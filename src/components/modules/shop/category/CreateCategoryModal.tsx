@@ -58,10 +58,10 @@ const CreateCategoryModal = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>Create Category</Button>
+        <Button className="bg-[#7c3f00] hover:bg-black">Create Category</Button>
       </DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
+      <DialogContent className="bg-[#7c3f00]/40 text-gray-400 space-y-4">
+        <DialogHeader className="space-y-4">
           <DialogTitle> Create Category </DialogTitle>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -71,7 +71,7 @@ const CreateCategoryModal = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Name</FormLabel>
-                    <FormControl>
+                    <FormControl className="bg-black">
                       <Input type="text" {...field} value={field.value || ""} />
                     </FormControl>
                     <FormMessage />
@@ -89,7 +89,7 @@ const CreateCategoryModal = () => {
                         <FormLabel>description</FormLabel>
                         <FormControl>
                           <Textarea
-                            className="h-36 w-72"
+                            className="h-36 w-72 bg-black  outline-none"
                             {...field}
                             value={field.value || ""}
                           />
@@ -118,7 +118,10 @@ const CreateCategoryModal = () => {
                 )}
               </div>
 
-              <Button type="submit" className="mt-5 w-full">
+              <Button
+                type="submit"
+                className="mt-5 w-full bg-[#7c3f00] hover:bg-[#7c3f00]/30"
+              >
                 {isSubmitting ? "Creating...." : "Create"}
               </Button>
             </form>

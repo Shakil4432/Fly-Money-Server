@@ -43,7 +43,7 @@ const ManageCategories = ({ categories }: { categories: ICategory[] }) => {
       accessorKey: "name",
       header: () => <div>Category Name</div>,
       cell: ({ row }) => (
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center space-x-3 text-[#7c3f00]">
           <Image
             src={row.original.icon}
             alt={row.original.name}
@@ -61,7 +61,7 @@ const ManageCategories = ({ categories }: { categories: ICategory[] }) => {
       cell: ({ row }) => (
         <div>
           {row.original.isActive ? (
-            <p className="text-green-500 border bg-green-100 w-14 text-center px-1 rounded">
+            <p className="text-[#7c3f00] border bg-[#7c3f00]/30 w-14 text-center px-1 rounded">
               True
             </p>
           ) : (
@@ -88,7 +88,7 @@ const ManageCategories = ({ categories }: { categories: ICategory[] }) => {
   ];
   return (
     <div>
-      <div className="flex items-center justify-between p-6">
+      <div className="flex items-center justify-between p-6 text-gray-400">
         <h1>Manage Categories</h1>
         <CreateCategoryModal></CreateCategoryModal>
       </div>
