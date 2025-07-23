@@ -7,9 +7,9 @@ import {
 } from "@/components/ui/carousel";
 
 import NMContainer from "@/components/ui/core/NMContainer";
-import { getAllBrands } from "@/services/brand";
+
 import { getAllCategories } from "@/services/Category";
-import { IBrand } from "@/types/brand";
+
 import { ICategory } from "@/types/category";
 
 import Image from "next/image";

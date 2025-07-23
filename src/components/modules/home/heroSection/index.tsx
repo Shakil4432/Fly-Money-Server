@@ -1,7 +1,5 @@
 import { Button } from "@/components/ui/button";
 import styles from "./HeroSeciton.module.css";
-import Image from "next/image";
-import cupImage from "@/assets/cup-with-headphone.png";
 
 const HeroSection = () => {
   return (

@@ -1,4 +1,10 @@
-import LoginForm from "@/components/modules/auth/login/LoginForm";
+"use client";
+import dynamic from "next/dynamic";
+
+const LoginForm = dynamic(
+  () => import("@/components/modules/auth/login/LoginForm"),
+  { ssr: false }
+);
 
 const LoginPage = () => {
   return (

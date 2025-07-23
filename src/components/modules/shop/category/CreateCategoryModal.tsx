@@ -21,17 +21,16 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { createCategory } from "@/services/Category";
-import { zodResolver } from "@hookform/resolvers/zod";
+
 import { useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { z } from "zod";
 
-const categorySchema = z.object({
-  name: z.string(),
-  description: z.string(),
-  image: z.string(),
-});
+// const categorySchema = z.object({
+//   name: z.string(),
+//   description: z.string(),
+//   image: z.string(),
+// });
 
 const CreateCategoryModal = () => {
   const [imageFiles, setImageFiles] = useState<File[] | []>([]);
