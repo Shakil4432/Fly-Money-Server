@@ -30,7 +30,7 @@ const TablePagination = ({ totalPage }: { totalPage: number }) => {
         disabled={currentPage === 1}
         variant="outline"
         size="sm"
-        className="w-8 h-8 rounded-full flex items-center justify-center"
+        className="w-8 h-8 rounded-full flex items-center justify-center bg-black hover:bg-black hover:text-gray-400"
       >
         <ArrowLeft />
       </Button>
@@ -43,7 +43,11 @@ const TablePagination = ({ totalPage }: { totalPage: number }) => {
           key={index}
           variant={currentPage === index + 1 ? "default" : "outline"}
           size="sm"
-          className="w-8 h-8 rounded-full flex items-center justify-center"
+          className={`w-8 h-8 rounded-full flex items-center justify-center ${
+            currentPage === index + 1
+              ? "bg-[#7c3f00] hover:bg-[#7c3f00] hover:text-gray-400"
+              : "bg-black hover:bg-black hover:text-gray-400"
+          }`}
         >
           {index + 1}
         </Button>
@@ -53,7 +57,7 @@ const TablePagination = ({ totalPage }: { totalPage: number }) => {
         disabled={currentPage === totalPage}
         variant="outline"
         size="sm"
-        className="w-8 h-8 rounded-full flex items-center justify-center"
+        className="w-8 h-8 rounded-full flex items-center justify-center bg-black hover:bg-black hover:text-gray-400"
       >
         <ArrowRight />
       </Button>

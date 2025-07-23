@@ -38,6 +38,7 @@ const ManageProducts = ({
       id: "select",
       header: ({ table }) => (
         <Checkbox
+          className="border-[#7c3f00]  !text-[#7c3f00] !bg-black"
           checked={
             table.getIsAllPageRowsSelected() ||
             (table.getIsSomePageRowsSelected() && "indeterminate")
@@ -48,6 +49,7 @@ const ManageProducts = ({
       ),
       cell: ({ row }) => (
         <Checkbox
+          className="border-[#7c3f00] !text-[#7c3f00] !bg-black"
           checked={row.getIsSelected()}
           onCheckedChange={(value) => {
             if (value) {
@@ -69,7 +71,7 @@ const ManageProducts = ({
       accessorKey: "name",
       header: "Product Name",
       cell: ({ row }) => (
-        <div className="flex items-center space-x-3">
+        <div className={`flex items-center space-x-3 `}>
           <Image
             src={row.original.imageUrls[0]}
             alt={row.original.name}
@@ -149,12 +151,13 @@ const ManageProducts = ({
 
   return (
     <div>
-      <div className="flex items-center justify-between">
-        <h1 className="text-xl font-bold">Manage Products</h1>
-        <div className="flex items-center gap-2">
+      <div className="flex items-center justify-between p-3">
+        <h1 className="text-xl font-bold text-[#7c3f00] ">Manage Products</h1>
+        <div className="flex items-center gap-2 ">
           <Button
             onClick={() => router.push("/user/shop/products/add-products")}
             size="sm"
+            className="bg-[#7c3f00] hover:text-yellow-100 hover:bg-[#7c3f00]/30"
           >
             Add Product <Plus />
           </Button>

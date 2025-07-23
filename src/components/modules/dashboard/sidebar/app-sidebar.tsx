@@ -36,12 +36,6 @@ const data = {
 
   navMain: [
     {
-      title: "Dashboard",
-      url: "/user/dashboard",
-      icon: SquareTerminal,
-      isActive: true,
-    },
-    {
       title: "Shop",
       url: "/user/shop/all-products",
       icon: Bot,
@@ -53,10 +47,6 @@ const data = {
         {
           title: "Manage Categories",
           url: "/user/shop/category",
-        },
-        {
-          title: "Manage Brand",
-          url: "/user/shop/brand",
         },
       ],
     },
@@ -78,8 +68,8 @@ const data = {
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props} className="">
-      <SidebarHeader></SidebarHeader>
-      <SidebarContent className="bg-[#090807]">
+      <SidebarHeader className="bg-[#090807] text-[#7c3f00]"></SidebarHeader>
+      <SidebarContent className="bg-[#090807] text-[#7c3f00]">
         <NavMain items={data.navMain} />
       </SidebarContent>
       <SidebarFooter className="bg-[#090807]">

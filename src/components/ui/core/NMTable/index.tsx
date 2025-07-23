@@ -32,14 +32,17 @@ export function NMTable<TData, TValue>({
   });
 
   return (
-    <div className="rounded-md border text-[#7c3f00]">
+    <div className="rounded-md border text-gray-400">
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
                 return (
-                  <TableHead className="font-bold " key={header.id}>
+                  <TableHead
+                    className="font-bold text-[#7c3f00] "
+                    key={header.id}
+                  >
                     {header.isPlaceholder
                       ? null
                       : flexRender(
@@ -58,6 +61,7 @@ export function NMTable<TData, TValue>({
               <TableRow
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
+                className={`${row.getIsSelected() ? "!bg-[#090807] " : ""}`}
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>

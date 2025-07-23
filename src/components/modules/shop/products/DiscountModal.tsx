@@ -54,11 +54,15 @@ const DiscountModal = ({ selectedIds, setSelectedIds }: TModalProps) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button disabled={!selectedIds?.length} size="sm">
+        <Button
+          disabled={!selectedIds?.length}
+          size="sm"
+          className="bg-[#7c3f00] hover:text-yellow-100 hover:bg-[#7c3f00]/30"
+        >
           Add Flash Sale
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px] bg-gray-900 text-gray-400">
         <DialogHeader>
           <DialogTitle>Add Flash Sale</DialogTitle>
         </DialogHeader>
@@ -73,7 +77,7 @@ const DiscountModal = ({ selectedIds, setSelectedIds }: TModalProps) => {
               name="discountPercentage"
               render={({ field }) => (
                 <FormItem>
-                  <FormControl>
+                  <FormControl className="bg-black outline-none text-gray-400">
                     <Input
                       type="number"
                       {...field}
@@ -87,7 +91,10 @@ const DiscountModal = ({ selectedIds, setSelectedIds }: TModalProps) => {
               )}
             />
 
-            <Button type="submit" className="w-full rounded-sm">
+            <Button
+              type="submit"
+              className="w-full rounded-sm bg-[#7c3f00] hover:text-yellow-100 hover:bg-[#7c3f00]/30"
+            >
               {isSubmitting ? "Adding...." : "Add"}
             </Button>
           </form>
