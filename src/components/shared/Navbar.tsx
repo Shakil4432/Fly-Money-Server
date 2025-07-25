@@ -44,7 +44,7 @@ export default function Navbar() {
         </div>
 
         {/* Navigation menu center on large screens */}
-        <nav className="hidden md:flex md:flex-1 md:justify-end text-lg  md:gap-6 text-[#facc15] ">
+        <nav className="hidden md:flex md:flex-1 md:justify-end text-lg  md:gap-6  text-gray-300">
           <Link href="/" className="hover:text-white">
             Home
           </Link>
@@ -60,7 +60,7 @@ export default function Navbar() {
         <nav className="hidden md:flex items-center gap-2 md:flex-1 md:justify-end order-3">
           <Button
             variant="outline"
-            className="rounded-full p-0 size-10 bg-[#090807] border-[#7c3f00] text-[#facc15] hover:bg-[#7c3f00] hover:text-white mr-2"
+            className="rounded-full p-0 size-10 bg-[#090807] border-[#7c3f00] text-gray-300 hover:bg-[#7c3f00] hover:text-white mr-2"
             onClick={() => setIsSearchOpen(true)}
           >
             <Search />
@@ -76,13 +76,13 @@ export default function Navbar() {
 
           <Button
             variant="outline"
-            className="rounded-full p-0 size-10 bg-[#090807] border-[#7c3f00] text-[#facc15] hover:bg-[#7c3f00] hover:text-white"
+            className="rounded-full p-0 size-10 bg-[#090807] border-[#7c3f00] text-gray-300 hover:bg-[#7c3f00] hover:text-white"
           >
             <Heart />
           </Button>
           <Button
             variant="outline"
-            className="rounded-full p-0 size-10 bg-[#090807] border-[#7c3f00] text-[#facc15] hover:bg-[#7c3f00] hover:text-white"
+            className="rounded-full p-0 size-10 bg-[#090807] border-[#7c3f00] text-gray-300 hover:bg-[#7c3f00] hover:text-white"
           >
             <ShoppingBag />
           </Button>
@@ -92,7 +92,7 @@ export default function Navbar() {
               <Link href="/create-shop">
                 <Button
                   variant="outline"
-                  className="rounded-full bg-[#090807] border-[#7c3f00] text-[#facc15] hover:bg-[#7c3f00] hover:text-white"
+                  className="rounded-full bg-[#090807] border-[#7c3f00] text-gray-300 hover:bg-[#7c3f00] hover:text-white"
                 >
                   Create Shop
                 </Button>
@@ -129,7 +129,7 @@ export default function Navbar() {
             <Link href="/login">
               <Button
                 variant="outline"
-                className="rounded-full bg-[#090807] border-[#7c3f00] text-[#facc15] hover:bg-[#7c3f00] hover:text-white"
+                className="px-4 md:px-4 md:py-2 py-1.5 cursor-pointer bg-gradient-to-r from-[#7c3f00] to-yellow-700 text-white rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300"
               >
                 Login
               </Button>
@@ -233,7 +233,7 @@ export default function Navbar() {
                 <Button
                   onClick={() => setIsMobileOpen(false)}
                   variant="outline"
-                  className="w-full border-[#7c3f00] text-[#facc15] hover:bg-[#7c3f00]"
+                  className="px-4 md:px-4 md:py-2 py-1.5 cursor-pointer bg-gradient-to-r from-[#7c3f00] to-yellow-700 text-white rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300"
                 >
                   Login
                 </Button>

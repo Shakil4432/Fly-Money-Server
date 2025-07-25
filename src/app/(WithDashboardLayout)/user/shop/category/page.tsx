@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import ManageCategories from "@/components/modules/shop/category";
 import { getAllCategories } from "@/services/Category";
 

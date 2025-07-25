@@ -46,7 +46,7 @@ export default function CountDown() {
   }, []);
 
   return (
-    <div className="flex items-center justify-center space-x-4 text-gray-800">
+    <div className="flex items-center justify-evenly space-x-4 text-gray-800 flex-wrap  gap-4">
       {(["hours", "minutes", "seconds"] as const).map((unit) => (
         <div
           key={unit}

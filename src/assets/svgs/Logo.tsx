@@ -25,7 +25,7 @@ export default function Logo() {
         fontSize="58"
         fontWeight="bold"
         fontFamily="Georgia, serif"
-        fill="#facc15"
+        fill="#7c3f00"
       >
         Fly Money
       </text>

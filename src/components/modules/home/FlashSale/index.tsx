@@ -15,7 +15,7 @@ const FlashSale = async () => {
       <NMContainer className="my-16">
         {/* Header section */}
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-8">
+          <div className="flex flex-col flex-wrap sm:flex-row items-start sm:items-center gap-4 sm:gap-8">
             <h2 className="text-2xl sm:text-3xl font-bold">Flash Sale</h2>
             <CountDown />
           </div>
