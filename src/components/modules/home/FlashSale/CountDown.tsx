@@ -53,7 +53,7 @@ export default function CountDown() {
           className={`flex flex-col items-center px-6 py-1 rounded-full w-32 ${
             unit === "seconds"
               ? "border border-red-500 text-red-500"
-              : "bg-[#090807] border border-[#7c3f00] text-[#fef9c3]"
+              : "bg-[#FAF0E6] border border-[#7c3f00] text-[#7c3f00]"
           }`}
         >
           <div className="flex items-center gap-2">

@@ -1,20 +1,20 @@
 "use client";
+
 import { useEffect, useState } from "react";
 import { Slider } from "@/components/ui/slider";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { Star, Menu, X } from "lucide-react";
+import { Star, Menu, X, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { getAllCategories } from "@/services/Category";
-
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 export default function FilterSidebar() {
   const [price, setPrice] = useState([0]);
   const [isLoading, setIsLoading] = useState(false);
   const [categories, setCategories] = useState([]);
-  const [isOpen, setIsOpen] = useState(false); // For mobile toggle
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -51,94 +51,84 @@ export default function FilterSidebar() {
 
   return (
     <>
-      {/* Hamburger button - visible only on small screens */}
+      {/* Mobile toggle button */}
       <button
-        className="
-          lg:hidden
-          fixed top-auto left-4 z-50 p-3 rounded-full
-          bg-[#7c3f00] text-white shadow-md
-          hover:bg-[#9b5e00] transition
-          flex items-center justify-center
-        "
-        aria-label="Toggle Filters"
+        className="lg:hidden fixed top-4 left-4 z-50 p-3 rounded-full
+        bg-[#7c3f00] text-white shadow-lg hover:bg-[#9b5e00] transition"
         onClick={() => setIsOpen(!isOpen)}
       >
-        {isOpen ? "" : <Menu size={24} />}
+        {isOpen ? <X size={22} /> : <Menu size={22} />}
       </button>
-      <div className="fixed top-12 left-4 z-50 text-xs text-white font-semibold pointer-events-none lg:hidden">
-        Filters
-      </div>
 
-      {/* Sidebar container */}
-      <div
+      {/* Sidebar */}
+      <aside
         className={`
-         
-          fixed top-0  left-0 h-full bg-[#7c3f00] p-6 w-64
-          rounded-tr-lg rounded-br-lg
-          shadow-lg z-50
-          transform transition-transform duration-300 ease-in-out
+          fixed top-0 left-0 h-full w-72 bg-white p-6 
+          shadow-2xl transition-transform duration-300 ease-in-out z-40
           ${isOpen ? "translate-x-0" : "-translate-x-full"}
-          lg:static lg:translate-x-0 lg:h-auto lg:rounded-md lg:shadow-none lg:w-64 lg:block
+          lg:static lg:translate-x-0 lg:shadow-none lg:h-auto
         `}
       >
+        {/* Header */}
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-xl font-semibold text-white">Filter</h2>
-          {/* Clear Filters button visible only if query params exist */}
+          <h2 className="text-2xl font-bold text-[#7c3f00]">Filters</h2>
           {searchParams.toString().length > 0 && (
             <Button
               onClick={clearFilters}
               size="sm"
-              className="bg-black hover:bg-gray-700 ml-5"
+              variant="outline"
+              className="text-[#7c3f00] border-[#7c3f00] hover:bg-[#7c3f00]/10"
             >
-              Clear Filters
+              Clear
             </Button>
           )}
-          {/* Close button on mobile inside sidebar */}
-          <button
-            className="lg:hidden text-white hover:text-gray-300 ml-auto"
-            aria-label="Close Filters"
-            onClick={() => setIsOpen(false)}
-          >
-            <X size={24} />
-          </button>
         </div>
 
-        {/* Filter by Price */}
-        <div className="mb-6">
-          <h2 className="text-lg font-semibold mb-4 text-white">Price</h2>
-          <div className="flex items-center justify-between text-sm mb-2 text-white">
-            <span>$0</span>
-            <span>$500000</span>
-          </div>
+        {/* Price Filter */}
+        <div className="mb-8">
+          <h3 className="text-lg font-semibold mb-3 text-gray-800">Price</h3>
           <Slider
-            max={500000}
-            step={1}
+            max={500}
+            step={10}
+            value={price}
             onValueChange={(value) => {
               setPrice(value);
               handleSearchQuery("price", value[0]);
             }}
-            className="w-full"
+            className="w-full [&_[data-radix-slider-range]]:bg-[#7c3f00]
+            [&_[data-radix-slider-track]]:bg-gray-200"
           />
-          <p className="text-sm mt-2 text-white">Selected Price: ${price[0]}</p>
+          <div className="flex justify-between mt-2 text-sm text-gray-600">
+            <span>$0</span>
+            <span>${price[0]}</span>
+            <span>$500</span>
+          </div>
         </div>
 
-        {/* Product Types */}
-        <div className="mb-6">
-          <h2 className="text-lg font-semibold mb-4 text-white">
-            Product Category
-          </h2>
-          {!isLoading && (
-            <RadioGroup className="space-y-2">
+        {/* Categories */}
+        <div className="mb-8">
+          <h3 className="text-lg font-semibold mb-3 text-gray-800">
+            Categories
+          </h3>
+          {isLoading ? (
+            <div className="flex items-center text-sm text-gray-500">
+              <Loader2 className="animate-spin mr-2" size={16} /> Loading...
+            </div>
+          ) : (
+            <RadioGroup className="space-y-3">
               {categories?.map((category: { _id: string; name: string }) => (
-                <div key={category._id} className="flex items-center space-x-2">
+                <div key={category._id} className="flex items-center space-x-3">
                   <RadioGroupItem
-                    onClick={() => handleSearchQuery("category", category._id)}
+                    className="border border-[#7c3f00] data-[state=checked]:bg-[#7c3f00]"
+                    onClick={() =>
+                      handleSearchQuery("parentCategory", category._id)
+                    }
                     value={category._id}
                     id={category._id}
                   />
                   <Label
                     htmlFor={category._id}
-                    className="text-gray-200 font-light"
+                    className="text-gray-700 cursor-pointer hover:text-[#7c3f00] transition"
                   >
                     {category.name}
                   </Label>
@@ -149,26 +139,27 @@ export default function FilterSidebar() {
         </div>
 
         {/* Rating */}
-        <div className="mb-6">
-          <h2 className="text-lg font-semibold mb-4 text-white">Rating</h2>
+        <div className="mb-4">
+          <h3 className="text-lg font-semibold mb-3 text-gray-800">Rating</h3>
           <RadioGroup className="space-y-3">
             {[5, 4, 3, 2, 1].map((rating) => (
-              <div key={rating} className="flex items-center space-x-2">
+              <div key={rating} className="flex items-center space-x-3">
                 <RadioGroupItem
+                  className="border border-[#7c3f00] data-[state=checked]:bg-[#7c3f00]"
                   onClick={() => handleSearchQuery("rating", rating)}
                   value={`${rating}`}
                   id={`rating-${rating}`}
                 />
                 <Label
                   htmlFor={`rating-${rating}`}
-                  className="flex items-center text-white"
+                  className="flex items-center gap-1 text-gray-700 cursor-pointer hover:text-[#7c3f00] transition"
                 >
                   {Array.from({ length: 5 }, (_, i) => (
                     <Star
-                      size={18}
                       key={i}
-                      fill={i < rating ? "orange" : "lightgray"}
-                      stroke={i < rating ? "orange" : "lightgray"}
+                      size={18}
+                      fill={i < rating ? "#facc15" : "transparent"}
+                      stroke={i < rating ? "#facc15" : "#d1d5db"}
                     />
                   ))}
                 </Label>
@@ -176,7 +167,7 @@ export default function FilterSidebar() {
             ))}
           </RadioGroup>
         </div>
-      </div>
+      </aside>
     </>
   );
 }

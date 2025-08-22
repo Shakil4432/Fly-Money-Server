@@ -23,7 +23,7 @@ const DeleteConfirmationModal: React.FC<DeleteModalProps> = ({
 }) => {
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent className="bg-[#7c3f00]/40">
+      <DialogContent>
         <DialogHeader>
           <DialogTitle className="text-[#7c3f00]">Delete Item</DialogTitle>
           <DialogDescription>

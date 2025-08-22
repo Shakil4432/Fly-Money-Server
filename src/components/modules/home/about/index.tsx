@@ -7,7 +7,7 @@ import Image from "next/image";
 
 const AboutUsSection = () => {
   return (
-    <section className="w-full py-20 bg-[#121212] text-gray-200 border-t border-[#1f1f1f]">
+    <section className="w-full py-20   border-t ">
       <div className="container mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
         {/* Text Content */}
         <div className="space-y-10">
@@ -15,7 +15,7 @@ const AboutUsSection = () => {
             About Us
           </Badge>
 
-          <h2 className="text-4xl md:text-5xl font-extrabold text-white">
+          <h2 className="text-4xl md:text-5xl font-extrabold ">
             The Art of Craftsmanship
           </h2>
 
@@ -47,13 +47,11 @@ const AboutUsSection = () => {
             ].map((item) => (
               <Card
                 key={item.title}
-                className="bg-[#1a1a1a] border border-[#2a2a2a] rounded-xl text-left"
+                className=" border border-[#7c3f00]/10 rounded-xl text-left"
               >
                 <CardContent className="p-5 space-y-3">
                   <div className="text-2xl">{item.icon}</div>
-                  <h3 className="text-lg font-semibold text-white">
-                    {item.title}
-                  </h3>
+                  <h3 className="text-lg font-semibold ">{item.title}</h3>
                   <p className="text-gray-400 text-sm">{item.desc}</p>
                 </CardContent>
               </Card>
@@ -63,7 +61,7 @@ const AboutUsSection = () => {
           {/* Button */}
           <Button
             variant="outline"
-            className="mt-8 text-[#7c3f00] bg-[#121212] border-[#7c3f00] hover:text-white hover:bg-[#7c3f00]"
+            className="mt-8 text-[#7c3f00]  border-[#7c3f00] hover:text-white hover:bg-[#7c3f00]"
           >
             Explore Our Craft
           </Button>

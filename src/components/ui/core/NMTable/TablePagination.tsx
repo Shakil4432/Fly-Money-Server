@@ -1,25 +1,37 @@
+"use client";
+
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Button } from "../../button";
-import { useState } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 const TablePagination = ({ totalPage }: { totalPage: number }) => {
-  const [currentPage, setCurrentPage] = useState(1);
-  //   console.log(currentPage);
   const router = useRouter();
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  // ✅ Always read page from URL instead of local state
+  const currentPage = Number(searchParams.get("page")) || 1;
+
+  // ✅ Preserve existing query params while updating "page"
+  const createQueryString = (page: number) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("page", String(page));
+    return params.toString();
+  };
 
   const handlePrev = () => {
     if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-      router.push(`${pathname}?page=${currentPage - 1}`);
+      router.push(`${pathname}?${createQueryString(currentPage - 1)}`, {
+        scroll: false,
+      });
     }
   };
 
   const handleNext = () => {
     if (currentPage < totalPage) {
-      setCurrentPage(currentPage + 1);
-      router.push(`${pathname}?page=${currentPage + 1}`);
+      router.push(`${pathname}?${createQueryString(currentPage + 1)}`, {
+        scroll: false,
+      });
     }
   };
 
@@ -30,34 +42,40 @@ const TablePagination = ({ totalPage }: { totalPage: number }) => {
         disabled={currentPage === 1}
         variant="outline"
         size="sm"
-        className="w-8 h-8 rounded-full flex items-center justify-center bg-black hover:bg-black hover:text-gray-400"
+        className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-[#7c3f00] hover:text-gray-400"
       >
         <ArrowLeft />
       </Button>
-      {[...Array(totalPage)].map((_, index) => (
-        <Button
-          onClick={() => {
-            setCurrentPage(index + 1);
-            router.push(`${pathname}?page=${index + 1}`);
-          }}
-          key={index}
-          variant={currentPage === index + 1 ? "default" : "outline"}
-          size="sm"
-          className={`w-8 h-8 rounded-full flex items-center justify-center ${
-            currentPage === index + 1
-              ? "bg-[#7c3f00] hover:bg-[#7c3f00] hover:text-gray-400"
-              : "bg-black hover:bg-black hover:text-gray-400"
-          }`}
-        >
-          {index + 1}
-        </Button>
-      ))}
+
+      {Array.from({ length: totalPage }).map((_, index) => {
+        const page = index + 1;
+        return (
+          <Button
+            key={page}
+            onClick={() =>
+              router.push(`${pathname}?${createQueryString(page)}`, {
+                scroll: false,
+              })
+            }
+            variant={currentPage === page ? "default" : "outline"}
+            size="sm"
+            className={`w-8 h-8 rounded-full flex items-center justify-center ${
+              currentPage === page
+                ? "bg-[#7c3f00] hover:bg-[#7c3f00] hover:text-gray-400"
+                : "hover:text-gray-400"
+            }`}
+          >
+            {page}
+          </Button>
+        );
+      })}
+
       <Button
         onClick={handleNext}
         disabled={currentPage === totalPage}
         variant="outline"
         size="sm"
-        className="w-8 h-8 rounded-full flex items-center justify-center bg-black hover:bg-black hover:text-gray-400"
+        className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-[#7c3f00] hover:text-gray-400"
       >
         <ArrowRight />
       </Button>

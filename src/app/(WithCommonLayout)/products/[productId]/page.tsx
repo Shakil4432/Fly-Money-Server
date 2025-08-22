@@ -11,13 +11,9 @@ const ProdcutDetailsPage = async ({
 }) => {
   const { productId } = await params;
   const { data: product } = await getSingleProduct(productId);
-  console.log(product);
+
   return (
-    <NMContainer className="text-white">
-      <ProductBanner
-        title="Product Details"
-        path="Home - Products - Product Details"
-      ></ProductBanner>
+    <NMContainer className="text-white ">
       <ProductDetails product={product}></ProductDetails>
     </NMContainer>
   );

@@ -12,7 +12,15 @@ export interface IProduct {
   price: number;
   stock: number;
   weight: number;
-  category: {
+  parentCategory: {
+    _id: string;
+    name: string;
+  };
+  subCategory: {
+    _id: string;
+    name: string;
+  };
+  thirdSubCategory: {
     _id: string;
     name: string;
   };
@@ -22,10 +30,7 @@ export interface IProduct {
     _id: string;
     shopName: string;
   };
-  brand: {
-    _id: string;
-    name: string;
-  };
+  brand: string;
   averageRating: number;
   ratingCount: number;
   availableColors: string[];

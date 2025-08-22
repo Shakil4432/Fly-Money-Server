@@ -20,7 +20,7 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-[#090807] border-t border-[#7c3f00] py-16 px-4">
+    <footer className="bg-[#FFFFFF] mt-32 border-t border-[#7c3f00] py-16 px-4">
       <div className="max-w-6xl mx-auto text-center space-y-6">
         {/* Logo & Tagline */}
         <div className="flex flex-col items-center">

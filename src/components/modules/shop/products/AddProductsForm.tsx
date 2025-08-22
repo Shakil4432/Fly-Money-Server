@@ -15,13 +15,13 @@ import {
   SubmitHandler,
   useFieldArray,
   useForm,
+  useWatch,
 } from "react-hook-form";
 import { Textarea } from "@/components/ui/textarea";
 import { useEffect, useState } from "react";
 import NMImageUploader from "@/components/ui/core/NMImageUploader";
 import ImagePreviewer from "@/components/ui/core/NMImageUploader/ImagePreviewer";
 import { Plus } from "lucide-react";
-// import Logo from "@/assets/svgs/Logo";
 
 import {
   Select,
@@ -32,13 +32,13 @@ import {
 } from "@/components/ui/select";
 
 import { getAllCategories } from "@/services/Category";
-
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { ICategory } from "@/types/category";
 import { IBrand } from "@/types/brand";
 import { getAllBrands } from "@/services/brand";
 import { addProduct } from "@/services/products";
+import { error } from "console";
 
 export default function AddProductsForm() {
   const [imageFiles, setImageFiles] = useState<File[] | []>([]);
@@ -53,7 +53,9 @@ export default function AddProductsForm() {
       name: "",
       description: "",
       price: "",
-      category: "",
+      parentCategory: "",
+      subCategory: "",
+      thirdSubCategory: "",
       brand: "",
       stock: "",
       weight: "",
@@ -62,6 +64,31 @@ export default function AddProductsForm() {
       specification: [{ key: "", value: "" }],
     },
   });
+
+  const parentCategory = useWatch({
+    control: form.control,
+    name: "parentCategory",
+  });
+
+  const subCategory = useWatch({
+    control: form.control,
+    name: "subCategory",
+  });
+
+  const getCategoryPath = (
+    category: any,
+    allCategories: ICategory[]
+  ): string => {
+    const path: string[] = [];
+    let current: ICategory | undefined = category;
+
+    while (current) {
+      path.unshift(current.name);
+      current = allCategories.find((c) => c._id === current?.parent);
+    }
+
+    return path.join(" / ");
+  };
 
   const {
     formState: { isSubmitting },
@@ -72,29 +99,90 @@ export default function AddProductsForm() {
     name: "availableColors",
   });
 
-  const addColor = () => {
-    appendColor({ value: "" });
-  };
+  const addColor = () => appendColor({ value: "" });
 
   const { append: appendFeatures, fields: featureFields } = useFieldArray({
     control: form.control,
     name: "keyFeatures",
   });
 
-  const addFeatures = () => {
-    appendFeatures({ value: "" });
-  };
+  const addFeatures = () => appendFeatures({ value: "" });
 
   const { append: appendSpec, fields: specFields } = useFieldArray({
     control: form.control,
     name: "specification",
   });
 
-  const addSpec = () => {
-    appendSpec({ key: "", value: "" });
+  const addSpec = () => appendSpec({ key: "", value: "" });
+
+  type Category = {
+    _id: string;
+    name: string;
+    parent: null | Category | string;
+    children?: Category[];
   };
 
-  // console.log(specFields);
+  type ExtractedCategories = {
+    parentCategories: Category[];
+    subCategories: { _id: string; name: string; parentId: string }[];
+    thirdLevelCategories: {
+      _id: string;
+      name: string;
+      parentId: string;
+      grandParentId: string;
+    }[];
+  };
+
+  function extractCategoryLevels(data: Category[]): ExtractedCategories {
+    const parentCategories: Category[] = [];
+    const subCategories: { _id: string; name: string; parentId: string }[] = [];
+    const thirdLevelCategories: {
+      _id: string;
+      name: string;
+      parentId: string;
+      grandParentId: string;
+    }[] = [];
+
+    for (const parent of data) {
+      if (!parent.parent) {
+        parentCategories.push(parent);
+
+        if (parent.children) {
+          for (const sub of parent.children) {
+            subCategories.push({
+              _id: sub._id,
+              name: sub.name,
+              parentId: parent._id,
+            });
+
+            if (sub.children) {
+              for (const third of sub.children) {
+                thirdLevelCategories.push({
+                  _id: third._id,
+                  name: third.name,
+                  parentId: sub._id,
+                  grandParentId: parent._id,
+                });
+              }
+            }
+          }
+        }
+      }
+    }
+
+    return { parentCategories, subCategories, thirdLevelCategories };
+  }
+
+  const { parentCategories, subCategories, thirdLevelCategories } =
+    extractCategoryLevels(categories);
+
+  const filteredSubCategories = subCategories.filter(
+    (sub) => sub.parentId === parentCategory
+  );
+
+  const filteredThirdCategories = thirdLevelCategories.filter(
+    (third) => third.parentId === subCategory
+  );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -109,6 +197,15 @@ export default function AddProductsForm() {
 
     fetchData();
   }, []);
+
+  useEffect(() => {
+    form.setValue("subCategory", "");
+    form.setValue("thirdSubCategory", "");
+  }, [parentCategory]);
+
+  useEffect(() => {
+    form.setValue("thirdSubCategory", "");
+  }, [subCategory]);
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     console.log(data);
@@ -126,8 +223,6 @@ export default function AddProductsForm() {
         (specification[item.key] = item.value)
     );
 
-    // console.log({ availableColors, keyFeatures, specification });
-
     const modifiedData = {
       ...data,
       availableColors,
@@ -138,15 +233,13 @@ export default function AddProductsForm() {
       weight: parseFloat(data.weight),
     };
 
-    console.log(modifiedData);
-
-    const formData = new FormData();
-    formData.append("data", JSON.stringify(modifiedData));
-
-    for (const file of imageFiles) {
-      formData.append("images", file);
-    }
     try {
+      const formData = new FormData();
+      formData.append("data", JSON.stringify(modifiedData));
+
+      for (const file of imageFiles) {
+        formData.append("images", file);
+      }
       const res = await addProduct(formData);
 
       if (res.success) {
@@ -156,12 +249,12 @@ export default function AddProductsForm() {
         toast.error(res.message);
       }
     } catch (err: any) {
-      console.error(err);
+      console.error(err.message);
     }
   };
 
   return (
-    <div className="border-2 border-gray-300 rounded-xl flex-grow max-w-2xl p-5 ">
+    <div className="border text-gray-600 border-gray-400 rounded-xl flex-grow max-w-4xl p-5 ">
       <div className="flex items-center space-x-4 mb-5 ">
         {/* <Logo /> */}
 
@@ -172,14 +265,14 @@ export default function AddProductsForm() {
           <div className="flex justify-between items-center border-t border-b py-3 my-5">
             <p className="text-primary font-bold text-xl">Basic Information</p>
           </div>
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
             <FormField
               control={form.control}
               name="name"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Product Name</FormLabel>
-                  <FormControl>
+                  <FormControl className="bg-gray-200 text-gray-600">
                     <Input {...field} value={field.value || ""} />
                   </FormControl>
                   <FormMessage />
@@ -193,7 +286,7 @@ export default function AddProductsForm() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Price</FormLabel>
-                  <FormControl>
+                  <FormControl className="bg-gray-200 text-gray-600">
                     <Input {...field} value={field.value || ""} />
                   </FormControl>
                   <FormMessage />
@@ -201,7 +294,7 @@ export default function AddProductsForm() {
               )}
             />
 
-            <FormField
+            {/* <FormField
               control={form.control}
               name="category"
               render={({ field }) => (
@@ -211,15 +304,43 @@ export default function AddProductsForm() {
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                   >
-                    <FormControl>
+                    <FormControl className="bg-gray-200 text-gray-600">
                       <SelectTrigger>
                         <SelectValue placeholder="Select Product Category" />
                       </SelectTrigger>
                     </FormControl>
-                    <SelectContent>
-                      {categories.map((category) => (
-                        <SelectItem key={category?._id} value={category?._id}>
-                          {category?.name}
+                    <SelectContent className="bg-gray-200 text-gray-600">
+                      {categories?.map((category) => (
+                        <SelectItem key={category._id} value={category._id}>
+                          {getCategoryPath(category, categories)}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+
+                  <FormMessage />
+                </FormItem>
+              )}
+            /> */}
+            <FormField
+              control={form.control}
+              name="parentCategory"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Parent Category</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl className="bg-gray-200 text-gray-600">
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select Product Category" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent className="bg-gray-200 text-gray-600">
+                      {parentCategories?.map((category) => (
+                        <SelectItem key={category._id} value={category._id}>
+                          {getCategoryPath(category, categories)}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -229,7 +350,79 @@ export default function AddProductsForm() {
                 </FormItem>
               )}
             />
+
             <FormField
+              control={form.control}
+              name="subCategory"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel> Sub Category</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl className="bg-gray-200 text-gray-600">
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select Product Category" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent className="bg-gray-200 text-gray-600">
+                      {filteredSubCategories?.map((category) => (
+                        <SelectItem key={category._id} value={category._id}>
+                          {getCategoryPath(category, categories)}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="thirdSubCategory"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Third SubCategory</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl className="bg-gray-200 text-gray-600">
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select Product Category" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent className="bg-gray-200 text-gray-600">
+                      {filteredThirdCategories?.map((category) => (
+                        <SelectItem key={category._id} value={category._id}>
+                          {getCategoryPath(category, categories)}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="brand"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Brand</FormLabel>
+                  <FormControl className="bg-gray-200 text-gray-600">
+                    <Input {...field} value={field.value || "Fly Money"} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            {/* <FormField
               control={form.control}
               name="brand"
               render={({ field }) => (
@@ -237,14 +430,14 @@ export default function AddProductsForm() {
                   <FormLabel>Brand</FormLabel>
                   <Select
                     onValueChange={field.onChange}
-                    defaultValue={field.value}
+                    defaultValue={"Fly Money"}
                   >
-                    <FormControl>
+                    <FormControl className="bg-gray-200 text-gray-600">
                       <SelectTrigger>
                         <SelectValue placeholder="Select Product Brand" />
                       </SelectTrigger>
                     </FormControl>
-                    <SelectContent>
+                    <SelectContent className="bg-gray-200 text-gray-600">
                       {brands.map((brand) => (
                         <SelectItem key={brand?._id} value={brand?._id}>
                           {brand?.name}
@@ -256,14 +449,14 @@ export default function AddProductsForm() {
                   <FormMessage />
                 </FormItem>
               )}
-            />
+            /> */}
             <FormField
               control={form.control}
               name="stock"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Stock</FormLabel>
-                  <FormControl>
+                  <FormControl className="bg-gray-200 text-gray-600">
                     <Input {...field} value={field.value || ""} />
                   </FormControl>
                   <FormMessage />
@@ -276,7 +469,7 @@ export default function AddProductsForm() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Weight</FormLabel>
-                  <FormControl>
+                  <FormControl className="bg-gray-200 text-gray-600">
                     <Input {...field} value={field.value || ""} />
                   </FormControl>
                   <FormMessage />
@@ -292,7 +485,7 @@ export default function AddProductsForm() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Description</FormLabel>
-                  <FormControl>
+                  <FormControl className="bg-gray-200 text-gray-600">
                     <Textarea
                       className="h-36 resize-none"
                       {...field}
@@ -347,7 +540,7 @@ export default function AddProductsForm() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Color {index + 1}</FormLabel>
-                        <FormControl>
+                        <FormControl className="bg-gray-200 text-gray-600">
                           <Input {...field} value={field.value || ""} />
                         </FormControl>
                         <FormMessage />
@@ -381,7 +574,7 @@ export default function AddProductsForm() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Key Feature {index + 1}</FormLabel>
-                        <FormControl>
+                        <FormControl className="bg-gray-200 text-gray-600">
                           <Input {...field} value={field.value || ""} />
                         </FormControl>
                         <FormMessage />
@@ -417,7 +610,7 @@ export default function AddProductsForm() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Feature name {index + 1}</FormLabel>
-                      <FormControl>
+                      <FormControl className="bg-gray-200 text-gray-600">
                         <Input {...field} value={field.value || ""} />
                       </FormControl>
                       <FormMessage />
@@ -430,7 +623,7 @@ export default function AddProductsForm() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Feature Description {index + 1}</FormLabel>
-                      <FormControl>
+                      <FormControl className="bg-gray-200 text-gray-600">
                         <Input {...field} value={field.value || ""} />
                       </FormControl>
                       <FormMessage />

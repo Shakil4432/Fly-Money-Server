@@ -32,7 +32,7 @@ export function NMTable<TData, TValue>({
   });
 
   return (
-    <div className="rounded-md border text-gray-400">
+    <div className=" border text-gray-600 bg-white">
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -40,7 +40,7 @@ export function NMTable<TData, TValue>({
               {headerGroup.headers.map((header) => {
                 return (
                   <TableHead
-                    className="font-bold text-[#7c3f00] "
+                    className="font-bold text-[#7c3f00] bg-[#7c3f00]/10"
                     key={header.id}
                   >
                     {header.isPlaceholder
@@ -61,7 +61,9 @@ export function NMTable<TData, TValue>({
               <TableRow
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
-                className={`${row.getIsSelected() ? "!bg-[#090807] " : ""}`}
+                className={`${
+                  row.getIsSelected() ? "!bg-[#FFFFFF] !rounded-md " : ""
+                }`}
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>
@@ -73,7 +75,7 @@ export function NMTable<TData, TValue>({
           ) : (
             <TableRow>
               <TableCell colSpan={columns.length} className="h-24 text-center">
-                No results.
+                No data found
               </TableCell>
             </TableRow>
           )}

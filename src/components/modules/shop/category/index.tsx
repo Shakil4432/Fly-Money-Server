@@ -12,6 +12,7 @@ import { deleteCategory } from "@/services/Category";
 import DeleteConfirmationModal from "@/components/ui/core/NMModal/DeleteConfirmModal";
 
 const ManageCategories = ({ categories }: { categories: ICategory[] }) => {
+  console.log(categories);
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
@@ -88,7 +89,7 @@ const ManageCategories = ({ categories }: { categories: ICategory[] }) => {
   ];
   return (
     <div>
-      <div className="flex items-center justify-between p-6 text-gray-400">
+      <div className="flex items-center font-bold text-2xl justify-between p-6 text-[#7c3f00]">
         <h1>Manage Categories</h1>
         <CreateCategoryModal></CreateCategoryModal>
       </div>

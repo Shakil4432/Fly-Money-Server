@@ -28,7 +28,7 @@ const newProducts = [
 
 const NewArrivals = () => {
   return (
-    <section className="py-20 bg-[#1a1a1a] text-white border-b border-slate-900">
+    <section className="py-20 text-white border-b">
       <div className="container mx-auto px-6">
         <h2 className="text-4xl font-bold text-center mb-12 text-[#7c3f00]">
           New Arrivals
@@ -37,7 +37,7 @@ const NewArrivals = () => {
           {newProducts.map((product) => (
             <Card
               key={product.name}
-              className="bg-[#202020] max-w-96 border border-[#7c3f00] shadow-xl text-white"
+              className=" max-w-96 border border-[#7c3f00]/10  "
             >
               <CardContent className="p-4 space-y-4 ">
                 <Image

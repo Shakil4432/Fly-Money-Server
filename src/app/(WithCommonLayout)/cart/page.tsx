@@ -7,7 +7,7 @@ const CartPage = () => {
   return (
     <NMContainer>
       <div>
-        <ProductBanner title="Cart Page" path="Home - Cart"></ProductBanner>
+        <h1 className="p-10 text-center bg-gray-100 mt-4">Your Product Here</h1>
       </div>
       <div>
         <CartProducts></CartProducts>

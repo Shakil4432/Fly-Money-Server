@@ -15,13 +15,13 @@ import {
   SubmitHandler,
   useFieldArray,
   useForm,
+  useWatch,
 } from "react-hook-form";
 import { Textarea } from "@/components/ui/textarea";
 import { useEffect, useState } from "react";
 import NMImageUploader from "@/components/ui/core/NMImageUploader";
 import ImagePreviewer from "@/components/ui/core/NMImageUploader/ImagePreviewer";
 import { Plus } from "lucide-react";
-// import Logo from "@/assets/svgs/Logo";
 
 import {
   Select,
@@ -32,22 +32,21 @@ import {
 } from "@/components/ui/select";
 
 import { getAllCategories } from "@/services/Category";
-
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
-import { ICategory } from "@/types/category";
-import { IBrand } from "@/types/brand";
 import { getAllBrands } from "@/services/brand";
 import { updateProduct } from "@/services/products";
+import { ICategory } from "@/types/category";
+import { IBrand } from "@/types/brand";
 import { IProduct } from "@/types/product";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export default function UpdateProductForm({ product }: { product: IProduct }) {
-  const [imageFiles, setImageFiles] = useState<File[] | []>([]);
-  const [imagePreview, setImagePreview] = useState<string[] | []>(
+  const [imageFiles, setImageFiles] = useState<File[]>([]);
+  const [imagePreview, setImagePreview] = useState<string[]>(
     product?.imageUrls || []
   );
-  const [categories, setCategories] = useState<ICategory[] | []>([]);
-  const [brands, setBrands] = useState<IBrand[] | []>([]);
+  const [categories, setCategories] = useState<ICategory[]>([]);
+  const [brands, setBrands] = useState<IBrand[]>([]);
 
   const router = useRouter();
 
@@ -55,15 +54,17 @@ export default function UpdateProductForm({ product }: { product: IProduct }) {
     defaultValues: {
       name: product?.name || "",
       description: product?.description || "",
-      price: product?.price || "",
-      category: product?.category.name || "",
-      brand: product?.brand.name || "",
-      stock: product?.stock || "",
-      weight: product?.weight || "",
-      availableColors: product?.availableColors.map((color) => ({
-        value: color,
-      })) || [{ value: "" }],
-      keyFeatures: product?.keyFeatures.map((item) => ({ value: item })) || [
+      price: product?.price?.toString() || "",
+      parentCategory: product?.parentCategory._id || "",
+      subCategory: product?.subCategory._id || "",
+      thirdSubCategory: product?.thirdSubCategory._id || "",
+      brand: product?.brand || "Fly Money",
+      stock: product?.stock?.toString() || "",
+      weight: product?.weight?.toString() || "",
+      availableColors: product?.availableColors?.map((c) => ({ value: c })) || [
+        { value: "" },
+      ],
+      keyFeatures: product?.keyFeatures?.map((f) => ({ value: f })) || [
         { value: "" },
       ],
       specification: Object.entries(product?.specification || {}).map(
@@ -71,6 +72,93 @@ export default function UpdateProductForm({ product }: { product: IProduct }) {
       ) || [{ key: "", value: "" }],
     },
   });
+
+  const parentCategory = useWatch({
+    control: form.control,
+    name: "parentCategory",
+  });
+  const subCategory = useWatch({ control: form.control, name: "subCategory" });
+
+  const getCategoryPath = (
+    category: any,
+    allCategories: ICategory[]
+  ): string => {
+    const path: string[] = [];
+    let current: ICategory | undefined = category;
+    while (current) {
+      path.unshift(current.name);
+      current = allCategories.find((c) => c._id === current?.parent);
+    }
+    return path.join(" / ");
+  };
+
+  function extractCategoryLevels(data: ICategory[]) {
+    const parentCategories: ICategory[] = [];
+    const subCategories: { _id: string; name: string; parentId: string }[] = [];
+    const thirdLevelCategories: {
+      _id: string;
+      name: string;
+      parentId: string;
+      grandParentId: string;
+    }[] = [];
+
+    for (const parent of data) {
+      if (!parent.parent) {
+        parentCategories.push(parent);
+        if (parent.children) {
+          for (const sub of parent.children) {
+            subCategories.push({
+              _id: sub._id,
+              name: sub.name,
+              parentId: parent._id,
+            });
+            if (sub.children) {
+              for (const third of sub.children) {
+                thirdLevelCategories.push({
+                  _id: third._id,
+                  name: third.name,
+                  parentId: sub._id,
+                  grandParentId: parent._id,
+                });
+              }
+            }
+          }
+        }
+      }
+    }
+    return { parentCategories, subCategories, thirdLevelCategories };
+  }
+
+  const { parentCategories, subCategories, thirdLevelCategories } =
+    extractCategoryLevels(categories);
+
+  const filteredSubCategories = subCategories.filter(
+    (sub) => sub.parentId === parentCategory
+  );
+  const filteredThirdCategories = thirdLevelCategories.filter(
+    (third) => third.parentId === subCategory
+  );
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const [categoriesData, brandsData] = await Promise.all([
+        getAllCategories(),
+        getAllBrands(),
+      ]);
+      setCategories(categoriesData?.data);
+      setBrands(brandsData?.data);
+    };
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    form.setValue("subCategory", "");
+    form.setValue("thirdSubCategory", "");
+  }, [parentCategory]);
+
+  useEffect(() => {
+    form.setValue("thirdSubCategory", "");
+  }, [subCategory]);
 
   const {
     formState: { isSubmitting },
@@ -80,62 +168,25 @@ export default function UpdateProductForm({ product }: { product: IProduct }) {
     control: form.control,
     name: "availableColors",
   });
-
-  const addColor = () => {
-    appendColor({ value: "" });
-  };
-
   const { append: appendFeatures, fields: featureFields } = useFieldArray({
     control: form.control,
     name: "keyFeatures",
   });
-
-  const addFeatures = () => {
-    appendFeatures({ value: "" });
-  };
-
   const { append: appendSpec, fields: specFields } = useFieldArray({
     control: form.control,
     name: "specification",
   });
 
-  const addSpec = () => {
-    appendSpec({ key: "", value: "" });
-  };
-
-  // console.log(specFields);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const [categoriesData, brandsData] = await Promise.all([
-        getAllCategories(),
-        getAllBrands(),
-      ]);
-
-      setCategories(categoriesData?.data);
-      setBrands(brandsData?.data);
-    };
-
-    fetchData();
-  }, []);
-
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     console.log(data);
     const availableColors = data.availableColors.map(
-      (color: { value: string }) => color.value
+      (c: { value: string }) => c.value
     );
-
-    const keyFeatures = data.keyFeatures.map(
-      (feature: { value: string }) => feature.value
-    );
-
-    const specification: { [key: string]: string } = {};
-    data.specification.forEach(
-      (item: { key: string; value: string }) =>
-        (specification[item.key] = item.value)
-    );
-
-    // console.log({ availableColors, keyFeatures, specification });
+    const keyFeatures = data.keyFeatures.map((f: { value: string }) => f.value);
+    const specification: Record<string, string> = {};
+    data.specification.forEach((item: { key: string; value: string }) => {
+      if (item.key) specification[item.key] = item.value;
+    });
 
     const modifiedData = {
       ...data,
@@ -147,22 +198,16 @@ export default function UpdateProductForm({ product }: { product: IProduct }) {
       weight: parseFloat(data.weight),
     };
 
-    console.log(modifiedData);
-
-    const formData = new FormData();
-    formData.append("data", JSON.stringify(modifiedData));
-
-    for (const file of imageFiles) {
-      formData.append("images", file);
-    }
     try {
+      const formData = new FormData();
+      formData.append("data", JSON.stringify(modifiedData));
+      for (const file of imageFiles) {
+        formData.append("images", file);
+      }
       const res = await updateProduct(formData, product?._id);
-
       if (res.success) {
         toast.success(res.message);
-        router.push("/user/shop/products");
       } else {
-        console.log(res);
         toast.error(res.message);
       }
     } catch (err: any) {
@@ -171,288 +216,294 @@ export default function UpdateProductForm({ product }: { product: IProduct }) {
   };
 
   return (
-    <div className="border-2 border-gray-300 rounded-xl flex-grow max-w-2xl p-5 ">
+    <div className="border text-gray-600 border-gray-400 rounded-xl flex-grow max-w-4xl p-5 ">
       <div className="flex items-center space-x-4 mb-5 ">
-        {/* <Logo /> */}
-
-        <h1 className="text-xl font-bold">Update Product Info</h1>
+        <h1 className="text-xl font-bold">Update Product</h1>
       </div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
+          {/* Basic Info */}
           <div className="flex justify-between items-center border-t border-b py-3 my-5">
             <p className="text-primary font-bold text-xl">Basic Information</p>
           </div>
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
             <FormField
-              control={form.control}
               name="name"
+              control={form.control}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Product Name</FormLabel>
-                  <FormControl>
+                  <FormControl className="bg-gray-200 text-gray-600">
                     <Input {...field} value={field.value || ""} />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
-
             <FormField
-              control={form.control}
               name="price"
+              control={form.control}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Price</FormLabel>
-                  <FormControl>
+                  <FormControl className="bg-gray-200 text-gray-600">
                     <Input {...field} value={field.value || ""} />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
-
             <FormField
+              name="parentCategory"
               control={form.control}
-              name="category"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Category</FormLabel>
+                  <FormLabel>Parent Category</FormLabel>
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                   >
-                    <FormControl>
+                    <FormControl className="bg-gray-200 text-gray-600">
                       <SelectTrigger>
-                        <SelectValue placeholder="Select Product Category" />
+                        <SelectValue placeholder="Select Parent Category" />
                       </SelectTrigger>
                     </FormControl>
-                    <SelectContent>
-                      {categories.map((category) => (
-                        <SelectItem key={category?._id} value={category?._id}>
-                          {category?.name}
+                    <SelectContent className="bg-gray-200 text-gray-600">
+                      {parentCategories.map((cat) => (
+                        <SelectItem key={cat._id} value={cat._id}>
+                          {getCategoryPath(cat, categories)}
                         </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
-
-                  <FormMessage />
                 </FormItem>
               )}
             />
             <FormField
+              name="subCategory"
               control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Sub Category</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl className="bg-gray-200 text-gray-600">
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select Sub Category" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent className="bg-gray-200 text-gray-600">
+                      {filteredSubCategories.map((cat) => (
+                        <SelectItem key={cat._id} value={cat._id}>
+                          {cat.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="thirdSubCategory"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Third SubCategory</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl className="bg-gray-200 text-gray-600">
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select Third Category" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent className="bg-gray-200 text-gray-600">
+                      {filteredThirdCategories.map((cat) => (
+                        <SelectItem key={cat._id} value={cat._id}>
+                          {cat.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </FormItem>
+              )}
+            />
+            <FormField
               name="brand"
+              control={form.control}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Brand</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select Product Brand" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {brands.map((brand) => (
-                        <SelectItem key={brand?._id} value={brand?._id}>
-                          {brand?.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-
-                  <FormMessage />
+                  <FormControl className="bg-gray-200 text-gray-600">
+                    <Input {...field} value={field.value || "Fly Money"} />
+                  </FormControl>
                 </FormItem>
               )}
             />
             <FormField
-              control={form.control}
               name="stock"
+              control={form.control}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Stock</FormLabel>
-                  <FormControl>
-                    <Input {...field} value={field.value || ""} />
+                  <FormControl className="bg-gray-200 text-gray-600">
+                    <Input {...field} />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
             <FormField
-              control={form.control}
               name="weight"
+              control={form.control}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Weight</FormLabel>
-                  <FormControl>
-                    <Input {...field} value={field.value || ""} />
+                  <FormControl className="bg-gray-200 text-gray-600">
+                    <Input {...field} />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
           </div>
 
+          {/* Description */}
           <div className="my-5">
             <FormField
-              control={form.control}
               name="description"
+              control={form.control}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Description</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      className="h-36 resize-none"
-                      {...field}
-                      value={field.value || ""}
-                    />
+                  <FormControl className="bg-gray-200 text-gray-600">
+                    <Textarea className="h-36 resize-none" {...field} />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
           </div>
 
-          <div>
-            <div className="flex justify-between items-center border-t border-b py-3 my-5">
-              <p className="text-primary font-bold text-xl">Images</p>
-            </div>
-            <div className="flex gap-4 ">
-              <NMImageUploader
-                setImageFiles={setImageFiles}
-                setImagePreview={setImagePreview}
-                label="Upload Image"
-                className="w-fit mt-0"
+          {/* Images */}
+          <div className="flex justify-between items-center border-t border-b py-3 my-5">
+            <p className="text-primary font-bold text-xl">Images</p>
+          </div>
+          <div className="flex gap-4 ">
+            <NMImageUploader
+              setImageFiles={setImageFiles}
+              setImagePreview={setImagePreview}
+              label="Upload Image"
+            />
+            <ImagePreviewer
+              setImageFiles={setImageFiles}
+              setImagePreview={setImagePreview}
+              imagePreview={imagePreview}
+            />
+          </div>
+
+          {/* Colors */}
+          <div className="flex justify-between items-center border-t border-b py-3 my-5">
+            <p className="text-primary font-bold text-xl">Available Colors</p>
+            <Button
+              type="button"
+              variant="outline"
+              className="size-10"
+              onClick={() => appendColor({ value: "" })}
+            >
+              <Plus className="text-primary" />
+            </Button>
+          </div>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            {colorFields.map((fieldItem, index) => (
+              <FormField
+                key={fieldItem.id}
+                name={`availableColors.${index}.value`}
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Color {index + 1}</FormLabel>
+                    <FormControl className="bg-gray-200 text-gray-600">
+                      <Input {...field} />
+                    </FormControl>
+                  </FormItem>
+                )}
               />
-              <ImagePreviewer
-                className="flex flex-wrap gap-4"
-                setImageFiles={setImageFiles}
-                imagePreview={imagePreview}
-                setImagePreview={setImagePreview}
-              />
-            </div>
-          </div>
-
-          <div>
-            <div className="flex justify-between items-center border-t border-b py-3 my-5">
-              <p className="text-primary font-bold text-xl">Available Colors</p>
-              <Button
-                variant="outline"
-                className="size-10"
-                onClick={addColor}
-                type="button"
-              >
-                <Plus className="text-primary" />
-              </Button>
-            </div>
-
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              {colorFields.map((colorField, index) => (
-                <div key={colorField.id}>
-                  <FormField
-                    control={form.control}
-                    name={`availableColors.${index}.value`}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Color {index + 1}</FormLabel>
-                        <FormControl>
-                          <Input {...field} value={field.value || ""} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <div className="flex justify-between items-center border-t border-b py-3 my-5">
-              <p className="text-primary font-bold text-xl">Key Features</p>
-              <Button
-                onClick={addFeatures}
-                variant="outline"
-                className="size-10"
-                type="button"
-              >
-                <Plus className="text-primary" />
-              </Button>
-            </div>
-
-            <div className="my-5">
-              {featureFields.map((featureField, index) => (
-                <div key={featureField.id}>
-                  <FormField
-                    control={form.control}
-                    name={`keyFeatures.${index}.value`}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Key Feature {index + 1}</FormLabel>
-                        <FormControl>
-                          <Input {...field} value={field.value || ""} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <div className="flex justify-between items-center border-t border-b py-3 my-5">
-              <p className="text-primary font-bold text-xl">Specification</p>
-              <Button
-                onClick={addSpec}
-                variant="outline"
-                className="size-10"
-                type="button"
-              >
-                <Plus className="text-primary" />
-              </Button>
-            </div>
-
-            {specFields.map((specField, index) => (
-              <div
-                key={specField.id}
-                className="grid grid-cols-1 gap-4 md:grid-cols-2 my-5"
-              >
-                <FormField
-                  control={form.control}
-                  name={`specification.${index}.key`}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Feature name {index + 1}</FormLabel>
-                      <FormControl>
-                        <Input {...field} value={field.value || ""} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name={`specification.${index}.value`}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Feature Description {index + 1}</FormLabel>
-                      <FormControl>
-                        <Input {...field} value={field.value || ""} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
             ))}
           </div>
 
+          {/* Key Features */}
+          <div className="flex justify-between items-center border-t border-b py-3 my-5">
+            <p className="text-primary font-bold text-xl">Key Features</p>
+            <Button
+              type="button"
+              variant="outline"
+              className="size-10"
+              onClick={() => appendFeatures({ value: "" })}
+            >
+              <Plus className="text-primary" />
+            </Button>
+          </div>
+          {featureFields.map((fieldItem, index) => (
+            <FormField
+              key={fieldItem.id}
+              name={`keyFeatures.${index}.value`}
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Key Feature {index + 1}</FormLabel>
+                  <FormControl className="bg-gray-200 text-gray-600">
+                    <Input {...field} />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+          ))}
+
+          {/* Specification */}
+          <div className="flex justify-between items-center border-t border-b py-3 my-5">
+            <p className="text-primary font-bold text-xl">Specification</p>
+            <Button
+              type="button"
+              variant="outline"
+              className="size-10"
+              onClick={() => appendSpec({ key: "", value: "" })}
+            >
+              <Plus className="text-primary" />
+            </Button>
+          </div>
+          {specFields.map((fieldItem, index) => (
+            <div
+              key={fieldItem.id}
+              className="grid grid-cols-1 gap-4 md:grid-cols-2 my-5"
+            >
+              <FormField
+                name={`specification.${index}.key`}
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Feature name {index + 1}</FormLabel>
+                    <FormControl className="bg-gray-200 text-gray-600">
+                      <Input {...field} />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name={`specification.${index}.value`}
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Feature Description {index + 1}</FormLabel>
+                    <FormControl className="bg-gray-200 text-gray-600">
+                      <Input {...field} />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            </div>
+          ))}
+
           <Button type="submit" className="mt-5 w-full" disabled={isSubmitting}>
-            {isSubmitting ? "Updating Product....." : "Update Product"}
+            {isSubmitting ? "Updating Product..." : "Update Product"}
           </Button>
         </form>
       </Form>

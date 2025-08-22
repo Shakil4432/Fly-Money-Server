@@ -1,0 +1,24 @@
+{
+  "name": "Lenovo XPS 15 Laptop",
+  "description": "The Lenovo XPS 13 is a high-performance laptop with a sleek design, perfect for work and play.",
+  "price": 120455,
+  "stock": 50,
+  "weight": 1.24,
+  "category": "686775ad2b8d6d9c03da1e11", 
+  "brand": "67dc407f7cdc18322b748dfe",
+  "availableColors": [
+    "Silver",
+    "Black"
+  ],
+  "specification": {
+    "processor": "Intel Core i7",
+    "ram": "16GB",
+    "storage": "512GB SSD",
+    "display": "13.3 inch FHD"
+  },
+  "keyFeatures": [
+    "Long battery life",
+    "Slim and lightweight",
+    "Fast performance"
+  ]
+}

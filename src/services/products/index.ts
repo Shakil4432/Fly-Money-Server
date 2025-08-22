@@ -4,7 +4,7 @@ import { revalidateTag } from "next/cache";
 import { cookies } from "next/headers";
 
 export const getAllProducts = async (
-  page?: string,
+  page?: any,
   limit?: string,
   query?: { [key: string]: string | string[] | undefined }
 ) => {
@@ -14,17 +14,56 @@ export const getAllProducts = async (
     params.append("minPrice", "0");
     params.append("maxPrice", query?.price.toString());
   }
+  if (query?.offerPrice) {
+    params.append("minOfferPrice", "0");
+    params.append("maxOfferPrice", query?.offerPrice.toString());
+  }
 
-  if (query?.category) {
-    params.append("categories", query?.category.toString());
+  if (query?.parentCategory) {
+    params.append("parentCategory", query?.parentCategory.toString());
+  }
+  if (query?.subCategory) {
+    params.append("subCategory", query?.subCategory.toString());
+  }
+
+  if (query?.thirdSubCategory) {
+    params.append("thirdSubCategory", query?.thirdSubCategory.toString());
   }
 
   if (query?.rating) {
     params.append("ratings", query?.rating.toString());
   }
+  if (query?.stock) {
+    params.append("minStock", "0");
+    params.append("maxStock", query?.stock.toString());
+  }
+  if (query?.sort) {
+    params.append("sort", query?.sort.toString());
+  }
+
+  if (query?.searchTerm) {
+    params.append("searchTerm", query?.searchTerm.toString());
+  }
+  console.log(params);
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_API}/product?page=${page}&limit=${limit}&${params}`,
+      {
+        next: {
+          tags: ["Product"],
+        },
+      }
+    );
+    const data = await res.json();
+    return data;
+  } catch (error: any) {
+    return Error(error.message);
+  }
+};
+export const getAllProductsWithoutPagination = async () => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_API}/product/all-products`,
       {
         next: {
           tags: ["Product"],
@@ -86,6 +125,24 @@ export const getSingleProduct = async (productId: string): Promise<any> => {
         },
       }
     );
+    return res.json();
+  } catch (error: any) {
+    return Error(error);
+  }
+};
+
+export const deleteProduct = async (productId: string): Promise<any> => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_API}/product/${productId}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: (await cookies()).get("accessToken")!.value,
+        },
+      }
+    );
+    revalidateTag("Product");
     return res.json();
   } catch (error: any) {
     return Error(error);

@@ -4,6 +4,7 @@ import { revalidateTag } from "next/cache";
 import { cookies } from "next/headers";
 
 export const createCategory = async (data: FormData) => {
+  console.log(data);
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/category`, {
       method: "POST",
@@ -26,7 +27,23 @@ export const getAllCategories = async () => {
         tags: ["Category"],
       },
     });
-    return res.json();
+    return res.json() || [];
+  } catch (error: any) {
+    return Error(error);
+  }
+};
+
+export const getParentCategores = async () => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_API}/category/parent-category`,
+      {
+        next: {
+          tags: ["Category"],
+        },
+      }
+    );
+    return res.json() || [];
   } catch (error: any) {
     return Error(error);
   }

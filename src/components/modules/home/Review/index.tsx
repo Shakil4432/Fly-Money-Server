@@ -21,19 +21,16 @@ const reviews = [
 
 const CustomerReviews = () => {
   return (
-    <section className="py-20 bg-[#121212] text-white">
+    <section className="py-20 ">
       <div className="max-w-6xl mx-auto px-6">
         <h2 className="text-4xl font-bold text-center mb-12 text-[#7c3f00]">
           What Our Customers Say
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
           {reviews.map((review, idx) => (
-            <Card
-              key={idx}
-              className="bg-[#1a1a1a] border border-[#7c3f00] shadow-md"
-            >
+            <Card key={idx} className=" border border-[#7c3f00]/10 ">
               <CardContent className="p-6 space-y-3">
-                <p className="text-gray-300">"{review.comment}"</p>
+                <p className="text-gray-500">{review.comment}</p>
                 <p className="text-[#facc15] font-semibold">— {review.name}</p>
               </CardContent>
             </Card>

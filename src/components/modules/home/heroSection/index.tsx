@@ -22,7 +22,7 @@ const HeroSection = () => {
             alt="Leather Goods Hero"
             width={700}
             height={700}
-            className="rounded-xl object-cover shadow-2xl w-full max-w-md"
+            className="rounded-xl object-cover shadow-2xl w-full max-w-4xl"
             priority
           />
         </div>
@@ -30,7 +30,10 @@ const HeroSection = () => {
         {/* Text second on mobile, first on desktop */}
         <div className="order-2 md:order-1 space-y-6 text-center md:text-left">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-            Premium <span className="text-[#864025]">Leather Goods</span>
+            Premium{" "}
+            <span className=" bg-gradient-to-r inline from-[#864025] to-gray-300 bg-clip-text font-bold text-transparent">
+              Leather Goods
+            </span>
           </h1>
           <p className="text-gray-400 text-base md:text-lg">
             Discover timeless craftsmanship. Shop handcrafted wallets, belts,
