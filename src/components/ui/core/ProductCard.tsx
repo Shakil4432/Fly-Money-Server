@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion";
 import {
-  Heart,
   ShoppingCart,
   Star,
   StarHalf,

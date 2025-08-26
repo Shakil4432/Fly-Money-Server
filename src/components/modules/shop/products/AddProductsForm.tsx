@@ -35,16 +35,13 @@ import { getAllCategories } from "@/services/Category";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { ICategory } from "@/types/category";
-import { IBrand } from "@/types/brand";
-import { getAllBrands } from "@/services/brand";
+
 import { addProduct } from "@/services/products";
-import { error } from "console";
 
 export default function AddProductsForm() {
   const [imageFiles, setImageFiles] = useState<File[] | []>([]);
   const [imagePreview, setImagePreview] = useState<string[] | []>([]);
   const [categories, setCategories] = useState<ICategory[] | []>([]);
-  const [brands, setBrands] = useState<IBrand[] | []>([]);
 
   const router = useRouter();
 
@@ -186,13 +183,9 @@ export default function AddProductsForm() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const [categoriesData, brandsData] = await Promise.all([
-        getAllCategories(),
-        getAllBrands(),
-      ]);
+      const [categoriesData] = await Promise.all([getAllCategories()]);
 
       setCategories(categoriesData?.data);
-      setBrands(brandsData?.data);
     };
 
     fetchData();
@@ -201,14 +194,13 @@ export default function AddProductsForm() {
   useEffect(() => {
     form.setValue("subCategory", "");
     form.setValue("thirdSubCategory", "");
-  }, [parentCategory]);
+  }, [parentCategory, form]);
 
   useEffect(() => {
     form.setValue("thirdSubCategory", "");
-  }, [subCategory]);
+  }, [subCategory, form]);
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    console.log(data);
     const availableColors = data.availableColors.map(
       (color: { value: string }) => color.value
     );
@@ -249,7 +241,7 @@ export default function AddProductsForm() {
         toast.error(res.message);
       }
     } catch (err: any) {
-      console.error(err.message);
+      toast.error(err.message);
     }
   };
 

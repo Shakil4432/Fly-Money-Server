@@ -2,16 +2,16 @@
 import { useState, useEffect } from "react";
 
 type TimeLeft = {
-  hours: number;
-  minutes: number;
-  seconds: number;
+  H: number;
+  M: number;
+  S: number;
 };
 
 export default function CountDown() {
   const [timeLeft, setTimeLeft] = useState<TimeLeft>({
-    hours: 0,
-    minutes: 0,
-    seconds: 0,
+    H: 0,
+    M: 0,
+    S: 0,
   });
 
   // Function to calculate the time left until midnight
@@ -22,14 +22,14 @@ export default function CountDown() {
 
     const diff = midnight.getTime() - now.getTime();
 
-    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-    const minutes = Math.floor((diff / (1000 * 60)) % 60);
-    const seconds = Math.floor((diff / 1000) % 60);
+    const H = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const M = Math.floor((diff / (1000 * 60)) % 60);
+    const S = Math.floor((diff / 1000) % 60);
 
     return {
-      hours,
-      minutes,
-      seconds,
+      H,
+      M,
+      S,
     };
   };
 
@@ -47,13 +47,13 @@ export default function CountDown() {
 
   return (
     <div className="flex items-center justify-evenly space-x-4 text-gray-800 flex-wrap  gap-4">
-      {(["hours", "minutes", "seconds"] as const).map((unit) => (
+      {(["H", "M", "S"] as const).map((unit) => (
         <div
           key={unit}
-          className={`flex flex-col items-center px-6 py-1 rounded-full w-32 ${
-            unit === "seconds"
-              ? "border border-red-500 text-red-500"
-              : "bg-[#FAF0E6] border border-[#7c3f00] text-[#7c3f00]"
+          className={`flex flex-col items-center px-3 lg:px-6 py-1 rounded-full w-24 lg:w-32 ${
+            unit === "H"
+              ? "border border-red-500 text-red-500 sm:text-sm"
+              : "bg-[#FAF0E6] border border-[#7c3f00] text-[#7c3f00] sm:text-sm"
           }`}
         >
           <div className="flex items-center gap-2">

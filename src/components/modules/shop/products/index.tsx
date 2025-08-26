@@ -33,18 +33,18 @@ const ManageProducts = ({
   products: IProduct[];
   meta: IMeta;
 }) => {
-  console.log(products);
-  // console.log(meta);
   const { totalPage } = meta;
   const [selectedIds, setSelectedIds] = useState<string[] | []>([]);
   const router = useRouter();
-  console.log(selectedIds);
+
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
   const [sort, setSort] = useState<string>("All");
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [search, setSearch] = useState<{ [key: string]: string }>({});
   const [searchTerm, setSearchTerm] = useState("");
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [filters, setFilters] = useState<{
     [key: string]: string | number | number[];
   }>({});
@@ -63,7 +63,7 @@ const ManageProducts = ({
     try {
       if (selectedId) {
         const res = await deleteProduct(selectedId);
-        console.log(res);
+
         if (res.success) {
           toast.success(res.message);
           setModalOpen(false);
@@ -72,7 +72,7 @@ const ManageProducts = ({
         }
       }
     } catch (err: any) {
-      console.error(err?.message);
+      toast.error(err?.message);
     }
   };
 

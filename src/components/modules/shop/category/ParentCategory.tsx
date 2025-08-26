@@ -1,9 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import { getAllCategories } from "@/services/Category";
-import { ChevronRight } from "lucide-react";
-import { useRouter, useSearchParams } from "next/navigation";
 
 type Category = {
   _id: string;
@@ -13,10 +10,8 @@ type Category = {
 
 export default function ParentCategories({ color }: { color: string }) {
   const [categories, setCategories] = useState<Category[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [hovered, setHovered] = useState<string | null>(null);
-  const [subHovered, setSubHovered] = useState<string | null>(null);
-  const searchParams = useSearchParams();
-  const router = useRouter();
 
   useEffect(() => {
     const fetchCategories = async () => {

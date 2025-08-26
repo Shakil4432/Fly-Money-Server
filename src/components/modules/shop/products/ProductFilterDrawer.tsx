@@ -19,7 +19,7 @@ import {
 import { Slider } from "@/components/ui/slider";
 import { useEffect, useState } from "react";
 import { FilterIcon } from "lucide-react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { getParentCategores } from "@/services/Category";
 
 interface ICategory {
@@ -52,9 +52,6 @@ type FilterValues = {
   sort?: string;
 };
 
-const brands = ["Apple", "Samsung", "Sony", "HP", "Nike", "Adidas"];
-const colors = ["Blue", "Black", "Red", "Yellow"];
-
 const ProductFilterDrawer = ({
   onApply,
   handleSearchQuery,
@@ -81,7 +78,6 @@ const ProductFilterDrawer = ({
 
   const router = useRouter();
   const pathName = usePathname();
-  const searchParams = useSearchParams();
 
   const applyFilters = () => {
     onApply({

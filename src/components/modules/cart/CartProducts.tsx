@@ -12,8 +12,7 @@ import {
   subTotalSelector,
 } from "@/Redux/features/cartSlice";
 import { useAppDispatch, useAppSelector } from "@/Redux/hooks";
-import { Minus, Plus, Trash2 } from "lucide-react";
-import Image from "next/image";
+
 import CartProductCard from "./CartProductCard";
 import Address from "./Address";
 import { toast } from "sonner";
@@ -83,7 +82,6 @@ export default function CartProducts() {
   ];
 
   const products = useAppSelector(orderProductsSelector);
-  console.log(products);
   const dispatch = useAppDispatch();
 
   const subTotal = useAppSelector(subTotalSelector);
@@ -128,11 +126,9 @@ export default function CartProducts() {
       }
 
       if (!res.success) {
-        console.log(res);
         toast.error(res.message, { id: orderLoading });
       }
     } catch (error: any) {
-      console.log(error);
       toast.error(error.message, { id: orderLoading });
     }
   };

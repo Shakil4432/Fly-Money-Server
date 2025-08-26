@@ -14,7 +14,7 @@ import { useForm, SubmitHandler, FieldValues } from "react-hook-form";
 import { useState } from "react";
 import NMImageUploader from "@/components/ui/core/NMImageUploader";
 import ImagePreviewer from "@/components/ui/core/NMImageUploader/ImagePreviewer";
-import { Pencil, Camera, Mail, Phone, MapPin, Calendar } from "lucide-react";
+import { Pencil, Mail, Phone, MapPin, Calendar } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -25,6 +25,7 @@ import {
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
 import { UpdateUserProfile } from "@/services/user";
+import Image from "next/image";
 
 export default function ProfileCard({ userProfile }: { userProfile: any }) {
   const [editMode, setEditMode] = useState(false);
@@ -61,7 +62,7 @@ export default function ProfileCard({ userProfile }: { userProfile: any }) {
         toast.error(res.message);
       }
     } catch (err: any) {
-      console.error(err.message);
+      toast.error(err.message);
     }
   };
 
@@ -82,7 +83,9 @@ export default function ProfileCard({ userProfile }: { userProfile: any }) {
           {/* Profile Section */}
           <div className="flex flex-col items-center -mt-14 px-6 pb-6">
             <div className="relative">
-              <img
+              <Image
+                width={500}
+                height={500}
                 src={userProfile?.photo || "https://i.pravatar.cc/150?img=3"}
                 alt={userProfile?.name}
                 className="w-28 h-28 rounded-full border-4 border-white shadow-md object-cover"

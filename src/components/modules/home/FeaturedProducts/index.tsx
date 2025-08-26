@@ -1,91 +1,3 @@
-// "use client";
-
-// import { useEffect, useState } from "react";
-// import useEmblaCarousel from "embla-carousel-react";
-// import { Card, CardContent } from "@/components/ui/card";
-// import NMContainer from "@/components/ui/core/NMContainer";
-// import Image from "next/image";
-// import Link from "next/link";
-// import Category3 from "../../shop/category/Category3";
-// import { Button } from "@/components/ui/button";
-
-// import { ShoppingCart } from "lucide-react";
-
-// const PRIMARY = "#7c3f00";
-
-// const FeaturedProducts = ({
-//   products,
-//   title = "Featured Products",
-// }: ProductSliderProps) => {
-//   const [emblaRef] = useEmblaCarousel({ loop: false, align: "start" });
-//   console.log(products);
-
-//   return (
-//     <section className="relative overflow-hidden mt-24 flex items-center justify-center">
-//       <NMContainer className="relative z-10">
-//         <div className="flex items-center justify-between">
-//           <div className="space-y-2 pt-4">
-//             <h1 className=" text-3xl font-bold text-[#7c3f00] ">
-//               Featured Product
-//             </h1>
-//             <p className="text-gray-500">Do not miss the current offers</p>
-//           </div>
-//           <div>
-//              <Category3 color="bg-white"></Category3>
-//           </div>
-//         </div>
-//         <div className="overflow-hidden mt-10" ref={emblaRef}>
-//           <div className="flex gap-4">
-//             {products.map((product) => (
-//               <div key={product._id} className="min-w-[250px] flex-shrink-0">
-//                 {/* <Link href={`/products/${product.slug}`}> */}
-//                 <Card className="h-96 w-64 flex flex-col bg-white border hover:shadow-lg transition rounded-sm">
-//                   <CardContent className="flex flex-col items-center justify-between p-4 h-full">
-//                     <Image
-//                       src={product.imageUrls[0]}
-//                       alt={product.name}
-//                       width={200}
-//                       height={160}
-//                       className="object-contain w-full h-40 mb-4"
-//                     />
-//                     <h3
-//                       className="text-base text-left  w-full font-semibold"
-//                       style={{ color: PRIMARY }}
-//                     >
-//                       {product.name}
-//                     </h3>
-//                     <div className=" flex w-full items-center  justify-between space-y-1 ">
-//                       <div className="text-lg font-bold text-gray-500">
-//                         ${product.price}
-//                       </div>
-//                       <div
-//                         className={`text-sm bg-[#7c3f00]/30 px-2 rounded-lg ${
-//                           product.stock > 0 ? "text-black" : "text-red-400"
-//                         }`}
-//                       >
-//                         {product.stock > 0 ? "stock" : "Out Of Stock"}
-//                       </div>
-//                     </div>
-//                     <Button
-//                       className="w-full border border-[#7c3f00] text-[#7c3f00] bg-white"
-//                       variant="outline"
-//                     >
-//                       <ShoppingCart></ShoppingCart>
-//                       Add To Cart
-//                     </Button>
-//                   </CardContent>
-//                 </Card>
-//                 {/* </Link> */}
-//               </div>
-//             ))}
-//           </div>
-//         </div>
-//       </NMContainer>
-//     </section>
-//   );
-// };
-
-// export default FeaturedProducts;
 "use client";
 
 import { useEffect, useState } from "react";
@@ -93,12 +5,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ICategory } from "@/types/category";
 import { IProduct } from "@/types/product";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper/modules";
 import "swiper/css";
-import "swiper/css/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ShoppingCart } from "lucide-react";
+import { ShoppingCart, Star } from "lucide-react";
+import { Autoplay, Navigation, Pagination } from "swiper/modules";
+import Image from "next/image";
 
 interface FeaturedProductsProps {
   ParentCategories: ICategory[];
@@ -128,26 +40,28 @@ const FeaturedProducts = ({
   );
 
   return (
-    <div className="container mx-auto mt-32">
+    <div className="container mx-auto lg:mt-16 md:mt-32 px-4 md:px-0">
       {defaultTab && (
-        <Tabs defaultValue={defaultTab} className="w-full  ">
-          <div className="flex items-center justify-between py-10">
-            <div>
-              <h2 className="text-3xl font-bold mb-4 text-[#7c3f00]">
+        <Tabs defaultValue={defaultTab} className="w-full">
+          {/* Tabs Header */}
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between py-6 md:py-10 gap-4 md:gap-0">
+            <div className="space-y-2">
+              <h2 className="text-2xl md:text-3xl font-bold text-[#7c3f00]">
                 {title}
               </h2>
-              <h3 className="text-sm text-gray-500 ">
+              <p className="text-gray-500 text-sm md:text-base">
                 Discover our most popular and highly rated items.
-              </h3>
+              </p>
             </div>
-            <div>
-              <TabsList className="flex  items-end mb-2 bg-white">
-                {ParentCategories.map((cat) => (
+
+            <div className="overflow-x-auto w-full md:w-auto">
+              <TabsList className="flex gap-2 md:gap-4 items-center bg-white px-2 md:px-0 rounded-md">
+                {ParentCategories.slice(0, 6).map((cat) => (
                   <TabsTrigger
                     key={cat._id}
                     value={cat.name}
                     onClick={() => setSelectedCategoryId(cat._id)}
-                    className=" font-medium  data-[state=active]:shadow-sm data-[state=active]:bg-white px-6 text-gray-600 data-[state=active]:text-[#7c3f00] data-[state=active]:border-b data-[state=active]:border-red-500 data-[state=active]:font-semibold  py-2 transition"
+                    className="whitespace-nowrap font-medium text-gray-600 data-[state=active]:text-[#7c3f00] data-[state=active]:border-b-2 data-[state=active]:border-[#7c3f00] data-[state=active]:font-semibold py-2 lg:px-4 md:px-6 transition"
                   >
                     {cat.name.toUpperCase()}
                   </TabsTrigger>
@@ -156,55 +70,95 @@ const FeaturedProducts = ({
             </div>
           </div>
 
+          {/* Tabs Content */}
           {ParentCategories.map((cat) => (
             <TabsContent key={cat._id} value={cat.name}>
               {filteredProducts.length > 0 ? (
                 <Swiper
-                  spaceBetween={20}
-                  slidesPerView={1}
+                  modules={[Pagination, Autoplay, Navigation]}
+                  spaceBetween={16}
+                  slidesPerView={2} // Default mobile view
+                  loop={true}
+                  autoplay={{ delay: 3000 }}
+                  pagination={{ clickable: true }}
                   breakpoints={{
                     640: { slidesPerView: 2 },
                     768: { slidesPerView: 3 },
                     1024: { slidesPerView: 4 },
                     1280: { slidesPerView: 5 },
                   }}
-                  modules={[Navigation]}
-                  className="mt-4"
+                  className="mt-4  pb-4 h-[540px]"
                 >
                   {filteredProducts.map((product) => (
                     <SwiperSlide key={product._id}>
-                      <div className="border p-4 rounded shadow-sm bg-white h-full ">
-                        <div className="flex items-center justify-center w-full h-40 bg-[#f9f5f0]/30">
-                          <img
+                      <div className="border p-4 h-[370px] lg:h-[470px] relative shadow-sm bg-white flex flex-col rounded-sm">
+                        {/* Image */}
+                        <div className="flex items-center justify-center w-full aspect-square bg-[#f9f5f0]/30 rounded">
+                          <Image
+                            width={500}
+                            height={500}
                             src={product.imageUrls[0]}
                             alt={product.name}
-                            className="w-36 h-36 object-cover rounded"
+                            className="w-24 h-24  sm:w-28 sm:h-28 md:w-32 md:h-32 object-contain rounded"
                           />
                         </div>
+
+                        {/* Title */}
                         <Link href={`/products/${product._id}`}>
-                          <h3 className="text-lg font-semibold mt-2 hover:text-[#7c3f00]">
+                          <h3 className="text-sm sm:text-base md:text-lg font-semibold mt-2 hover:text-[#7c3f00] line-clamp-2">
                             {product.name}
                           </h3>
                         </Link>
 
-                        <div className="flex items-center justify-between mt-2">
-                          <p className="text-[#7c3f00] font-bold mt-1">
-                            ${product?.price}
-                          </p>
+                        {/* Rating */}
+                        <div className="flex items-center gap-1 text-yellow-500 my-1">
+                          {Array.from({ length: 5 }).map((_, i) => (
+                            <Star
+                              key={i}
+                              className={`h-3 w-3 sm:h-4 sm:w-4 ${
+                                i < product?.averageRating
+                                  ? "fill-yellow-500"
+                                  : "fill-gray-300 text-gray-300"
+                              }`}
+                            />
+                          ))}
+                        </div>
+
+                        {/* Price + Stock */}
+                        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-1 sm:gap-2 mt-1 gap-2">
+                          <div className="flex items-center gap-2">
+                            {product?.offerPrice ? (
+                              <>
+                                <span className="text-[#7c3f00] font-bold text-sm sm:text-base md:text-lg">
+                                  ₹{product?.offerPrice.toFixed(2)}
+                                </span>
+                                <span className="text-gray-400 line-through text-xs sm:text-sm">
+                                  ₹{product?.price.toFixed(2)}
+                                </span>
+                              </>
+                            ) : (
+                              <span className="text-[#7c3f00] font-bold text-sm sm:text-base md:text-lg">
+                                ₹{product?.price.toFixed(2)}
+                              </span>
+                            )}
+                          </div>
                           <div
-                            className={`text-sm bg-[#7c3f00]/30 px-2 rounded-lg ${
-                              product.stock > 0 ? "text-black" : "text-red-400"
+                            className={`text-[10px] sm:text-xs md:text-sm px-2 py-0.5 rounded-lg mb-4 ${
+                              product.stock > 0
+                                ? "bg-[#7c3f00]/20 text-black"
+                                : "bg-red-100 text-red-400"
                             }`}
                           >
-                            {product.stock > 0 ? "stock" : "Out Of Stock"}
+                            {product.stock > 0 ? "Stock" : "Out Of Stock"}
                           </div>
                         </div>
+
+                        {/* Add To Cart */}
                         <Button
-                          className="w-full border border-[#7c3f00] !rounded-none text-[#7c3f00] hover:bg-[#7c3f00]/30 bg-white mt-4"
+                          className="w-full mt-auto rounded-md border border-[#7c3f00] text-[#7c3f00] hover:bg-[#7c3f00]/20 bg-white flex items-center justify-center gap-2 text-xs sm:text-sm md:text-base"
                           variant="outline"
                         >
-                          <ShoppingCart></ShoppingCart>
-                          Add To Cart
+                          <ShoppingCart className="h-4 w-4" /> Add To Cart
                         </Button>
                       </div>
                     </SwiperSlide>

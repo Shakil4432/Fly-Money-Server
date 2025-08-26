@@ -54,7 +54,6 @@ export const getAllUser = async (
     const data = await res.json();
     return data || [];
   } catch (error) {
-    console.error("Error fetching users:", error);
     return { error: (error as Error).message };
   }
 };
@@ -85,7 +84,6 @@ export const getAllUserWithOrders = async (userId: string) => {
     const data = await res.json();
     return data || [];
   } catch (error) {
-    console.error("Error fetching users:", error);
     return { error: (error as Error).message };
   }
 };
@@ -153,7 +151,6 @@ export const getUserProfile = async () => {
     const data = await res.json();
     return data || [];
   } catch (error) {
-    console.error("Error fetching users:", error);
     return { error: (error as Error).message };
   }
 };

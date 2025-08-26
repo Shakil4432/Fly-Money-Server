@@ -44,7 +44,7 @@ export const getAllProducts = async (
   if (query?.searchTerm) {
     params.append("searchTerm", query?.searchTerm.toString());
   }
-  console.log(params);
+
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_API}/product?page=${page}&limit=${limit}&${params}`,
@@ -77,6 +77,56 @@ export const getAllProductsWithoutPagination = async () => {
   }
 };
 
+export const getNewArrivalProducts = async () => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_API}/product/new-arrival`,
+      {
+        next: {
+          tags: ["Product"],
+        },
+      }
+    );
+    const data = await res.json();
+    return data;
+  } catch (error: any) {
+    return Error(error.message);
+  }
+};
+
+export const getTopRatedProduct = async () => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_API}/product/top-rated`,
+      {
+        next: {
+          tags: ["Product"],
+        },
+      }
+    );
+    const data = await res.json();
+    return data;
+  } catch (error: any) {
+    return Error(error.message);
+  }
+};
+
+export const getTrendingProducts = async () => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_API}/product/trending`,
+      {
+        next: {
+          tags: ["Product"],
+        },
+      }
+    );
+    const data = await res.json();
+    return data;
+  } catch (error: any) {
+    return Error(error.message);
+  }
+};
 export const addProduct = async (productData: FormData): Promise<any> => {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/product`, {

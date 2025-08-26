@@ -41,6 +41,7 @@ const ProductDetails = ({ product }: { product: IProduct }) => {
   );
   const [user, setUser] = useState();
   const [zoomed, setZoomed] = useState<boolean>(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
@@ -53,8 +54,6 @@ const ProductDetails = ({ product }: { product: IProduct }) => {
     };
     getUserFunc();
   }, []);
-
-  console.log(user);
 
   // Provide default values so fields are registered and `field` won't be undefined.
   const form = useForm({
@@ -72,7 +71,6 @@ const ProductDetails = ({ product }: { product: IProduct }) => {
   const onSubmit: SubmitHandler<FormData | FieldValues> = async (data) => {
     // data typed as FormData at runtime
     const reviewData = { ...data, product: product._id };
-    console.log(reviewData);
 
     if (!user) {
       router.push("/login");
@@ -94,11 +92,9 @@ const ProductDetails = ({ product }: { product: IProduct }) => {
 
         form.reset();
       } else {
-        console.log(res.message);
         toast.error(res.message);
       }
     } catch (err: any) {
-      console.log(err.message);
       toast.error(err.message);
     }
   };

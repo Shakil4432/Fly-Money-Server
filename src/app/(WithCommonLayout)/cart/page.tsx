@@ -1,5 +1,4 @@
 import CartProducts from "@/components/modules/cart/CartProducts";
-import ProductBanner from "@/components/modules/products/banner";
 import NMContainer from "@/components/ui/core/NMContainer";
 import React from "react";
 

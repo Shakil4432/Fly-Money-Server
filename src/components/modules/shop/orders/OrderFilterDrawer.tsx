@@ -6,7 +6,7 @@ import {
   SheetTitle,
   SheetFooter,
 } from "@/components/ui/sheet";
-import { Checkbox } from "@/components/ui/checkbox";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -36,7 +36,7 @@ const OrderFilterDrawer = ({
   const [dateTo, setDateTo] = useState("");
   const [status, setStatus] = useState("All");
   const [paymentStatus, setPaymentStatus] = useState("All");
-  const [paymentTypes, setPaymentTypes] = useState<string[]>([]);
+  const [paymentTypes] = useState<string[]>([]);
   const [open, setOpen] = useState(false);
   const [statusOpen, setStatusOpen] = useState(false);
   const [paymentOpen, setPaymentOpen] = useState(false);
@@ -48,12 +48,6 @@ const OrderFilterDrawer = ({
       setPaymentOpen(false); // Close Payment Status Select
     }
     setOpen(next);
-  };
-
-  const togglePaymentType = (type: string) => {
-    setPaymentTypes((prev) =>
-      prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type]
-    );
   };
 
   const applyFilters = () => {

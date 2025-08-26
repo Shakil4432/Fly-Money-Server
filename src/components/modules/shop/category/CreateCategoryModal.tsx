@@ -145,7 +145,7 @@ const CreateCategoryModal = () => {
         <Button className="bg-[#7c3f00] hover:bg-black">Create Category</Button>
       </DialogTrigger>
 
-      <DialogContent className="bg-[#7c3f00]/40 text-gray-400 space-y-4">
+      <DialogContent className=" text-gray-400 space-y-4">
         <DialogHeader className="space-y-4">
           <DialogTitle>Create Category</DialogTitle>
           <Form {...form}>
@@ -157,8 +157,11 @@ const CreateCategoryModal = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Name</FormLabel>
-                    <FormControl className="bg-black">
-                      <Input {...field} />
+                    <FormControl>
+                      <Input
+                        {...field}
+                        className="focus-visible:ring-0 focus-visible:border-[#7c3f00]"
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -176,7 +179,7 @@ const CreateCategoryModal = () => {
                       onValueChange={field.onChange}
                       value={field.value || "none"}
                     >
-                      <FormControl className="bg-black">
+                      <FormControl className="focus:ring-2 focus:ring-[#7c3f00] ">
                         <SelectTrigger>
                           <SelectValue placeholder="Select parent category" />
                         </SelectTrigger>
@@ -206,8 +209,11 @@ const CreateCategoryModal = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Description</FormLabel>
-                    <FormControl>
-                      <Textarea className="h-36 w-full bg-black" {...field} />
+                    <FormControl className="focus:border-none focus:ring-[#7c3f00]">
+                      <Textarea
+                        {...field}
+                        className="h-36 w-full focus-visible:ring-0 focus-visible:border-[#7c3f00]"
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

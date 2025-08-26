@@ -7,7 +7,6 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import {
@@ -35,9 +34,9 @@ import { getAllCategories } from "@/services/Category";
 import { getAllBrands } from "@/services/brand";
 import { updateProduct } from "@/services/products";
 import { ICategory } from "@/types/category";
-import { IBrand } from "@/types/brand";
+
 import { IProduct } from "@/types/product";
-import { useRouter } from "next/navigation";
+
 import { toast } from "sonner";
 
 export default function UpdateProductForm({ product }: { product: IProduct }) {
@@ -46,9 +45,7 @@ export default function UpdateProductForm({ product }: { product: IProduct }) {
     product?.imageUrls || []
   );
   const [categories, setCategories] = useState<ICategory[]>([]);
-  const [brands, setBrands] = useState<IBrand[]>([]);
-
-  const router = useRouter();
+  // const [brands, setBrands] = useState<IBrand[]>([]);
 
   const form = useForm({
     defaultValues: {
@@ -141,12 +138,11 @@ export default function UpdateProductForm({ product }: { product: IProduct }) {
 
   useEffect(() => {
     const fetchData = async () => {
-      const [categoriesData, brandsData] = await Promise.all([
+      const [categoriesData] = await Promise.all([
         getAllCategories(),
         getAllBrands(),
       ]);
       setCategories(categoriesData?.data);
-      setBrands(brandsData?.data);
     };
     fetchData();
   }, []);
@@ -154,11 +150,11 @@ export default function UpdateProductForm({ product }: { product: IProduct }) {
   useEffect(() => {
     form.setValue("subCategory", "");
     form.setValue("thirdSubCategory", "");
-  }, [parentCategory]);
+  }, [parentCategory, form]);
 
   useEffect(() => {
     form.setValue("thirdSubCategory", "");
-  }, [subCategory]);
+  }, [subCategory, form]);
 
   const {
     formState: { isSubmitting },
@@ -178,7 +174,6 @@ export default function UpdateProductForm({ product }: { product: IProduct }) {
   });
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    console.log(data);
     const availableColors = data.availableColors.map(
       (c: { value: string }) => c.value
     );
@@ -211,7 +206,7 @@ export default function UpdateProductForm({ product }: { product: IProduct }) {
         toast.error(res.message);
       }
     } catch (err: any) {
-      console.error(err);
+      toast.error(err);
     }
   };
 

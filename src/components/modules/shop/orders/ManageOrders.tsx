@@ -1,20 +1,13 @@
 "use client";
 
-import { getAllOrders } from "@/services/order";
-import Image from "next/image";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 
 import { NMTable } from "@/components/ui/core/NMTable";
 import { ColumnDef } from "@tanstack/react-table";
-import { Eye, Trash, Plus, Edit } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Eye, Edit } from "lucide-react";
 
 import TablePagination from "@/components/ui/core/NMTable/TablePagination";
-import { IMeta } from "@/types/meta";
-import DeleteConfirmationModal from "@/components/ui/core/NMModal/DeleteConfirmModal";
-import { toast } from "sonner";
+
 import UpdateStatusModal from "./UpdateStatusModal";
 import OrderFilterDrawer from "./OrderFilterDrawer";
 
@@ -89,17 +82,21 @@ type OrderFilters = {
   dateTo?: string;
 };
 
-const ManageOrders = ({ orders, meta }: { orders: Order[]; meta: IMeta }) => {
-  const { totalPage } = meta;
+const ManageOrders = ({
+  orders,
+  totalPage,
+}: {
+  orders: Order[];
+  totalPage: number;
+}) => {
   const [selectedId, setSelectedId] = useState<string>("");
-  const router = useRouter();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [filters, setFilters] = useState<OrderFilters>({});
 
   const filteredOrders = useMemo(() => {
-    return orders.filter((order) => {
+    return (orders ?? []).filter((order) => {
       const matchDeliveryStatus =
         filters.status && filters.status !== "All"
           ? order.status === filters.status

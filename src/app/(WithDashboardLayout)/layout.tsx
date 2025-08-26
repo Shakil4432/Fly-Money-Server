@@ -2,7 +2,6 @@ import { AppSidebar } from "@/components/modules/dashboard/sidebar/app-sidebar";
 import {
   Breadcrumb,
   BreadcrumbItem,
-  BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,

@@ -10,7 +10,7 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+
 import { Progress } from "@/components/ui/progress";
 import {
   BarChart as RBarChart,
@@ -109,34 +109,36 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 export default function AdminDashboard({ data, expenseLineData }: Props) {
   // === Derived Values ===
   const paid =
-    data.paymentStatusCounts.find((p) => p.status === "Paid")?.totalPayments ||
-    0;
-  const pending =
-    data.paymentStatusCounts.find((p) => p.status === "Pending")
+    (data?.paymentStatusCounts ?? []).find((p) => p.status === "Paid")
       ?.totalPayments || 0;
-  const paidPct = data.totalPayments
+
+  const pending =
+    (data?.paymentStatusCounts ?? []).find((p) => p.status === "Pending")
+      ?.totalPayments || 0;
+
+  const paidPct = data?.totalPayments
     ? Math.round((paid / data.totalPayments) * 100)
     : 0;
 
   const ordersBar = useMemo(
     () =>
-      data.barChartData.map((d) => ({
+      (data?.barChartData ?? []).map((d) => ({
         ...d,
         label: `${monthLabel(d.month)} ${d.year}`,
       })),
-    [data.barChartData]
+    [data?.barChartData]
   );
 
   const salesLine = useMemo(
     () =>
-      data.lineChartData.map((d) => ({
+      (data?.lineChartData ?? []).map((d) => ({
         date: new Date(d.date).toLocaleDateString(undefined, {
           month: "short",
           day: "2-digit",
         }),
         totalSales: d.totalSales,
       })),
-    [data.lineChartData]
+    [data?.lineChartData]
   );
 
   const hasExpense = !!expenseLineData?.length;
@@ -171,6 +173,10 @@ export default function AdminDashboard({ data, expenseLineData }: Props) {
       (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
     );
   }, [hasExpense, salesLine, expenseSeries]);
+
+  if (!data) {
+    return <div>Loading dashboard...</div>;
+  }
 
   return (
     <div className="space-y-6 p-4 md:p-6">
@@ -325,7 +331,7 @@ export default function AdminDashboard({ data, expenseLineData }: Props) {
                       </linearGradient>
                     </defs>
                     <Pie
-                      data={data.paymentStatusCounts}
+                      data={data.paymentStatusCounts ?? []}
                       innerRadius={60}
                       outerRadius={90}
                       paddingAngle={3}
@@ -333,7 +339,7 @@ export default function AdminDashboard({ data, expenseLineData }: Props) {
                       nameKey="status"
                       label={(d) => `${d.status}`}
                     >
-                      {data.paymentStatusCounts.map((s, i) => (
+                      {(data.paymentStatusCounts ?? []).map((s, i) => (
                         <Cell
                           key={i}
                           fill={
@@ -547,7 +553,7 @@ export default function AdminDashboard({ data, expenseLineData }: Props) {
         <Card className="rounded-2xl shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between">
             <div>
-              <CardTitle>Today's Sales</CardTitle>
+              <CardTitle>Today{`&apos;`}s Sales</CardTitle>
               <CardDescription>Real-time snapshot</CardDescription>
             </div>
             <Badge variant="outline" className="rounded-full">

@@ -12,8 +12,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useEffect, useState } from "react";
-import { getAllOrders } from "@/services/order";
 
 export default function UserDashboard() {
   const recentOrders = [

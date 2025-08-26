@@ -12,6 +12,7 @@ import {
 import { NavMain } from "./nav-main";
 import { NavUser } from "./nav-user";
 import { getCurrentUser } from "@/services/AuthService";
+import { toast } from "sonner";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const [user, setUser] = React.useState<any>(null);
@@ -68,8 +69,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         }
 
         setNavItems(menu);
-      } catch (error) {
-        console.error("Failed to load user:", error);
+      } catch (error: any) {
+        toast.error(error);
       }
     };
 

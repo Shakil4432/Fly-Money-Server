@@ -12,7 +12,6 @@ import { deleteCategory } from "@/services/Category";
 import DeleteConfirmationModal from "@/components/ui/core/NMModal/DeleteConfirmModal";
 
 const ManageCategories = ({ categories }: { categories: ICategory[] }) => {
-  console.log(categories);
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
@@ -27,7 +26,7 @@ const ManageCategories = ({ categories }: { categories: ICategory[] }) => {
     try {
       if (selectedId) {
         const res = await deleteCategory(selectedId);
-        console.log(res);
+
         if (res.success) {
           toast.success(res.message);
           setModalOpen(false);
@@ -36,7 +35,7 @@ const ManageCategories = ({ categories }: { categories: ICategory[] }) => {
         }
       }
     } catch (err: any) {
-      console.error(err?.message);
+      toast.error(err?.message);
     }
   };
   const columns: ColumnDef<ICategory>[] = [

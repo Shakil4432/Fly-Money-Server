@@ -90,10 +90,8 @@ export const orderSelector = (state: RootState) => {
 export const subTotalSelector = (state: RootState) => {
   return state.cart.products.reduce((acc, product) => {
     if (product.offerPrice) {
-      console.log(product.offerPrice);
       return acc + product.offerPrice * product.orderQuantity;
     } else {
-      console.log(product.price, "Price");
       return acc + product.price * product.orderQuantity;
     }
   }, 0);

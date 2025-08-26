@@ -1,11 +1,5 @@
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 
 import {
@@ -16,7 +10,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import { addFlashSale } from "@/services/FlashSale";
 import { toast } from "sonner";
 import { Dispatch, SetStateAction } from "react";
 import { changeOrderStatus } from "@/services/order";
@@ -30,7 +23,6 @@ type TModalProps = {
 
 const UpdateStatusModal = ({
   selectedId,
-  setSelectedId,
   isOpen,
   onOpenChange,
 }: TModalProps) => {
@@ -41,17 +33,16 @@ const UpdateStatusModal = ({
   } = form || {};
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    console.log(data);
     try {
       const res = await changeOrderStatus(selectedId, data);
-      console.log(res);
+
       if (res.success) {
         toast.success(res.message);
       } else {
         toast.error(res.message);
       }
     } catch (err: any) {
-      console.error(err);
+      toast.error(err);
     }
   };
 

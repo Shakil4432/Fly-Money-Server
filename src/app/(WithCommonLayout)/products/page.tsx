@@ -1,6 +1,4 @@
 import AllProducts from "@/components/modules/products";
-import ProductBanner from "@/components/modules/products/banner";
-
 import NMContainer from "@/components/ui/core/NMContainer";
 import {
   getAllProducts,

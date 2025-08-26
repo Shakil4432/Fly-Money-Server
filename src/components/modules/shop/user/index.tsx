@@ -2,62 +2,36 @@
 
 import { NMTable } from "@/components/ui/core/NMTable/index";
 import { ColumnDef } from "@tanstack/react-table";
-import { Edit, Eye, Plus, Trash, Search } from "lucide-react";
+import { Eye, Search } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { IProduct } from "@/types/product";
-import { Checkbox } from "@/components/ui/checkbox";
+
 import { useState } from "react";
 import TablePagination from "@/components/ui/core/NMTable/TablePagination";
 import { IMeta } from "@/types/meta";
-import DeleteConfirmationModal from "@/components/ui/core/NMModal/DeleteConfirmModal";
-import { deleteProduct } from "@/services/products";
+
 import { toast } from "sonner";
 import { UserInfo } from "@/types/userInfo";
 import UserFilterDrawer from "./UserFilterDrawer";
 import { Input } from "@/components/ui/input";
-import UserStatusUpdateModal from "./UserStatusUpdateModal";
+
 import { Switch } from "@/components/ui/switch";
 import { changeUserStatus } from "@/services/user";
 
 const ManageUsers = ({ user, meta }: { user: UserInfo[]; meta: IMeta }) => {
   const { totalPage } = meta;
-  const [selectedIds, setSelectedIds] = useState<string[]>([]);
-  const [selectedId, setSelectedId] = useState<string>("");
-  const [isModalOpen, setModalOpen] = useState(false);
+  // const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
-  const [selectedItem, setSelectedItem] = useState<string | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [filters, setFilters] = useState<{ [key: string]: string }>({});
   const [searchTerm, setSearchTerm] = useState("");
-  const [isStatusModalOpen, setIsModalOpen] = useState(false);
-  const router = useRouter();
 
-  const handleDelete = (data: UserInfo) => {
-    setSelectedId(data?._id);
-    setSelectedItem(data?.name);
-    setModalOpen(true);
-  };
+  const router = useRouter();
 
   const handleView = (product: UserInfo) => {
     router.push(`/admin/shop/user/${product._id}`);
   };
-
-  // const handleDeleteConfirm = async () => {
-  //   try {
-  //     if (selectedId) {
-  //       const res = await deleteProduct(selectedId);
-  //       if (res.success) {
-  //         toast.success(res.message);
-  //         setModalOpen(false);
-  //       } else {
-  //         toast.error(res.message);
-  //       }
-  //     }
-  //   } catch (err: any) {
-  //     console.error(err?.message);
-  //   }
-  // };
 
   const handleSearch = () => {
     setFilters((prev) => ({ ...prev, search: searchTerm }));
@@ -65,43 +39,7 @@ const ManageUsers = ({ user, meta }: { user: UserInfo[]; meta: IMeta }) => {
     router.push(`?searchTerm=${searchTerm}`);
   };
 
-  const handleUserStatus = (id: string) => {
-    setSelectedId(id);
-    setIsModalOpen(true);
-  };
-
   const columns: ColumnDef<UserInfo>[] = [
-    {
-      id: "select",
-      header: ({ table }) => (
-        <Checkbox
-          checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && "indeterminate")
-          }
-          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-          aria-label="Select all"
-        />
-      ),
-      cell: ({ row }) => (
-        <Checkbox
-          checked={row.getIsSelected()}
-          onCheckedChange={(value) => {
-            if (value) {
-              setSelectedIds((prev) => [...prev, row.original._id]);
-            } else {
-              setSelectedIds((prev) =>
-                prev.filter((id) => id !== row.original._id)
-              );
-            }
-            row.toggleSelected(!!value);
-          }}
-          aria-label="Select row"
-        />
-      ),
-      enableSorting: false,
-      enableHiding: false,
-    },
     {
       accessorKey: "name",
       header: "Name",
@@ -153,6 +91,7 @@ const ManageUsers = ({ user, meta }: { user: UserInfo[]; meta: IMeta }) => {
       accessorKey: "action",
       header: "Action",
       cell: ({ row }) => {
+        // eslint-disable-next-line react-hooks/rules-of-hooks
         const [active, setActive] = useState(row.original.isActive); // local state
 
         const handleToggle = async (value: boolean) => {
@@ -160,10 +99,11 @@ const ManageUsers = ({ user, meta }: { user: UserInfo[]; meta: IMeta }) => {
 
           try {
             const res = await changeUserStatus(row.original._id);
-            console.log(res);
+
             if (res.success) {
               toast.success(res.message);
             }
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
           } catch (err) {
             toast.error("Failed to update status!");
             setActive(!value); // rollback if failed

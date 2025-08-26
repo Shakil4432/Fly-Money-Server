@@ -15,6 +15,7 @@ import {
   Smartphone,
 } from "lucide-react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 interface UserDetailsProps {
   user: {
@@ -55,7 +56,9 @@ export default function UserDetails({ user, order }: UserDetailsProps) {
       <Card className="p-6 flex flex-col items-center bg-gradient-to-b from-white to-gray-50  rounded-2xl relative border">
         {/* Profile Picture */}
         <div className="relative">
-          <img
+          <Image
+            width={500}
+            height={500}
             src={`https://ui-avatars.com/api/?name=${encodeURIComponent(
               user.name
             )}&background=random`}

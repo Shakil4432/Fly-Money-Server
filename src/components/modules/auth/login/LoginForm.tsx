@@ -42,7 +42,7 @@ export default function LoginForm() {
         setReCaptchaStatus(true);
       }
     } catch (err: any) {
-      console.error(err);
+      toast.error(err);
     }
   };
 
@@ -56,7 +56,7 @@ export default function LoginForm() {
         toast.error(res?.message);
       }
     } catch (err: any) {
-      console.error(err);
+      toast.error(err);
     }
   };
 
