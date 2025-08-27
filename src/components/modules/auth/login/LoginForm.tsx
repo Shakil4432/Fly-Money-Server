@@ -1,5 +1,5 @@
 "use client";
-import ReCAPTCHA from "react-google-recaptcha";
+
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -14,10 +14,10 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import Link from "next/link";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { loginUser, reCaptchaTokenVerification } from "@/services/AuthService";
+import { loginUser } from "@/services/AuthService";
 import { toast } from "sonner";
 import { loginSchema } from "./loginValidation";
-import { useState } from "react";
+
 import { useRouter, useSearchParams } from "next/navigation";
 import Logo from "@/assets/svgs/Logo";
 
@@ -26,7 +26,6 @@ export default function LoginForm() {
     resolver: zodResolver(loginSchema),
   });
 
-  const [reCaptchaStatus, setReCaptchaStatus] = useState(false);
   const searchParams = useSearchParams();
   const redirect = searchParams.get("redirectPath");
   const router = useRouter();
@@ -34,17 +33,6 @@ export default function LoginForm() {
   const {
     formState: { isSubmitting },
   } = form;
-
-  const handleReCaptcha = async (value: string | null) => {
-    try {
-      const res = await reCaptchaTokenVerification(value!);
-      if (res?.success) {
-        setReCaptchaStatus(true);
-      }
-    } catch (err: any) {
-      toast.error(err);
-    }
-  };
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
@@ -117,16 +105,7 @@ export default function LoginForm() {
               )}
             />
 
-            <div className="flex justify-center">
-              <ReCAPTCHA
-                sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_CLIENT_KEY!}
-                onChange={handleReCaptcha}
-                theme="dark"
-              />
-            </div>
-
             <Button
-              disabled={!reCaptchaStatus}
               type="submit"
               className="w-full bg-yellow-500 hover:bg-yellow-600"
             >

@@ -87,31 +87,34 @@ const FeaturedProducts = ({
                     1024: { slidesPerView: 4 },
                     1280: { slidesPerView: 5 },
                   }}
-                  className="mt-4  pb-4 h-[540px]"
+                  className="mt-4  pb-4 h-[370px]  lg:h-[510px]"
                 >
                   {filteredProducts.map((product) => (
                     <SwiperSlide key={product._id}>
-                      <div className="border p-4 h-[370px] lg:h-[470px] relative shadow-sm bg-white flex flex-col rounded-sm">
+                      <div className="border  h-[320px] lg:h-[400px] relative shadow-sm bg-white flex flex-col rounded-sm">
                         {/* Image */}
-                        <div className="flex items-center justify-center w-full aspect-square bg-[#f9f5f0]/30 rounded">
+                        <div className="relative w-full h-56  aspect-square bg-[#f9f5f0]/30  overflow-hidden">
                           <Image
-                            width={500}
-                            height={500}
-                            src={product.imageUrls[0]}
-                            alt={product.name}
-                            className="w-24 h-24  sm:w-28 sm:h-28 md:w-32 md:h-32 object-contain rounded"
+                            src={
+                              product?.imageUrls[0] ||
+                              "https://psediting.websites.co.in/obaju-turquoise/img/product-placeholder.png"
+                            }
+                            alt={product?.name || "Leather product image"}
+                            height={400}
+                            width={400}
+                            className="w-full h-full object-cover rounded-t-sm  transition-transform duration-300 hover:scale-125"
                           />
                         </div>
 
                         {/* Title */}
                         <Link href={`/products/${product._id}`}>
-                          <h3 className="text-sm sm:text-base md:text-lg font-semibold mt-2 hover:text-[#7c3f00] line-clamp-2">
+                          <h3 className="text-sm px-4 sm:text-base md:text-lg font-semibold mt-2 hover:text-[#7c3f00] line-clamp-2 truncate">
                             {product.name}
                           </h3>
                         </Link>
 
                         {/* Rating */}
-                        <div className="flex items-center gap-1 text-yellow-500 my-1">
+                        <div className="flex items-center  px-4 gap-1 text-yellow-500 my-1">
                           {Array.from({ length: 5 }).map((_, i) => (
                             <Star
                               key={i}
@@ -125,8 +128,8 @@ const FeaturedProducts = ({
                         </div>
 
                         {/* Price + Stock */}
-                        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-1 sm:gap-2 mt-1 gap-2">
-                          <div className="flex items-center gap-2">
+                        <div className="flex flex-col px-4 sm:flex-row items-start sm:items-center justify-between gap-1 sm:gap-2 mt-1 gap-2">
+                          <div className="flex items-center justify-between gap-2 w-full">
                             {product?.offerPrice ? (
                               <>
                                 <span className="text-[#7c3f00] font-bold text-sm sm:text-base md:text-lg">
@@ -142,24 +145,17 @@ const FeaturedProducts = ({
                               </span>
                             )}
                           </div>
-                          <div
-                            className={`text-[10px] sm:text-xs md:text-sm px-2 py-0.5 rounded-lg mb-4 ${
-                              product.stock > 0
-                                ? "bg-[#7c3f00]/20 text-black"
-                                : "bg-red-100 text-red-400"
-                            }`}
-                          >
-                            {product.stock > 0 ? "Stock" : "Out Of Stock"}
-                          </div>
                         </div>
 
                         {/* Add To Cart */}
-                        <Button
-                          className="w-full mt-auto rounded-md border border-[#7c3f00] text-[#7c3f00] hover:bg-[#7c3f00]/20 bg-white flex items-center justify-center gap-2 text-xs sm:text-sm md:text-base"
-                          variant="outline"
-                        >
-                          <ShoppingCart className="h-4 w-4" /> Add To Cart
-                        </Button>
+                        <div className="p-4 mt-auto">
+                          <Button
+                            className="w-full  rounded-md border border-[#7c3f00] text-[#7c3f00] hover:bg-[#7c3f00]/20 bg-white flex items-center justify-center gap-2 text-xs sm:text-sm md:text-base"
+                            variant="outline"
+                          >
+                            <ShoppingCart className="h-4 w-4" /> Add To Cart
+                          </Button>
+                        </div>
                       </div>
                     </SwiperSlide>
                   ))}

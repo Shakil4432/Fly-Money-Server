@@ -1,6 +1,8 @@
+"use client";
+
 import ProductCard from "@/components/ui/core/ProductCard";
 import { IProduct } from "@/types/product";
-import React from "react";
+import React, { useState } from "react";
 import FilterSidebar from "./filterSidebar";
 import TablePagination from "@/components/ui/core/NMTable/TablePagination";
 import ProductToolbar from "./ProductToolbar";
@@ -14,25 +16,32 @@ const AllProducts = ({
   totalPage: number;
   length: number;
 }) => {
+  const [view, setView] = useState<"grid" | "list">("grid"); // 👈 view state
+
   return (
     <div className="flex flex-col lg:flex-row gap-6 mt-20 px-4">
       {/* Sidebar */}
-      <div className="w-full lg:w-1/4 border rounded-md">
+      <div className="hidden lg:block w-full lg:w-1/4 border rounded-md h-fit sticky top-24">
         <FilterSidebar />
       </div>
 
-      {/* Product Grid */}
+      {/* Main Product Section */}
       <div className="w-full lg:w-3/4">
-        <div>
-          <ProductToolbar length={length}></ProductToolbar>
+        {/* Toolbar */}
+        <div className="mb-4">
+          <ProductToolbar length={length} setView={setView} view={view} />
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6 mt-4">
+
+        {/* Product List/Grid */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 ">
           {products?.map((product: IProduct, idx: number) => (
             <ProductCard key={idx} product={product} />
           ))}
         </div>
-        <div>
-          <TablePagination totalPage={totalPage}></TablePagination>
+
+        {/* Pagination */}
+        <div className="flex flex-wrap justify-center mt-8">
+          <TablePagination totalPage={totalPage} />
         </div>
       </div>
     </div>

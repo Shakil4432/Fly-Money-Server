@@ -45,21 +45,24 @@ const NewArrivalSlider = ({ newArrivals }: { newArrivals: IProduct[] }) => {
           1024: { slidesPerView: 4 },
           1280: { slidesPerView: 5 },
         }}
-        className="mt-4  pb-4 h-[450px]"
+        className="mt-4  pb-4 h-[500px]"
       >
         {newArrivals.map((product) => (
           <SwiperSlide key={product._id}>
-            <div className="bg-white mt-10 border border-[#7c3f00]/10  shadow-sm overflow-hidden relative group rounded-sm">
+            <div className="bg-white mt-10 border border-[#7c3f00]/10  shadow-sm overflow-hidden relative group  rounded-sm">
               {/* Discount Badge */}
 
               {/* Product Image */}
-              <div className="flex items-center justify-center w-full h-36 md:h-40 bg-[#f9f5f0]/30 rounded">
+              <div className="relative w-full h-56 aspect-square bg-[#f9f5f0]/30 rounded overflow-hidden">
                 <Image
-                  src={product?.imageUrls[0] || "/placeholder.png"}
-                  alt={product?.name}
-                  height={500}
-                  width={500}
-                  className="w-32 h-32 md:w-36 md:h-36 object-cover rounded"
+                  src={
+                    product?.imageUrls[0] ||
+                    "https://psediting.websites.co.in/obaju-turquoise/img/product-placeholder.png"
+                  }
+                  alt={product?.name || "Leather product image"}
+                  height={400}
+                  width={400}
+                  className="w-full h-full object-cover  transition-transform duration-300 hover:scale-105"
                 />
               </div>
 

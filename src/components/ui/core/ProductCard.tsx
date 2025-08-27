@@ -1,12 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import {
-  ShoppingCart,
-  Star,
-  StarHalf,
-  Star as StarOutline,
-} from "lucide-react";
+import { ShoppingCart, Star, StarHalf } from "lucide-react";
 import Image from "next/image";
 import { IProduct } from "@/types/product";
 import Link from "next/link";
@@ -15,32 +10,22 @@ const cardVariants = {
   rest: { scale: 1 },
   hover: {
     scale: 1.02,
-    boxShadow: "0 10px 25px rgba(0,0,0,0.5)",
+    boxShadow: "0 6px 16px rgba(0,0,0,0.15)",
     transition: { duration: 0.3 },
   },
 };
 
-// Helper function to render stars
+// ⭐ Helper to render stars
 const renderStars = (rating: number) => {
-  const stars = [];
-  for (let i = 1; i <= 5; i++) {
-    if (rating >= i) {
-      stars.push(
-        <Star
-          size={18}
-          key={i}
-          fill={i <= rating ? "orange" : "lightgray"}
-          stroke={i <= rating ? "orange" : "lightgray"}
-          className="text-yellow-500"
-        />
-      );
-    } else if (rating >= i - 0.5) {
-      stars.push(<StarHalf key={i} className="text-yellow-500" size={16} />);
+  return Array.from({ length: 5 }, (_, i) => {
+    if (rating >= i + 1) {
+      return <Star key={i} size={16} fill="#facc15" stroke="#facc15" />;
+    } else if (rating >= i + 0.5) {
+      return <StarHalf key={i} size={16} className="text-yellow-400" />;
     } else {
-      stars.push(<StarOutline key={i} className="text-gray-300" size={16} />);
+      return <Star key={i} size={16} stroke="#d1d5db" />;
     }
-  }
-  return stars;
+  });
 };
 
 const ProductCard = ({ product }: { product: IProduct }) => {
@@ -48,29 +33,41 @@ const ProductCard = ({ product }: { product: IProduct }) => {
 
   return (
     <motion.div
-      className="relative group overflow-hidden text-[#7c3f00] rounded-2xl transition border border-[#7c3f00]/10 duration-300"
+      className="relative group overflow-hidden rounded-sm  border border-[#7c3f00]/10 bg-white shadow-sm hover:shadow-sm transition"
       variants={cardVariants}
       initial="rest"
+      whileHover="hover"
       animate="rest"
     >
       {/* Product Image */}
-      <div className="relative w-full h-40 bg-[#f9f5f0]/30 p-3">
+      <div className="relative w-full aspect-square bg-[#f9f5f0]/40 overflow-hidden rounded-t-sm">
+        {/* Discount Badge */}
+        {product?.offerPrice && (
+          <span className="absolute top-2 left-2 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded-md shadow-md">
+            {Math.round(
+              ((product.price - product.offerPrice) / product.price) * 100
+            )}
+            %
+          </span>
+        )}
+
         <Image
           src={
             product?.imageUrls[0] ||
             "https://psediting.websites.co.in/obaju-turquoise/img/product-placeholder.png"
           }
           alt={product?.name || "Leather product image"}
-          height={500}
-          width={500}
-          className="w-36 h-32 object-cover rounded items-center justify-center mx-auto"
+          height={400}
+          width={400}
+          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
         />
 
-        {/* Top Action Buttons */}
-        <div className="absolute top-3 right-3 flex gap-2 z-10">
+        {/* Top Right Action Buttons */}
+        <div className="absolute top-2 right-2 flex gap-2 z-10">
           <button
+            aria-label="Add to cart"
             disabled={!isInStock}
-            className="p-2 backdrop-blur border border-[#7c3f00] text-[#7c3f00] rounded-full hover:bg-[#7c3f00] hover:text-white transition"
+            className="p-2 backdrop-blur border border-[#7c3f00] text-[#7c3f00] rounded-full hover:scale-110 hover:bg-[#7c3f00] hover:text-white transition disabled:opacity-40 disabled:cursor-not-allowed"
           >
             <ShoppingCart size={16} />
           </button>
@@ -78,9 +75,12 @@ const ProductCard = ({ product }: { product: IProduct }) => {
       </div>
 
       {/* Product Info */}
-      <div className="p-4 space-y-2 text-[#7c3f00]">
+      <div className="p-4 flex flex-col gap-2 text-[#7c3f00]">
         {/* Product Name */}
-        <h3 className="text-lg font-semibold truncate" title={product?.name}>
+        <h3
+          className="text-base md:text-lg font-semibold line-clamp-2"
+          title={product?.name}
+        >
           {product?.name}
         </h3>
 
@@ -90,18 +90,20 @@ const ProductCard = ({ product }: { product: IProduct }) => {
         </div>
 
         {/* Price & Stock */}
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mt-1">
           {/* Pricing */}
           <div className="flex items-center gap-2">
             {product?.offerPrice ? (
               <>
-                <span className="text-gray-600 font-bold text-base">
+                <span className="text-gray-800 font-bold text-sm md:text-base">
                   ${product.offerPrice}
                 </span>
-                <del className="text-sm text-gray-400">${product.price}</del>
+                <del className="text-xs md:text-sm text-gray-400">
+                  ${product.price}
+                </del>
               </>
             ) : (
-              <span className="text-base font-semibold text-gray-500">
+              <span className="text-sm md:text-base font-semibold text-gray-700">
                 ${product.price}
               </span>
             )}
@@ -109,7 +111,7 @@ const ProductCard = ({ product }: { product: IProduct }) => {
 
           {/* Stock */}
           <span
-            className={`text-xs font-medium px-3 py-1 rounded-full ${
+            className={`text-[10px] md:text-xs font-medium px-2.5 py-1 rounded-full ${
               isInStock
                 ? "text-[#7c3f00] bg-[#7c3f00]/10"
                 : "text-red-600 border border-red-600"
@@ -120,10 +122,11 @@ const ProductCard = ({ product }: { product: IProduct }) => {
         </div>
 
         {/* Details Button */}
-        <Link href={`/products/${product._id}`}>
+        <Link href={`/products/${product._id}`} className="w-full">
           <button
+            aria-label="See product details"
             disabled={!isInStock}
-            className="w-full mt-3 text-sm text-[#7c3f00] border border-[#7c3f00] py-2 rounded-full hover:bg-[#5e2f00] hover:text-white transition disabled:opacity-40"
+            className="w-full mt-3 text-sm text-[#7c3f00] border border-[#7c3f00] py-2 rounded-full hover:scale-[1.02] hover:bg-[#5e2f00] hover:text-white transition disabled:opacity-40 disabled:cursor-not-allowed"
           >
             See Details
           </button>

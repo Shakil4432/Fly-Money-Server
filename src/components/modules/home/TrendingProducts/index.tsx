@@ -62,31 +62,34 @@ const TrendingProducts = ({
             1024: { slidesPerView: 4 },
             1280: { slidesPerView: 5 },
           }}
-          className="mt-4  pb-4 h-[540px]"
+          className="mt-4  pb-4 h-[370px]  lg:h-[510px]"
         >
           {trendingProduct.map((product) => (
             <SwiperSlide key={product.productId}>
-              <div className="border p-4 h-[310px] lg:h-[470px] shadow-sm bg-white  flex flex-col rounded-sm">
+              <div className="border h-[310px] lg:h-[400px] shadow-sm bg-white  flex flex-col ">
                 {/* Product Image */}
-                <div className="flex items-center justify-center w-full aspect-square bg-[#f9f5f0]/30 rounded">
+                <div className="relative w-full h-56  aspect-square bg-[#f9f5f0]/30  overflow-hidden">
                   <Image
-                    width={500}
-                    height={500}
-                    src={product.imageUrls[0]}
-                    alt={product.name}
-                    className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 object-contain rounded"
+                    src={
+                      product?.imageUrls[0] ||
+                      "https://psediting.websites.co.in/obaju-turquoise/img/product-placeholder.png"
+                    }
+                    alt={product?.name || "Leather product image"}
+                    height={400}
+                    width={400}
+                    className="w-full h-full object-cover rounded-t-sm  transition-transform duration-300 hover:scale-105"
                   />
                 </div>
 
                 {/* Product Name */}
                 <Link href={`/products/${product.productId}`}>
-                  <h3 className="text-xs sm:text-sm md:text-base lg:text-lg font-semibold mt-2 hover:text-[#7c3f00] line-clamp-2">
+                  <h3 className="text-xs px-4 sm:text-sm md:text-base lg:text-lg font-semibold mt-2 hover:text-[#7c3f00] line-clamp-2 truncate">
                     {product.name}
                   </h3>
                 </Link>
 
                 {/* Ratings Demo (Static) */}
-                <div className="flex items-center gap-1 text-yellow-500 my-1">
+                <div className="flex items-center px-4 gap-1 text-yellow-500 my-1">
                   {Array.from({ length: 5 }).map((_, i) => (
                     <Star
                       key={i}
@@ -100,7 +103,7 @@ const TrendingProducts = ({
                 </div>
 
                 {/* Price & Orders */}
-                <div className="flex items-center justify-between mt-1">
+                <div className="flex items-center justify-between mt-1 px-4">
                   <span className="text-[#7c3f00] font-bold text-sm sm:text-base md:text-lg">
                     ₹{product.price.toFixed(2)}
                   </span>
@@ -110,12 +113,14 @@ const TrendingProducts = ({
                 </div>
 
                 {/* Button */}
-                <Button
-                  className="w-full mt-auto rounded-md border border-[#7c3f00] text-[#7c3f00] hover:bg-[#7c3f00]/20 bg-white flex items-center justify-center gap-2 text-xs sm:text-sm md:text-base"
-                  variant="outline"
-                >
-                  <ShoppingCart className="h-4 w-4" /> Add To Cart
-                </Button>
+                <div className="p-4 mt-auto">
+                  <Button
+                    className="w-full  rounded-sm border border-[#7c3f00] text-[#7c3f00] hover:bg-[#7c3f00]/20 bg-white flex items-center justify-center gap-2 text-xs sm:text-sm md:text-base"
+                    variant="outline"
+                  >
+                    <ShoppingCart className="h-4 w-4" /> Add To Cart
+                  </Button>
+                </div>
               </div>
             </SwiperSlide>
           ))}

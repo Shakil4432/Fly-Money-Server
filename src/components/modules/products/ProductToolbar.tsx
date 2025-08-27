@@ -8,13 +8,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
 
-export default function ProductToolbar({ length }: { length: number }) {
-  const [sort, setSort] = useState<string>("All");
-  const [view, setView] = useState<"list" | "grid">("grid"); // 👈 NEW state
+export default function ProductToolbar({
+  length,
+  setView,
+  view,
+}: {
+  length: number;
+  setView: (view: "list" | "grid") => void;
+  view: "list" | "grid";
+}) {
   const pathName = usePathname();
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -34,7 +38,7 @@ export default function ProductToolbar({ length }: { length: number }) {
   };
 
   return (
-    <div className="flex items-center justify-between bg-gray-50 rounded-md px-4 py-2 shadow-sm border">
+    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-gray-50 rounded-md px-4 py-2 shadow-sm border">
       {/* Left Side */}
       <div className="flex items-center gap-3">
         {/* List View Button */}
@@ -69,14 +73,10 @@ export default function ProductToolbar({ length }: { length: number }) {
       <div className="flex items-center gap-2">
         <span className="text-sm text-gray-700">Sort By</span>
         <Select
-          value={sort}
-          onValueChange={(val) => {
-            setSort(val);
-            handleSearchQuery("sort", val);
-          }}
+          onValueChange={(val) => handleSearchQuery("sort", val)}
           defaultValue="All"
         >
-          <SelectTrigger className="w-[160px] h-8 text-sm focus:ring-0 focus:ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0 bg-white text-gray-500">
+          <SelectTrigger className="w-[160px] h-8 text-sm bg-white text-gray-500">
             <SelectValue placeholder="Sort option" />
           </SelectTrigger>
           <SelectContent className="bg-white">

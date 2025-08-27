@@ -53,31 +53,34 @@ const TopRatedProducts = ({
           1024: { slidesPerView: 4 },
           1280: { slidesPerView: 5 },
         }}
-        className="mt-4  pb-4 h-[540px]"
+        className="mt-4  pb-4 h-[400px]  lg:h-[510px]"
       >
         {TopRatingProducts.map((product) => (
           <SwiperSlide key={product._id}>
-            <div className="bg-white mt-6 border h-[350px] lg:h-[450px] border-[#7c3f00]/10 shadow-sm overflow-hidden relative group rounded-sm flex flex-col">
+            <div className="bg-white mt-6 border h-[320px] lg:h-[400px] border-[#7c3f00]/10 shadow-sm overflow-hidden relative group rounded-sm flex flex-col">
               {/* Product Image */}
-              <div className="flex items-center justify-center w-full aspect-auto h-64 bg-[#f9f5f0]/30">
+              <div className="relative w-full h-56 aspect-square bg-[#f9f5f0]/30 rounded overflow-hidden">
                 <Image
-                  src={product?.imageUrls[0] || "/placeholder.png"}
-                  alt={product?.name}
-                  height={100}
-                  width={100}
-                  className="w-24 h-24  sm:w-28 sm:h-28 md:w-32 md:h-32 object-contain rounded"
+                  src={
+                    product?.imageUrls[0] ||
+                    "https://psediting.websites.co.in/obaju-turquoise/img/product-placeholder.png"
+                  }
+                  alt={product?.name || "Leather product image"}
+                  height={400}
+                  width={400}
+                  className="w-full h-full object-cover  transition-transform duration-300 hover:scale-105"
                 />
               </div>
 
               {/* Product Details */}
-              <div className="p-3 flex flex-col flex-1">
+              <div className="mt-1 flex flex-col flex-1">
                 {/* Name */}
-                <h3 className="text-xs sm:text-sm md:text-base font-medium mt-1 line-clamp-2 hover:text-[#7c3f00]">
+                <h3 className="text-xs px-4 sm:text-sm md:text-base font-medium mt-1 line-clamp-2 hover:text-[#7c3f00] truncate">
                   {product?.name}
                 </h3>
 
                 {/* Ratings */}
-                <div className="flex items-center gap-1 text-yellow-500 my-1">
+                <div className="flex items-center px-4 gap-1 text-yellow-500 my-1">
                   {Array.from({ length: 5 }).map((_, i) => (
                     <Star
                       key={i}
@@ -91,7 +94,7 @@ const TopRatedProducts = ({
                 </div>
 
                 {/* Price */}
-                <div className="flex items-center gap-2 mt-1 mb-4 lg:mb-0">
+                <div className="flex items-center px-4 gap-2 mt-1 mb-4 lg:mb-0">
                   {product?.offerPrice ? (
                     <>
                       <span className="text-gray-400 line-through text-xs sm:text-sm">
@@ -109,12 +112,14 @@ const TopRatedProducts = ({
                 </div>
 
                 {/* Add to Cart */}
-                <Button
-                  variant="outline"
-                  className="mt-auto  w-full bg-white flex items-center justify-center gap-2 border-[#7c3f00]/30 text-[#7c3f00] hover:bg-[#7c3f00]/20 text-xs sm:text-sm md:text-base rounded-md"
-                >
-                  <ShoppingCart className="h-4 w-4" /> ADD TO CART
-                </Button>
+                <div className="p-4 mt-auto">
+                  <Button
+                    variant="outline"
+                    className="mt-auto  w-full bg-white flex items-center justify-center gap-2 border-[#7c3f00]/30 text-[#7c3f00] hover:bg-[#7c3f00]/20 text-xs sm:text-sm md:text-base rounded-md"
+                  >
+                    <ShoppingCart className="h-4 w-4" /> ADD TO CART
+                  </Button>
+                </div>
               </div>
             </div>
           </SwiperSlide>

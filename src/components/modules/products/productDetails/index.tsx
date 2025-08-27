@@ -39,9 +39,8 @@ const ProductDetails = ({ product }: { product: IProduct }) => {
   const [selectedImage, setSelectedImage] = useState<string>(
     product?.imageUrls?.[0] || ""
   );
-  const [user, setUser] = useState();
+  const [user, setUser] = useState<any>();
   const [zoomed, setZoomed] = useState<boolean>(false);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
@@ -55,7 +54,6 @@ const ProductDetails = ({ product }: { product: IProduct }) => {
     getUserFunc();
   }, []);
 
-  // Provide default values so fields are registered and `field` won't be undefined.
   const form = useForm({
     defaultValues: {
       review: "",
@@ -69,7 +67,6 @@ const ProductDetails = ({ product }: { product: IProduct }) => {
   } = form;
 
   const onSubmit: SubmitHandler<FormData | FieldValues> = async (data) => {
-    // data typed as FormData at runtime
     const reviewData = { ...data, product: product._id };
 
     if (!user) {
@@ -128,7 +125,7 @@ const ProductDetails = ({ product }: { product: IProduct }) => {
       )}
 
       {/* Top Section */}
-      <div className="grid grid-cols-2 gap-8 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
         {/* Left Image Section */}
         <div className="flex flex-col gap-4">
           {selectedImage && (
@@ -137,7 +134,7 @@ const ProductDetails = ({ product }: { product: IProduct }) => {
               width={500}
               height={500}
               alt="product image"
-              className="w-full h-[380px] border rounded-lg object-cover cursor-zoom-in"
+              className="w-full max-h-[350px] sm:max-h-[400px] md:max-h-[500px] border rounded-lg object-cover cursor-zoom-in"
               onClick={() => setZoomed(true)}
             />
           )}
@@ -163,17 +160,23 @@ const ProductDetails = ({ product }: { product: IProduct }) => {
 
         {/* Right Product Info Section */}
         <div className="flex flex-col gap-4">
-          <h1 className="text-2xl font-bold text-gray-800">{product?.name}</h1>
-          <p className="text-sm text-gray-500">{product?.description}</p>
+          <h1 className="text-xl md:text-2xl font-bold text-gray-800">
+            {product?.name}
+          </h1>
+          <p className="text-sm md:text-base text-gray-500">
+            {product?.description}
+          </p>
 
           <div className="flex items-center gap-2">
             <Star className="w-5 h-5 fill-yellow-500 text-yellow-500" />
-            <span className="text-sm text-gray-600">
+            <span className="text-sm md:text-base text-gray-600">
               {averageRating.toFixed(1)} Ratings ({reviews.length} Reviews)
             </span>
           </div>
 
-          <p className="text-sm text-gray-500">Brand: {product?.brand}</p>
+          <p className="text-sm md:text-base text-gray-500">
+            Brand: {product?.brand}
+          </p>
 
           <p className="text-lg font-semibold text-gray-800">
             Price:{" "}
@@ -182,7 +185,8 @@ const ProductDetails = ({ product }: { product: IProduct }) => {
             </span>
           </p>
 
-          <div className="flex items-center gap-2">
+          {/* Colors */}
+          <div className="flex items-center gap-2 flex-wrap">
             <span className="text-sm font-medium">Color:</span>
             {["#000000", "#ff6600", "#66cc33", "#00ccff", "#00cccc"].map(
               (color, idx) => (
@@ -196,6 +200,7 @@ const ProductDetails = ({ product }: { product: IProduct }) => {
             )}
           </div>
 
+          {/* Quantity */}
           <div className="flex items-center gap-3">
             <span className="text-sm font-medium">Quantity:</span>
             <div className="flex items-center border rounded-lg overflow-hidden">
@@ -208,15 +213,16 @@ const ProductDetails = ({ product }: { product: IProduct }) => {
             </span>
           </div>
 
-          <div className="flex gap-3 mt-2">
+          {/* Buttons */}
+          <div className="flex flex-col sm:flex-row gap-3 mt-2">
             <Button
-              className="bg-gray-200 text-gray-800 hover:bg-gray-300"
+              className="bg-gray-200 text-gray-800 hover:bg-gray-300 w-full sm:w-auto"
               disabled={product?.stock === 0}
             >
               Add to Cart
             </Button>
             <Button
-              className="bg-[#7c3f00] text-white hover:bg-[#7c3f00]/80"
+              className="bg-[#7c3f00] text-white hover:bg-[#7c3f00]/80 w-full sm:w-auto"
               disabled={product?.stock === 0}
             >
               Buy Now
@@ -232,8 +238,9 @@ const ProductDetails = ({ product }: { product: IProduct }) => {
           <TabsTrigger value="reviews">Reviews</TabsTrigger>
         </TabsList>
 
+        {/* Specs */}
         <TabsContent value="specs">
-          <ul className="list-disc pl-6 mt-4 text-sm text-gray-700">
+          <ul className="list-disc pl-6 mt-4 text-sm text-gray-700 space-y-1">
             {product?.keyFeatures?.map((feature, idx) => (
               <li key={idx}>{feature}</li>
             ))}
@@ -241,6 +248,7 @@ const ProductDetails = ({ product }: { product: IProduct }) => {
           </ul>
         </TabsContent>
 
+        {/* Reviews */}
         <TabsContent value="reviews">
           <div className="mt-4 space-y-6">
             {/* Review Form */}
@@ -248,17 +256,18 @@ const ProductDetails = ({ product }: { product: IProduct }) => {
               <CardContent className="p-4 w-full">
                 <h4 className="font-semibold mb-2">Write a Review</h4>
 
-                <div className="border-2 text-gray-300 border-gray-300 rounded-xl flex-grow max-w-2xl p-5 w-full ">
+                <div className="border-2 text-gray-300 border-gray-300 rounded-xl flex-grow max-w-2xl p-5 w-full">
                   <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)}>
                       <div className="my-5 w-full">
+                        {/* Review Field */}
                         <FormField
                           control={form.control}
                           name="review"
                           render={({ field }) => (
                             <FormItem className="mb-2">
                               <FormLabel>Review</FormLabel>
-                              <FormControl className=" text-gray-600">
+                              <FormControl className="text-gray-600">
                                 <Textarea
                                   className="h-36 resize-none"
                                   {...field}
@@ -270,6 +279,7 @@ const ProductDetails = ({ product }: { product: IProduct }) => {
                           )}
                         />
 
+                        {/* Rating Field */}
                         <FormField
                           control={form.control}
                           name="rating"
@@ -290,7 +300,6 @@ const ProductDetails = ({ product }: { product: IProduct }) => {
                                         if (field?.onChange) {
                                           field.onChange(star);
                                         } else {
-                                          // fallback if field is temporarily undefined
                                           setValue("rating", star);
                                         }
                                       }}
@@ -309,7 +318,7 @@ const ProductDetails = ({ product }: { product: IProduct }) => {
                         className="mt-5 w-full bg-[#7c3f00] hover:bg-[#7c3f00]/60"
                         disabled={isSubmitting}
                       >
-                        {isSubmitting ? "Add Review....." : "Add Review"}
+                        {isSubmitting ? "Adding Review..." : "Add Review"}
                       </Button>
                     </form>
                   </Form>
