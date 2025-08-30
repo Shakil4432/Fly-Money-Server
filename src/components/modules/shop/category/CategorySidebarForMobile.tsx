@@ -1,11 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Menu, X, Plus, Minus, ChevronDown } from "lucide-react";
+import { Menu, X, Plus, Minus } from "lucide-react";
 import { getAllCategories } from "@/services/Category";
 import Logo from "@/assets/svgs/Logo";
 import { useRouter } from "next/navigation";
-import Category3 from "./Category3";
 
 type Category = {
   _id: string;

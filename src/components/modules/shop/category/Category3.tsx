@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { getAllCategories } from "@/services/Category";
-import { ChevronRight, Plus, Minus } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 type Category = {
@@ -14,7 +14,7 @@ type Category = {
 export default function Category3({ color }: { color: string }) {
   const [categories, setCategories] = useState<Category[]>([]);
   const [hovered, setHovered] = useState<string | null>(null);
-  const [openMobile, setOpenMobile] = useState<string | null>(null);
+
   const [subHovered, setSubHovered] = useState<string | null>(null);
   const router = useRouter();
 
@@ -51,7 +51,7 @@ export default function Category3({ color }: { color: string }) {
             </button>
 
             {hovered === cat._id && cat.children && (
-              <div className="hidden lg:absolute left-0 top-full pt-2 bg-white shadow-md border min-w-[220px] z-50 p-3">
+              <div className="absolute left-0 top-10 lg:top-full lg:pt-2 bg-white shadow-md border min-w-[220px] z-50 p-3">
                 {cat.children.map((child) => (
                   <div
                     key={child._id}
