@@ -23,15 +23,25 @@ interface TrendingProductsProps {
 
 const TrendingProducts = ({
   trendingProduct,
-  title = "Best Selling Products",
+  title = "Best Selling ",
 }: TrendingProductsProps) => {
   return (
     <div className="container mx-auto lg:mt-16 md:mt-32 px-4 md:px-0 ">
       <div className="flex  items-start justify-between py-6 md:py-10 gap-4 md:gap-0">
         <div className="space-y-2">
-          <h2 className="text-2xl md:text-3xl font-bold text-[#7c3f00]">
-            {title}
-          </h2>
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg lg:text-3xl md:text-3xl font-bold text-[#7c3f00]">
+              {title}
+            </h2>
+            <Link href={"/products"}>
+              <Button
+                className="w-full mt-auto block lg:hidden text-sm  border-none text-[#7c3f00] hover:bg-[#7c3f00]/20 bg-white  gap-2 lg:text-xs sm:text-sm md:text-base"
+                variant="outline"
+              >
+                See more...
+              </Button>
+            </Link>
+          </div>
           <p className="text-gray-500 text-sm md:text-base">
             Check out our most popular and highly ordered products.
           </p>
@@ -39,7 +49,7 @@ const TrendingProducts = ({
         <div>
           <Link href={"/products"}>
             <Button
-              className="w-full mt-auto rounded-md border border-[#7c3f00] text-[#7c3f00] hover:bg-[#7c3f00]/20 bg-white flex items-center justify-center gap-2 text-xs sm:text-sm md:text-base"
+              className="w-full hidden lg:block mt-auto text-sm rounded-md border border-[#7c3f00] text-[#7c3f00] hover:bg-[#7c3f00]/20 bg-white  lg:text-xs sm:text-sm md:text-base"
               variant="outline"
             >
               All Collection
@@ -62,7 +72,7 @@ const TrendingProducts = ({
             1024: { slidesPerView: 4 },
             1280: { slidesPerView: 5 },
           }}
-          className="mt-4  pb-4 h-[370px]  lg:h-[510px]"
+          className="mt-4  pb-4 h-[370px]  lg:h-[470px]"
         >
           {trendingProduct.map((product) => (
             <SwiperSlide key={product.productId}>

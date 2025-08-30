@@ -96,6 +96,10 @@ const ProductDetails = ({ product }: { product: IProduct }) => {
     }
   };
 
+  if (isLoading) {
+    return <div>Loading</div>;
+  }
+
   const averageRating =
     reviews.length > 0
       ? reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length

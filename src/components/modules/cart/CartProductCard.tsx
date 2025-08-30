@@ -29,30 +29,38 @@ export default function CartProductCard({ product }: { product: CardProduct }) {
   const handleDeleteProduct = (productId: string) => {
     dispatch(removeProduct(productId));
   };
+
   return (
-    <div>
-      <Card className="flex items-center p-4 mt-4">
-        <div className="w-16 h-16 bg-gray-200 rounded">
-          <Image
-            src={`${product.imageUrls[0]}`}
-            height={100}
-            width={100}
-            alt={`${product.name}`}
-            className="w-16 h-16"
-          ></Image>
-        </div>
-        <div className="ml-4 flex-1 space-y-1">
-          <p className="font-semibold text-sm leading-tight">{product.name}</p>
-          <p className="text-xs text-gray-500">
-            Color: {product?.availableColors} &nbsp; | &nbsp; Stock Available:
-            {product.stock}
-          </p>
-          <p className="text-sm font-medium text-black">
-            Price: ${product.price}
-          </p>
-        </div>
-        <div className="flex items-center gap-2 ml-4">
-          <span className="text-sm">Quantity</span>
+    <Card className="flex flex-col sm:flex-row items-start sm:items-center p-4 gap-4">
+      {/* Product Image */}
+      <div className="w-20 h-20 bg-gray-100 rounded flex-shrink-0">
+        <Image
+          src={product.imageUrls[0]}
+          height={80}
+          width={80}
+          alt={product.name}
+          className="w-full h-full object-contain rounded"
+        />
+      </div>
+
+      {/* Product Info */}
+      <div className="flex-1 w-full space-y-1">
+        <p className="font-semibold text-sm sm:text-base leading-tight line-clamp-2">
+          {product.name}
+        </p>
+        <p className="text-xs sm:text-sm text-gray-500">
+          Color: {product?.availableColors} &nbsp; | &nbsp; Stock:{" "}
+          {product.stock}
+        </p>
+        <p className="text-sm sm:text-base font-medium text-black">
+          Price: ${product.price}
+        </p>
+      </div>
+
+      {/* Actions */}
+      <div className="flex sm:flex-col md:flex-row sm:items-end md:items-center gap-2 sm:ml-4">
+        <div className="flex items-center gap-2">
+          <span className="text-xs sm:text-sm">Qty</span>
           <Button
             size="icon"
             variant="outline"
@@ -60,7 +68,7 @@ export default function CartProductCard({ product }: { product: CardProduct }) {
           >
             <Minus className="w-3 h-3" />
           </Button>
-          <span className="text-sm">{product?.orderQuantity}</span>
+          <span className="text-sm font-medium">{product?.orderQuantity}</span>
           <Button
             size="icon"
             variant="outline"
@@ -68,16 +76,17 @@ export default function CartProductCard({ product }: { product: CardProduct }) {
           >
             <Plus className="w-3 h-3" />
           </Button>
-          <Button
-            size="icon"
-            variant="ghost"
-            className="text-red-500"
-            onClick={() => handleDeleteProduct(product._id)}
-          >
-            <Trash2 className="w-4 h-4" />
-          </Button>
         </div>
-      </Card>
-    </div>
+
+        <Button
+          size="icon"
+          variant="ghost"
+          className="text-red-500"
+          onClick={() => handleDeleteProduct(product._id)}
+        >
+          <Trash2 className="w-4 h-4" />
+        </Button>
+      </div>
+    </Card>
   );
 }

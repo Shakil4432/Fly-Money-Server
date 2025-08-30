@@ -23,15 +23,10 @@ export const createReview = async (productData: any): Promise<any> => {
 export const getAllReviews = async () => {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/review`, {
-      headers: {
-        Authorization: (await cookies()).get("accessToken")!.value,
-      },
-
       next: {
         tags: ["Review"],
       },
     });
-
     return res.json() || [];
   } catch (error: any) {
     return Error(error);

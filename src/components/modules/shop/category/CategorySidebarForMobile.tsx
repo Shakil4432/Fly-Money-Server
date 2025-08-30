@@ -1,6 +1,6 @@
 "use client";
 
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Menu, X, Plus, Minus, ChevronDown } from "lucide-react";
 import { getAllCategories } from "@/services/Category";
 import Logo from "@/assets/svgs/Logo";
@@ -16,11 +16,9 @@ type Category = {
 export const CategoryItem = ({
   category,
   level,
-  setSidebarOpen,
 }: {
   category: Category;
   level: "parentCategory" | "subCategory" | "thirdSubCategory";
-  setSidebarOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
   const [open, setOpen] = useState(false);
   const hasChildren = category.children && category.children.length > 0;
@@ -29,7 +27,6 @@ export const CategoryItem = ({
   const handleCategoryFilter = (key: string, id: string) => {
     const params = new URLSearchParams();
     params.set(key, id);
-
     router.push(`/products?${params.toString()}`, { scroll: false });
   };
 
@@ -63,12 +60,7 @@ export const CategoryItem = ({
       {open && hasChildren && (
         <div className="ml-4 mt-1 text-sm text-[#7c3f00]/70">
           {category.children?.map((child) => (
-            <CategoryItem
-              key={child._id}
-              category={child}
-              level={nextLevel}
-              setSidebarOpen={setSidebarOpen}
-            />
+            <CategoryItem key={child._id} category={child} level={nextLevel} />
           ))}
         </div>
       )}
@@ -76,7 +68,7 @@ export const CategoryItem = ({
   );
 };
 
-export default function CategorySidebarWithToggle() {
+export default function CategorySidebarForMobile() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [categories2, setCategories2] = useState<Category[]>([]);
 
@@ -89,26 +81,20 @@ export default function CategorySidebarWithToggle() {
   }, []);
 
   return (
-    <div className="relative z-50 bg-[#f9f5f0]">
+    <div className="relative z-[100] ">
       {/* SHOP BY CATEGORY Button (visible on all devices) */}
       <div className="flex items-center px-2">
         <button
           onClick={() => setSidebarOpen(true)}
-          className="hidden lg:flex items-center gap-3 p-2 w-full md:w-[260px] rounded-md hover:bg-[#7c3f00]/20 transition"
+          className="flex items-center gap-3  w-full md:w-[260px] rounded-md transition"
         >
-          <div className="p-2 text-[#7c3f00] shadow rounded-md">
+          <div className="p-2 hidden lg:block text-[#7c3f00] shadow rounded-md">
             <Menu size={18} />
           </div>
-          <h1 className="text-sm text-[#7c3f00] font-semibold">
-            SHOP BY CATEGORY
-          </h1>
-          <ChevronDown className="text-[#7c3f00] ml-auto" />
+          <div className=" p-1  block lg:hidden text-[#7c3f00] shadow rounded-md">
+            <Menu size={20} />
+          </div>
         </button>
-
-        {/* Desktop-only horizontal nav next to it */}
-        <div className="flex flex-1 py-2 lg:ml-10 overflow-x-auto  relative z-[200] w-full md:w-auto">
-          <Category3 color="bg-[#f9f5f0]" />
-        </div>
       </div>
 
       {/* Sidebar Drawer (same for desktop + mobile) */}
@@ -127,12 +113,7 @@ export default function CategorySidebarWithToggle() {
 
         <div className="overflow-y-auto max-h-[70vh] pr-2">
           {categories2.map((cat) => (
-            <CategoryItem
-              key={cat._id}
-              category={cat}
-              level="parentCategory"
-              setSidebarOpen={setSidebarOpen}
-            />
+            <CategoryItem key={cat._id} category={cat} level="parentCategory" />
           ))}
         </div>
 

@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { IProduct } from "@/types/product";
 import { ShoppingCart, Star } from "lucide-react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const NewArrivalSlider = ({ newArrivals }: { newArrivals: IProduct[] }) => {
   const router = useRouter();
@@ -19,14 +20,25 @@ const NewArrivalSlider = ({ newArrivals }: { newArrivals: IProduct[] }) => {
     router.push(`/products?${params.toString()}`);
   };
   return (
-    <div className="w-full py-8 container mx-auto">
+    <div className="w-full py-4 lg:py-8 px-4 container mx-auto">
       <div className="flex items-center justify-between">
-        <h2 className="text-3xl text-[#7c3f00] font-bold  lg:mt-16 md:mt-28">
-          New Arrivals
-        </h2>
+        <div className="flex items-center justify-between w-full">
+          <h2 className="text-lg lg:text-3xl md:text-3xl font-bold text-[#7c3f00]">
+            New Arrivals
+          </h2>
+          <Link href={"/products"}>
+            <Button
+              onClick={() => handleSearchQuery("sort", "-createdAt")}
+              className="w-full mt-auto block lg:hidden text-sm  border-none text-[#7c3f00] hover:bg-[#7c3f00]/20 bg-white  gap-2 lg:text-xs sm:text-sm md:text-base"
+              variant="outline"
+            >
+              See more...
+            </Button>
+          </Link>
+        </div>
         <Button
           onClick={() => handleSearchQuery("sort", "-createdAt")}
-          className=" mt-auto rounded-md border border-[#7c3f00] text-[#7c3f00] hover:bg-[#7c3f00]/20 bg-white flex items-center justify-center gap-2 text-xs sm:text-sm md:text-base"
+          className=" mt-auto hidden lg:block rounded-md border border-[#7c3f00] text-[#7c3f00] hover:bg-[#7c3f00]/20 bg-white  text-xs sm:text-sm md:text-base"
           variant="outline"
         >
           All Collection
@@ -49,7 +61,7 @@ const NewArrivalSlider = ({ newArrivals }: { newArrivals: IProduct[] }) => {
       >
         {newArrivals.map((product) => (
           <SwiperSlide key={product._id}>
-            <div className="bg-white mt-10 border border-[#7c3f00]/10  shadow-sm overflow-hidden relative group  rounded-sm">
+            <div className="bg-white mt-4 lg:mt-10 border border-[#7c3f00]/10  shadow-sm overflow-hidden relative group  rounded-sm">
               {/* Discount Badge */}
 
               {/* Product Image */}

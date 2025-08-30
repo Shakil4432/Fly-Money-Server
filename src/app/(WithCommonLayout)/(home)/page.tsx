@@ -31,6 +31,7 @@ const HomePage = async () => {
   const { data: newArrivals } = await getNewArrivalProducts();
   const { data: TopRatingProducts } = await getTopRatedProduct();
   const { data: reviews } = await getAllReviews();
+  console.log(reviews);
 
   return (
     <div>

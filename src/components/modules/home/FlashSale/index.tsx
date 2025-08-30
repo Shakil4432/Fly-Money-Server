@@ -56,20 +56,23 @@ const FlashSale = ({
         <Tabs defaultValue={defaultTab} className="w-full">
           {/* Header */}
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between py-6 md:py-10 gap-4 md:gap-0">
-            <div className="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-10">
-              <h2 className="text-2xl md:text-3xl font-bold text-[#7c3f00]">
+            <div className="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-10 lg:w-full ">
+              <h2 className="text-lg lg:w-[26%]  lg:text-3xl md:text-3xl font-bold text-[#7c3f00]">
                 {title}
               </h2>
               <CountDown />
             </div>
 
             {/* Tabs */}
-            <div className="overflow-x-auto  md:w-auto overflow-hidden ">
-              <TabsList className="flex  md:gap-4 items-center bg-white px-2 md:px-0 rounded-md">
+            <div className="w-full md:w-auto">
+              <TabsList className="flex items-center justify-start gap-6 bg-white    border-gray-200 overflow-x-auto md:overflow-visible scrollbar-hide">
                 <TabsTrigger
                   value="all"
                   onClick={() => setSelectedCategoryId("all")}
-                  className="whitespace-nowrap font-medium text-gray-600 data-[state=active]:text-[#7c3f00] data-[state=active]:border-b-2 data-[state=active]:border-[#7c3f00] data-[state=active]:font-semibold py-2 lg:px-2 md:px-6 transition"
+                  className="whitespace-nowrap font-medium text-gray-600 
+      data-[state=active]:text-[#7c3f00] data-[state=active]:border-b-1
+      data-[state=active]:border-[#7c3f00] data-[state=active]:font-semibold 
+      py-2 px-3 transition"
                 >
                   ALL
                 </TabsTrigger>
@@ -79,7 +82,10 @@ const FlashSale = ({
                     key={cat._id}
                     value={cat.name}
                     onClick={() => setSelectedCategoryId(cat._id)}
-                    className="whitespace-nowrap font-medium text-gray-600 data-[state=active]:text-[#7c3f00] data-[state=active]:border-b-2 data-[state=active]:border-[#7c3f00] data-[state=active]:font-semibold py-2 lg:px-4 md:px-6 transition"
+                    className="whitespace-nowrap font-medium text-gray-600 
+        data-[state=active]:text-[#7c3f00] data-[state=active]:border-b-1
+        data-[state=active]:border-[#7c3f00] data-[state=active]:font-semibold 
+        py-2 px-3 transition"
                   >
                     {cat.name.toUpperCase()}
                   </TabsTrigger>
@@ -108,7 +114,7 @@ const FlashSale = ({
                   1024: { slidesPerView: 4 },
                   1280: { slidesPerView: 5 },
                 }}
-                className="mt-4  pb-4 h-[370px]  lg:h-[510px]"
+                className="mt-4  pb-4 h-[370px]  lg:h-[470px]"
               >
                 {products.map((product) => (
                   <SwiperSlide key={product._id}>
@@ -207,7 +213,7 @@ const FlashSale = ({
                     1024: { slidesPerView: 4 },
                     1280: { slidesPerView: 5 },
                   }}
-                  className="mt-4  pb-4 h-[370px]  lg:h-[510px]"
+                  className="mt-4  pb-4 h-[370px]  lg:h-[470px]"
                 >
                   {filteredProducts.map((product) => (
                     <SwiperSlide key={product._id}>

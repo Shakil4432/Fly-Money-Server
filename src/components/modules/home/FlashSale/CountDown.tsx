@@ -46,7 +46,7 @@ export default function CountDown() {
   }, []);
 
   return (
-    <div className="flex items-center justify-evenly space-x-4 text-gray-800 flex-wrap  gap-4">
+    <div className="flex items-center justify-center w-full   space-x-4 text-gray-800 flex-wrap gap-2  lg:gap-4">
       {(["H", "M", "S"] as const).map((unit) => (
         <div
           key={unit}
@@ -57,10 +57,10 @@ export default function CountDown() {
           }`}
         >
           <div className="flex items-center gap-2">
-            <span className="text-2xl font-bold">
+            <span className=" text-sm lg:text-2xl font-bold">
               {timeLeft[unit].toString().padStart(2, "0")}
             </span>
-            <span className="text-sm">
+            <span className="text-sm lg:text-2xl">
               {unit.charAt(0).toUpperCase() + unit.slice(1)}
             </span>
           </div>

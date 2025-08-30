@@ -33,9 +33,9 @@ export default function Category3({ color }: { color: string }) {
   };
 
   return (
-    <nav className={`${color} text-[#7c3f00] font-medium`}>
+    <nav className={`${color} text-[#7c3f00] z-[500] font-medium`}>
       {/* Desktop (hover mega menu) */}
-      <div className="hidden lg:flex gap-6">
+      <div className="flex gap-6 z-[500]">
         {categories.map((cat) => (
           <div
             key={cat._id}
@@ -45,13 +45,13 @@ export default function Category3({ color }: { color: string }) {
           >
             <button
               onClick={() => handleSearchQuery("parentCategory", cat._id)}
-              className="hover:text-[#a0522d] pr-3"
+              className="hover:text-[#a0522d] pr-3 truncate"
             >
               {cat.name}
             </button>
 
             {hovered === cat._id && cat.children && (
-              <div className="absolute left-0 top-full pt-2 bg-white shadow-md border min-w-[220px] z-50 p-3">
+              <div className="hidden lg:absolute left-0 top-full pt-2 bg-white shadow-md border min-w-[220px] z-50 p-3">
                 {cat.children.map((child) => (
                   <div
                     key={child._id}
@@ -71,7 +71,7 @@ export default function Category3({ color }: { color: string }) {
 
                     {/* third level */}
                     {child.children && subHovered === child._id && (
-                      <div className="absolute left-full top-0 bg-white shadow-md border min-w-[200px] z-50 p-3">
+                      <div className="hidden lg:absolute left-full top-0 bg-white shadow-md border min-w-[200px] z-[200] p-3">
                         {child.children.map((gchild) => (
                           <button
                             key={gchild._id}
@@ -91,66 +91,6 @@ export default function Category3({ color }: { color: string }) {
             )}
           </div>
         ))}
-      </div>
-
-      {/* Mobile/Tablet (accordion style) */}
-      <div className="lg:hidden flex flex-col gap-2">
-        {categories.map((cat) => {
-          const isOpen = openMobile === cat._id;
-          return (
-            <div key={cat._id} className="border-b pb-2">
-              <div
-                className="flex justify-between items-center cursor-pointer"
-                onClick={() =>
-                  isOpen ? setOpenMobile(null) : setOpenMobile(cat._id)
-                }
-              >
-                <span>{cat.name}</span>
-                {cat.children && (
-                  <span className="p-1">
-                    {isOpen ? <Minus size={14} /> : <Plus size={14} />}
-                  </span>
-                )}
-              </div>
-
-              {isOpen && cat.children && (
-                <div className="ml-4 mt-2 space-y-1">
-                  {cat.children.map((child) => (
-                    <div key={child._id}>
-                      <button
-                        onClick={() =>
-                          handleSearchQuery("subCategory", child._id)
-                        }
-                        className="block w-full text-left py-1 hover:text-[#7c3f00]"
-                      >
-                        {child.name}
-                      </button>
-
-                      {child.children && (
-                        <div className="ml-4 space-y-1">
-                          {child.children.map((gchild) => (
-                            <button
-                              key={gchild._id}
-                              onClick={() =>
-                                handleSearchQuery(
-                                  "thirdSubCategory",
-                                  gchild._id
-                                )
-                              }
-                              className="block w-full text-left text-sm py-1 hover:text-[#7c3f00]"
-                            >
-                              {gchild.name}
-                            </button>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          );
-        })}
       </div>
     </nav>
   );

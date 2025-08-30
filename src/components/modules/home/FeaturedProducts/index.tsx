@@ -11,6 +11,8 @@ import { Button } from "@/components/ui/button";
 import { ShoppingCart, Star } from "lucide-react";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import Image from "next/image";
+import { useAppDispatch } from "@/Redux/hooks";
+import { addProduct } from "@/Redux/features/cartSlice";
 
 interface FeaturedProductsProps {
   ParentCategories: ICategory[];
@@ -27,6 +29,7 @@ const FeaturedProducts = ({
     null
   );
   const [defaultTab, setDefaultTab] = useState<string>("");
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (ParentCategories.length > 0) {
@@ -39,6 +42,10 @@ const FeaturedProducts = ({
     (product: IProduct) => product.parentCategory?._id === selectedCategoryId
   );
 
+  const handleAddToProduct = (product: IProduct) => {
+    dispatch(addProduct(product));
+  };
+
   return (
     <div className="container mx-auto lg:mt-16 md:mt-32 px-4 md:px-0">
       {defaultTab && (
@@ -46,7 +53,7 @@ const FeaturedProducts = ({
           {/* Tabs Header */}
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between py-6 md:py-10 gap-4 md:gap-0">
             <div className="space-y-2">
-              <h2 className="text-2xl md:text-3xl font-bold text-[#7c3f00]">
+              <h2 className="text-lg lg:text-3xl md:text-3xl font-bold text-[#7c3f00]">
                 {title}
               </h2>
               <p className="text-gray-500 text-sm md:text-base">
@@ -54,14 +61,14 @@ const FeaturedProducts = ({
               </p>
             </div>
 
-            <div className="overflow-x-auto w-full md:w-auto">
-              <TabsList className="flex gap-2 md:gap-4 items-center bg-white px-2 md:px-0 rounded-md">
+            <div className="overflow-x-auto overflow-visible scrollbar-hide w-full md:w-auto">
+              <TabsList className="flex gap-4 md:gap-4 items-center bg-white px-2 md:px-0 rounded-md">
                 {ParentCategories.slice(0, 6).map((cat) => (
                   <TabsTrigger
                     key={cat._id}
                     value={cat.name}
                     onClick={() => setSelectedCategoryId(cat._id)}
-                    className="whitespace-nowrap font-medium text-gray-600 data-[state=active]:text-[#7c3f00] data-[state=active]:border-b-2 data-[state=active]:border-[#7c3f00] data-[state=active]:font-semibold py-2 lg:px-4 md:px-6 transition"
+                    className="whitespace-nowrap font-medium text-gray-600 data-[state=active]:text-[#7c3f00] data-[state=active]:border-b-1 data-[state=active]:border-[#7c3f00] data-[state=active]:font-semibold py-2 lg:px-4 md:px-6 transition"
                   >
                     {cat.name.toUpperCase()}
                   </TabsTrigger>
@@ -150,6 +157,7 @@ const FeaturedProducts = ({
                         {/* Add To Cart */}
                         <div className="p-4 mt-auto">
                           <Button
+                            onClick={() => handleAddToProduct(product)}
                             className="w-full  rounded-md border border-[#7c3f00] text-[#7c3f00] hover:bg-[#7c3f00]/20 bg-white flex items-center justify-center gap-2 text-xs sm:text-sm md:text-base"
                             variant="outline"
                           >

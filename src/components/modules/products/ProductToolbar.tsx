@@ -38,7 +38,7 @@ export default function ProductToolbar({
   };
 
   return (
-    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-gray-50 rounded-md px-4 py-2 shadow-sm border">
+    <div className="flex items-center justify-between   bg-gray-50 rounded-md px-2 lg:px-4  py-2 shadow-sm border">
       {/* Left Side */}
       <div className="flex items-center gap-3">
         {/* List View Button */}
@@ -66,7 +66,9 @@ export default function ProductToolbar({
         </button>
 
         {/* Product Count */}
-        <p className="text-sm text-gray-700">There are {length} products.</p>
+        <p className="text-sm hidden lg:block text-gray-700">
+          There are {length} products.
+        </p>
       </div>
 
       {/* Right Side */}
@@ -76,7 +78,7 @@ export default function ProductToolbar({
           onValueChange={(val) => handleSearchQuery("sort", val)}
           defaultValue="All"
         >
-          <SelectTrigger className="w-[160px] h-8 text-sm bg-white text-gray-500">
+          <SelectTrigger className=" w-[100px] lg:w-[160px]  h-8 text-sm bg-white text-gray-500">
             <SelectValue placeholder="Sort option" />
           </SelectTrigger>
           <SelectContent className="bg-white">

@@ -3,8 +3,8 @@
 import { motion } from "framer-motion";
 import { ShoppingCart, Star, StarHalf } from "lucide-react";
 import Image from "next/image";
-import { IProduct } from "@/types/product";
 import Link from "next/link";
+import { IProduct } from "@/types/product";
 
 const cardVariants = {
   rest: { scale: 1 },
@@ -19,52 +19,69 @@ const cardVariants = {
 const renderStars = (rating: number) => {
   return Array.from({ length: 5 }, (_, i) => {
     if (rating >= i + 1) {
-      return <Star key={i} size={16} fill="#facc15" stroke="#facc15" />;
+      return (
+        <Star key={i} size={16} className="text-yellow-400 fill-yellow-400" />
+      );
     } else if (rating >= i + 0.5) {
       return <StarHalf key={i} size={16} className="text-yellow-400" />;
     } else {
-      return <Star key={i} size={16} stroke="#d1d5db" />;
+      return <Star key={i} size={16} className="text-gray-300" />;
     }
   });
 };
 
-const ProductCard = ({ product }: { product: IProduct }) => {
+const ProductCard = ({
+  product,
+  view,
+}: {
+  product: IProduct;
+  view: string;
+}) => {
   const isInStock = product.stock > 0;
 
   return (
     <motion.div
-      className="relative group overflow-hidden rounded-sm  border border-[#7c3f00]/10 bg-white shadow-sm hover:shadow-sm transition"
+      className={`relative group overflow-hidden rounded-sm border border-[#7c3f00]/10 bg-white shadow-sm hover:shadow-md transition 
+        ${view === "list" ? "flex flex-col md:flex-row w-full" : ""}`}
       variants={cardVariants}
       initial="rest"
       whileHover="hover"
-      animate="rest"
     >
       {/* Product Image */}
-      <div className="relative w-full aspect-square bg-[#f9f5f0]/40 overflow-hidden rounded-t-sm">
+      <div
+        className={`relative ${
+          view === "list"
+            ? "w-full md:w-1/3 lg:w-1/4 flex-shrink-0"
+            : "w-full h-56"
+        } aspect-square bg-[#f9f5f0]/40 overflow-hidden rounded-t-sm `}
+      >
         {/* Discount Badge */}
         {product?.offerPrice && (
           <span className="absolute top-2 left-2 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded-md shadow-md">
             {Math.round(
               ((product.price - product.offerPrice) / product.price) * 100
             )}
-            %
+            % OFF
           </span>
         )}
 
         <Image
           src={
-            product?.imageUrls[0] ||
+            product?.imageUrls?.[0] ||
             "https://psediting.websites.co.in/obaju-turquoise/img/product-placeholder.png"
           }
-          alt={product?.name || "Leather product image"}
+          alt={product?.name || "Product image"}
           height={400}
           width={400}
-          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+          className={`${
+            view === "list" ? "h-full w-full object-cover" : "w-full h-full"
+          } transition-transform duration-300 group-hover:scale-105`}
         />
 
-        {/* Top Right Action Buttons */}
+        {/* Action Buttons */}
         <div className="absolute top-2 right-2 flex gap-2 z-10">
           <button
+            type="button"
             aria-label="Add to cart"
             disabled={!isInStock}
             className="p-2 backdrop-blur border border-[#7c3f00] text-[#7c3f00] rounded-full hover:scale-110 hover:bg-[#7c3f00] hover:text-white transition disabled:opacity-40 disabled:cursor-not-allowed"
@@ -75,27 +92,38 @@ const ProductCard = ({ product }: { product: IProduct }) => {
       </div>
 
       {/* Product Info */}
-      <div className="p-4 flex flex-col gap-2 text-[#7c3f00]">
+      <div
+        className={`p-4 flex flex-col gap-2  flex-1 ${
+          view === "list" ? "justify-between" : ""
+        }`}
+      >
         {/* Product Name */}
         <h3
-          className="text-base md:text-lg font-semibold line-clamp-2"
+          className="text-base md:text-lg text-[#7c3f00] font-semibold line-clamp-2 truncate"
           title={product?.name}
         >
           {product?.name}
         </h3>
+        <h3
+          className={`text-sm lg:text-sm md:text-lg text-gray-400  line-clamp-2 ${
+            view == "list" ? "block" : "hidden"
+          }`}
+          title={product?.description}
+        >
+          {product?.description}
+        </h3>
 
         {/* Rating */}
         <div className="flex items-center gap-1">
-          {renderStars(product.averageRating)}
+          {renderStars(product.averageRating || 0)}
         </div>
 
         {/* Price & Stock */}
         <div className="flex items-center justify-between mt-1">
-          {/* Pricing */}
           <div className="flex items-center gap-2">
             {product?.offerPrice ? (
               <>
-                <span className="text-gray-800 font-bold text-sm md:text-base">
+                <span className="text-[#7c3f00] font-bold text-sm md:text-base">
                   ${product.offerPrice}
                 </span>
                 <del className="text-xs md:text-sm text-gray-400">
@@ -108,25 +136,15 @@ const ProductCard = ({ product }: { product: IProduct }) => {
               </span>
             )}
           </div>
-
-          {/* Stock */}
-          <span
-            className={`text-[10px] md:text-xs font-medium px-2.5 py-1 rounded-full ${
-              isInStock
-                ? "text-[#7c3f00] bg-[#7c3f00]/10"
-                : "text-red-600 border border-red-600"
-            }`}
-          >
-            {isInStock ? "In Stock" : "Out of Stock"}
-          </span>
         </div>
 
         {/* Details Button */}
         <Link href={`/products/${product._id}`} className="w-full">
           <button
+            type="button"
             aria-label="See product details"
             disabled={!isInStock}
-            className="w-full mt-3 text-sm text-[#7c3f00] border border-[#7c3f00] py-2 rounded-full hover:scale-[1.02] hover:bg-[#5e2f00] hover:text-white transition disabled:opacity-40 disabled:cursor-not-allowed"
+            className="w-full mt-3 text-sm text-[#7c3f00] border border-[#7c3f00] py-2 rounded-sm hover:scale-[1.02] hover:bg-[#5e2f00] hover:text-white transition disabled:opacity-40 disabled:cursor-not-allowed"
           >
             See Details
           </button>

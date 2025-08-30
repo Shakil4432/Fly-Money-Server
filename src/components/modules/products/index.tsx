@@ -33,9 +33,15 @@ const AllProducts = ({
         </div>
 
         {/* Product List/Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 ">
+        <div
+          className={`grid ${
+            view == "grid"
+              ? "grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4"
+              : "grid-cols-1 gap-4"
+          } `}
+        >
           {products?.map((product: IProduct, idx: number) => (
-            <ProductCard key={idx} product={product} />
+            <ProductCard key={idx} product={product} view={view} />
           ))}
         </div>
 
