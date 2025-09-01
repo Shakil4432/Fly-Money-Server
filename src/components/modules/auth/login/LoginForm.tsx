@@ -20,6 +20,7 @@ import { loginSchema } from "./loginValidation";
 
 import { useRouter, useSearchParams } from "next/navigation";
 import Logo from "@/assets/svgs/Logo";
+import { useUser } from "@/context/UserContext";
 
 export default function LoginForm() {
   const form = useForm({
@@ -29,6 +30,7 @@ export default function LoginForm() {
   const searchParams = useSearchParams();
   const redirect = searchParams.get("redirectPath");
   const router = useRouter();
+  const { setIsLoading } = useUser();
 
   const {
     formState: { isSubmitting },
@@ -37,6 +39,7 @@ export default function LoginForm() {
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
       const res = await loginUser(data);
+      setIsLoading(true);
       if (res?.success) {
         toast.success(res?.message);
         router.push(redirect || "/");

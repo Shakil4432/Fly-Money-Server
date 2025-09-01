@@ -1,7 +1,7 @@
 "use server";
 
+import { getValidToken } from "@/lib/verifyToken";
 import { revalidateTag } from "next/cache";
-import { cookies } from "next/headers";
 
 export const getAllUser = async (
   page?: any,
@@ -11,7 +11,8 @@ export const getAllUser = async (
   }
 ) => {
   try {
-    const token = (await cookies()).get("accessToken")?.value;
+    const token = await getValidToken();
+
     if (!token) {
       throw new Error("No access token found");
     }
@@ -60,7 +61,8 @@ export const getAllUser = async (
 
 export const getAllUserWithOrders = async (userId: string) => {
   try {
-    const token = (await cookies()).get("accessToken")?.value;
+    const token = await getValidToken();
+
     if (!token) {
       throw new Error("No access token found");
     }
@@ -89,13 +91,15 @@ export const getAllUserWithOrders = async (userId: string) => {
 };
 
 export const changeUserStatus = async (userId: string): Promise<any> => {
+  const token = await getValidToken();
+
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_API}/user/${userId}/status`,
       {
         method: "PATCH",
         headers: {
-          Authorization: (await cookies()).get("accessToken")!.value,
+          Authorization: token,
           "Content-Type": "application/json",
         },
       }
@@ -110,13 +114,15 @@ export const changeUserStatus = async (userId: string): Promise<any> => {
 export const UpdateUserProfile = async (
   ProfileData: FormData
 ): Promise<any> => {
+  const token = await getValidToken();
+
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_API}/user/update-profile`,
       {
         method: "PATCH",
         headers: {
-          Authorization: (await cookies()).get("accessToken")!.value,
+          Authorization: token,
         },
         body: ProfileData,
       }
@@ -130,7 +136,8 @@ export const UpdateUserProfile = async (
 
 export const getUserProfile = async () => {
   try {
-    const token = (await cookies()).get("accessToken")?.value;
+    const token = await getValidToken();
+
     if (!token) {
       throw new Error("No access token found");
     }

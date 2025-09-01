@@ -4,7 +4,12 @@ import { useEffect, useState } from "react";
 import { Menu, X, Plus, Minus } from "lucide-react";
 import { getAllCategories } from "@/services/Category";
 import Logo from "@/assets/svgs/Logo";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { useUser } from "@/context/UserContext";
+import { logout } from "@/services/AuthService";
+import { protectedRoutes } from "@/components/constant";
 
 type Category = {
   _id: string;
@@ -70,6 +75,9 @@ export const CategoryItem = ({
 export default function CategorySidebarForMobile() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [categories2, setCategories2] = useState<Category[]>([]);
+  const pathname = usePathname();
+  const router = useRouter();
+  const { user, setIsLoading } = useUser();
 
   useEffect(() => {
     const categoryData = async () => {
@@ -78,6 +86,14 @@ export default function CategorySidebarForMobile() {
     };
     categoryData();
   }, []);
+
+  const handleLogout = () => {
+    logout();
+    setIsLoading(true);
+    if (protectedRoutes.some((route) => pathname.match(route))) {
+      router.push("/");
+    }
+  };
 
   return (
     <div className="relative z-[100] ">
@@ -90,8 +106,8 @@ export default function CategorySidebarForMobile() {
           <div className="p-2 hidden lg:block text-[#7c3f00] shadow rounded-md">
             <Menu size={18} />
           </div>
-          <div className=" p-1  block lg:hidden text-[#7c3f00] shadow rounded-md">
-            <Menu size={20} />
+          <div className=" p-1  block lg:hidden text-[#7c3f00]  rounded-md">
+            <Menu size={22} />
           </div>
         </button>
       </div>
@@ -116,9 +132,20 @@ export default function CategorySidebarForMobile() {
           ))}
         </div>
 
-        <button className="mt-6 w-full bg-[#7c3f00] text-white py-2 rounded">
-          Login
-        </button>
+        {user ? (
+          <Button
+            onClick={handleLogout}
+            className="mt-6 w-full bg-[#7c3f00] text-white py-2 rounded hover:bg-[#7c3f00]/30"
+          >
+            Logout
+          </Button>
+        ) : (
+          <Link href={"/login"}>
+            <Button className="mt-6 w-full bg-[#7c3f00] text-white py-2 rounded hover:bg-[#7c3f00]/30">
+              Login
+            </Button>
+          </Link>
+        )}
       </div>
     </div>
   );

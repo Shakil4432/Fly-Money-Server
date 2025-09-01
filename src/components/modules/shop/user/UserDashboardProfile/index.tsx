@@ -27,7 +27,11 @@ import { toast } from "sonner";
 import { UpdateUserProfile } from "@/services/user";
 import Image from "next/image";
 
-export default function ProfileCard({ userProfile }: { userProfile: any }) {
+export default function UserDashboardProfile({
+  userProfile,
+}: {
+  userProfile: any;
+}) {
   const [editMode, setEditMode] = useState(false);
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [imagePreview, setImagePreview] = useState<string[]>([]);

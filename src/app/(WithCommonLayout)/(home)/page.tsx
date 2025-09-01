@@ -15,7 +15,7 @@ import TrendingProducts from "@/components/modules/home/TrendingProducts";
 import { getParentCategores } from "@/services/Category";
 import { getFlashSaleProducts } from "@/services/FlashSale";
 import {
-  getAllProducts,
+  getAllProductsWithoutPagination,
   getNewArrivalProducts,
   getTopRatedProduct,
   getTrendingProducts,
@@ -24,14 +24,13 @@ import { getAllReviews } from "@/services/review";
 
 const HomePage = async () => {
   const { data: ParentCategories } = await getParentCategores();
-  const { data: products } = await getAllProducts();
+  const { data: products } = await getAllProductsWithoutPagination();
   const { data: trendingProduct } = await getTrendingProducts();
 
   const { data: flashSale } = await getFlashSaleProducts();
   const { data: newArrivals } = await getNewArrivalProducts();
   const { data: TopRatingProducts } = await getTopRatedProduct();
   const { data: reviews } = await getAllReviews();
-  console.log(reviews);
 
   return (
     <div>

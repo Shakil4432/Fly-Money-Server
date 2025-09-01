@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
-import { LogOut, ShoppingCart } from "lucide-react";
+import { Heart, LogOut, ShoppingCart } from "lucide-react";
 import Link from "next/link";
 import {
   DropdownMenu,
@@ -22,6 +22,8 @@ import { Input } from "@/components/ui/input";
 import { getAllCategories } from "@/services/Category";
 import CategorySidebarWithToggle from "../modules/shop/category/Category2";
 import CategorySidebarForMobile from "../modules/shop/category/CategorySidebarForMobile";
+import { useAppSelector } from "@/Redux/hooks";
+import { orderProductsSelector } from "@/Redux/features/cartSlice";
 
 type Category = {
   name: string;
@@ -30,6 +32,7 @@ type Category = {
 };
 
 export default function Navbar() {
+  const products = useAppSelector(orderProductsSelector);
   const pathname = usePathname();
   const router = useRouter();
   const { user, setIsLoading } = useUser();
@@ -64,14 +67,14 @@ export default function Navbar() {
   };
 
   return (
-    <header className="border-b w-full  sticky top-0 z-50 bg-white">
+    <header className="border-b lg:w-full  sticky top-0 z-50 bg-white">
       <div className=" py-2 flex pr-4 lg:px-4 items-center justify-between gap-4">
         {/* Logo */}
-        <div className=" flex items-center   justify-between lg:flex flex-shrink-0 w-72 lg:w-72 md:w-44">
+        <div className=" flex items-center   justify-between lg:flex flex-shrink-0 w-[300px] lg:w-72 md:w-44">
           <div className=" block lg:hidden">
             <CategorySidebarForMobile></CategorySidebarForMobile>
           </div>
-          <div>
+          <div className="ml-10 lg:ml-auto ">
             <Logo />
           </div>
         </div>
@@ -106,14 +109,21 @@ export default function Navbar() {
             </DialogContent>
           </Dialog>
 
-          <Link href={"/cart"}>
-            <Button
-              variant="outline"
-              className="rounded-full size-8 lg:size-12 bg-white lg:border-[#7c3f00] text-[#7c3f00] hover:bg-[#7c3f00] hover:text-white flex items-center justify-center"
-            >
-              <ShoppingCart className="w-4 h-4 lg:w-8 lg:h-8" />
-            </Button>
-          </Link>
+          <div className="relative">
+            <div className=" absolute  left-1  rounded-full flex justify-center bg-white text-red-600 mx-auto items-center">
+              <span className={`${products.length === 0 ? "hidden" : "block"}`}>
+                {products.length}
+              </span>
+            </div>
+            <Link href={"/cart"}>
+              <Button
+                variant="outline"
+                className="rounded-full size-8 lg:size-12 bg-white lg:border-[#7c3f00] text-[#7c3f00] hover:bg-[#7c3f00] hover:text-white flex items-center justify-center"
+              >
+                <ShoppingCart className="w-4 h-4 lg:w-8 lg:h-8" />
+              </Button>
+            </Link>
+          </div>
 
           {user ? (
             <DropdownMenu>
@@ -149,18 +159,23 @@ export default function Navbar() {
 
         {/* Mobile toggle */}
 
-        <div className="md:hidden flex items-center justify-center gap-2">
-          <div>
+        <div className="md:hidden flex items-center justify-center ">
+          <div className="relative">
+            <div className=" absolute top-2 left-3 bg-white rounded-full flex justify-center text-xs text-red-600 mx-auto items-center">
+              <span className={`${products.length === 0 ? "hidden" : "block"}`}>
+                {products.length}
+              </span>
+            </div>
             <Link href={"/cart"}>
               <Button
                 variant="outline"
-                className="rounded-full shadow-sm size-10 bg-white border-none lg:border-[#7c3f00] text-[#7c3f00] hover:bg-[#7c3f00] hover:text-white"
+                className="rounded-full shadow-sm size-12 bg-white border-none lg:border-[#7c3f00] text-[#7c3f00] hover:bg-[#7c3f00] hover:text-white"
               >
                 <ShoppingCart className="w-4 h-4 lg:w-6 lg:h-6" />
               </Button>
             </Link>
           </div>
-          {user ? (
+          {/* {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger>
                 <Avatar className="h-8 w-8 lg:h-20 lg:w-20 md:h-16 md:w-16 ">
@@ -187,12 +202,12 @@ export default function Navbar() {
             <Link href="/login">
               <Button
                 variant="outline"
-                className="lg:px-4 !py-1 !lg:py-2 bg-[#FFFFFF]  text-[#7c3f00] rounded-sm font-medium  hover:shadow-xl transition"
+                className="px-2 lg:px-4 !py-0 !lg:py-2 ml-1 lg:ml-auto bg-[#FFFFFF]  text-[#7c3f00] rounded-sm font-medium  hover:shadow-xl transition"
               >
                 Login
               </Button>
             </Link>
-          )}
+          )} */}
         </div>
       </div>
 

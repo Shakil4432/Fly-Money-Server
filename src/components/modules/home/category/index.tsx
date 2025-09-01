@@ -37,13 +37,13 @@ const Category = () => {
 
   return (
     <section className="relative overflow-hidden   flex items-center justify-center  ">
-      <NMContainer className="relative z-10 my-16">
+      <NMContainer className="relative z-10 my-8 lg:my-16">
         <div className="overflow-hidden" ref={emblaRef}>
           <div className="flex gap-3">
             {Parent.map((category: any) => (
               <div
                 key={category.name}
-                className="relative min-w-[250px] flex-shrink-0"
+                className="relative min-w-[180px] lg:min-w-[250px] flex-shrink-0"
               >
                 <button
                   onClick={() =>
@@ -59,10 +59,10 @@ const Category = () => {
                         alt={category.name}
                         width={60}
                         height={60}
-                        className="object-contain w-16 h-16 sm:w-20 sm:h-20"
+                        className="object-contain w-12 h-12 lg:w-16 lg:h-16 "
                       />
                       <div
-                        className="text-center text-lg sm:text-base font-semibold"
+                        className="text-center text-sm lg:text-lg  font-semibold"
                         style={{ color: PRIMARY }}
                       >
                         {category.name}

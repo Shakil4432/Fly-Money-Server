@@ -5,7 +5,7 @@ export default function Logo() {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       preserveAspectRatio="xMidYMid meet"
-      className=" w-48 lg:w-full h-auto max-w-[280px]" // Tailwind utility for responsiveness
+      className="w-[200px]  lg:w-full h-auto max-w-[280px]" // Tailwind utility for responsiveness
     >
       {/* Leather Tag Icon */}
       <g transform="translate(10, 10)">
@@ -22,7 +22,7 @@ export default function Logo() {
       <text
         x="120"
         y="70"
-        fontSize="58"
+        fontSize="50"
         fontWeight="bold"
         fontFamily="Georgia, serif"
         fill="#7c3f00"

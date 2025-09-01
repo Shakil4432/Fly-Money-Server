@@ -20,7 +20,7 @@ import { Switch } from "@/components/ui/switch";
 import { changeUserStatus } from "@/services/user";
 
 const ManageUsers = ({ user, meta }: { user: UserInfo[]; meta: IMeta }) => {
-  const { totalPage } = meta;
+  const totalPage = meta?.totalPage;
   // const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

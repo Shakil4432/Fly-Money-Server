@@ -45,7 +45,7 @@ export default function Category3({ color }: { color: string }) {
           >
             <button
               onClick={() => handleSearchQuery("parentCategory", cat._id)}
-              className="hover:text-[#a0522d] pr-3 truncate"
+              className="hover:text-[#a0522d] pr-3 text-sm truncate"
             >
               {cat.name}
             </button>

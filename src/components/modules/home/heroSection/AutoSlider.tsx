@@ -21,24 +21,24 @@ export default function AutoSlider() {
               autoplay={{ delay: 3000 }}
               loop
               modules={[Navigation, Pagination, Autoplay]}
-              className="overflow-hidden rounded-2xl"
+              className="overflow-hidden rounded-sm lg:rounded-2xl"
             >
               {/* Slide 1 */}
               <SwiperSlide>
-                <div className="bg-gray-100 flex flex-col md:flex-row items-center justify-between p-6 md:p-16 h-[60vh] md:h-[50vh] lg:h-[60vh] rounded-2xl">
+                <div className="bg-gray-100 flex flex-col md:flex-row items-center justify-between p-6 md:p-16 lg:h-[60vh]    rounded-2xl">
                   <div className="text-center md:text-left mb-6 md:mb-0">
                     <p className="text-gray-600 text-sm mb-2 uppercase">
                       Exclusive Deal
                     </p>
-                    <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-2 uppercase">
+                    <h2 className="text-xl lg:text-4xl  md:text-6xl font-bold mb-2 uppercase">
                       Handcrafted Leather Bag
                     </h2>
                     <p className="text-lg text-gray-700 mb-4">
-                      <span className="text-red-500 font-bold text-2xl sm:text-3xl">
+                      <span className="text-red-500 font-bold text-xl lg:text-2xl sm:text-3xl">
                         ₹7,999
                       </span>
                     </p>
-                    <button className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-all duration-300">
+                    <button className="bg-red-500 text-white px-2 py-1 lg:px-4 lg:py-2 rounded hover:bg-red-600 transition-all duration-300">
                       Shop Now
                     </button>
                   </div>
@@ -47,27 +47,27 @@ export default function AutoSlider() {
                     alt="Leather Bag"
                     width={400}
                     height={400}
-                    className="w-full max-w-xs md:max-w-sm lg:max-w-md"
+                    className="w-full h-52 lg:h-full max-w-lg lg:max-w-md md:max-w-sm "
                   />
                 </div>
               </SwiperSlide>
 
               {/* Slide 2 */}
               <SwiperSlide>
-                <div className="bg-[#f9f5f0]/40 flex flex-col md:flex-row items-center justify-between p-6 md:p-16 h-[60vh] md:h-[50vh] lg:h-[60vh] rounded-2xl">
+                <div className="bg-[#f9f5f0]/40 flex flex-col md:flex-row items-center justify-between p-6 md:p-16  lg:h-[60vh] md:h-[50vh]  rounded-2xl">
                   <div className="text-center md:text-left mb-6 md:mb-0">
                     <p className="text-gray-600 text-sm mb-2 uppercase">
                       Best Seller
                     </p>
-                    <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-2 uppercase">
+                    <h2 className="text-xl lg:text-4xl  md:text-6xl font-bold mb-2 uppercase">
                       Premium Leather Wallet
                     </h2>
                     <p className="text-lg text-gray-700 mb-4">
-                      <span className="text-red-500 font-bold text-2xl sm:text-3xl">
+                      <span className="text-red-500 font-bold text-xl lg:text-2xl sm:text-3xl">
                         ₹999
                       </span>
                     </p>
-                    <button className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-all duration-300">
+                    <button className="bg-red-500 text-white px-2 py-1 lg:px-4 lg:py-2 rounded hover:bg-red-600 transition-all duration-300">
                       Shop Now
                     </button>
                   </div>
@@ -76,7 +76,7 @@ export default function AutoSlider() {
                     alt="Leather Wallet"
                     width={400}
                     height={400}
-                    className="w-full max-w-xs md:max-w-sm lg:max-w-md"
+                    className="w-full h-52 lg:h-full max-w-lg lg:max-w-md md:max-w-sm "
                   />
                 </div>
               </SwiperSlide>
@@ -84,7 +84,7 @@ export default function AutoSlider() {
           </div>
 
           {/* Side Deal Cards */}
-          <div className="flex flex-col gap-4 mt-4 lg:mt-0">
+          <div className="hidden lg:flex flex-col gap-4 mt-4 lg:mt-0">
             {/* Card 1 */}
             <div className="bg-blue-100/30 p-4 flex-1 flex flex-col items-center justify-center rounded-2xl h-48 md:h-[50%]">
               <p className="font-semibold text-2xl sm:text-3xl md:text-4xl text-center">
@@ -115,7 +115,7 @@ export default function AutoSlider() {
       </div>
 
       {/* Categories Section */}
-      <div className="mt-8">
+      <div className="lg:mt-8">
         <Category />
       </div>
     </div>

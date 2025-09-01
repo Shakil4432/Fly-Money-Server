@@ -31,7 +31,7 @@ import {
 } from "@/components/ui/select";
 
 import { getAllCategories } from "@/services/Category";
-import { getAllBrands } from "@/services/brand";
+
 import { updateProduct } from "@/services/products";
 import { ICategory } from "@/types/category";
 
@@ -138,10 +138,7 @@ export default function UpdateProductForm({ product }: { product: IProduct }) {
 
   useEffect(() => {
     const fetchData = async () => {
-      const [categoriesData] = await Promise.all([
-        getAllCategories(),
-        getAllBrands(),
-      ]);
+      const [categoriesData] = await Promise.all([getAllCategories()]);
       setCategories(categoriesData?.data);
     };
     fetchData();

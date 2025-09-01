@@ -4,8 +4,12 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Menu, X, Plus, Minus, ChevronDown } from "lucide-react";
 import { getAllCategories } from "@/services/Category";
 import Logo from "@/assets/svgs/Logo";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Category3 from "./Category3";
+import { Button } from "@/components/ui/button";
+import { useUser } from "@/context/UserContext";
+import { logout } from "@/services/AuthService";
+import { protectedRoutes } from "@/components/constant";
 
 type Category = {
   _id: string;
@@ -79,6 +83,9 @@ export const CategoryItem = ({
 export default function CategorySidebarWithToggle() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [categories2, setCategories2] = useState<Category[]>([]);
+  const { user, setIsLoading } = useUser();
+  const pathname = usePathname();
+  const router = useRouter();
 
   useEffect(() => {
     const categoryData = async () => {
@@ -87,6 +94,14 @@ export default function CategorySidebarWithToggle() {
     };
     categoryData();
   }, []);
+
+  const handleLogout = () => {
+    logout();
+    setIsLoading(true);
+    if (protectedRoutes.some((route) => pathname.match(route))) {
+      router.push("/");
+    }
+  };
 
   return (
     <div className="relative z-50 bg-[#f9f5f0]">
@@ -106,7 +121,7 @@ export default function CategorySidebarWithToggle() {
         </button>
 
         {/* Desktop-only horizontal nav next to it */}
-        <div className="flex flex-1 py-2 lg:ml-10 overflow-x-auto  lg:overflow-x-visible  relative z-[200] w-full md:w-auto">
+        <div className="flex flex-1 py-3 lg:ml-10 overflow-x-auto  lg:overflow-x-visible  relative z-[200] w-full md:w-auto">
           <Category3 color="bg-[#f9f5f0]" />
         </div>
       </div>
@@ -136,9 +151,18 @@ export default function CategorySidebarWithToggle() {
           ))}
         </div>
 
-        <button className="mt-6 w-full bg-[#7c3f00] text-white py-2 rounded">
-          Login
-        </button>
+        {user ? (
+          <Button
+            onClick={handleLogout}
+            className="mt-6 w-full bg-[#7c3f00] text-white py-2 rounded hover:bg-[#7c3f00]"
+          >
+            Logout
+          </Button>
+        ) : (
+          <Button className="mt-6 w-full bg-[#7c3f00] text-white py-2 rounded hover:bg-[#7c3f00]">
+            Login
+          </Button>
+        )}
       </div>
     </div>
   );
