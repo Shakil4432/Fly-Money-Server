@@ -134,7 +134,9 @@ export default function Navbar() {
                 </Avatar>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="bg-white text-black border">
-                <DropdownMenuItem>Profile</DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link href={"/profile"}>Profile</Link>{" "}
+                </DropdownMenuItem>
                 <DropdownMenuItem>
                   <Link href={`/${user.role}`}>Dashboard</Link>
                 </DropdownMenuItem>

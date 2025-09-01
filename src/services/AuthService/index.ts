@@ -168,7 +168,7 @@ export const changePassword = async (
   console.log((await cookies()).get("accessToken")!.value);
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_API}/auth/forgot-password`,
+      `${process.env.NEXT_PUBLIC_BASE_API}/auth/change-password`,
       {
         method: "POST",
         headers: {

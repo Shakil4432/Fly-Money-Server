@@ -9,16 +9,30 @@ import "swiper/css";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ShoppingCart, Star } from "lucide-react";
-import { Autoplay, Navigation, Pagination } from "swiper/modules";
+import { Autoplay, Pagination } from "swiper/modules"; // ✅ removed Navigation since you don’t want arrows
 import Image from "next/image";
 import { useAppDispatch } from "@/Redux/hooks";
 import { addProduct } from "@/Redux/features/cartSlice";
+import { motion, Variants } from "framer-motion"; // ✅ animation
 
 interface FeaturedProductsProps {
   ParentCategories: ICategory[];
   products: IProduct[];
   title?: string;
 }
+
+const cardVariants: Variants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: "easeOut" },
+  },
+  hover: {
+    scale: 1.05,
+    transition: { duration: 0.3, ease: "easeInOut" },
+  },
+};
 
 const FeaturedProducts = ({
   ParentCategories,
@@ -82,9 +96,9 @@ const FeaturedProducts = ({
             <TabsContent key={cat._id} value={cat.name}>
               {filteredProducts.length > 0 ? (
                 <Swiper
-                  modules={[Pagination, Autoplay, Navigation]}
+                  modules={[Pagination, Autoplay]}
                   spaceBetween={16}
-                  slidesPerView={2} // Default mobile view
+                  slidesPerView={2}
                   loop={true}
                   autoplay={{ delay: 3000 }}
                   pagination={{ clickable: true }}
@@ -94,13 +108,20 @@ const FeaturedProducts = ({
                     1024: { slidesPerView: 4 },
                     1280: { slidesPerView: 5 },
                   }}
-                  className="mt-4  pb-4 h-[370px]  lg:h-[510px]"
+                  className="mt-4 pb-4 h-[370px] lg:h-[510px]"
                 >
                   {filteredProducts.map((product) => (
                     <SwiperSlide key={product._id}>
-                      <div className="border  h-[320px] lg:h-[400px] relative shadow-sm bg-white flex flex-col rounded-sm">
+                      <motion.div
+                        className="border h-[320px] lg:h-[400px] relative shadow-sm bg-white flex flex-col rounded-sm"
+                        variants={cardVariants}
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true, amount: 0.2 }}
+                        whileHover="hover"
+                      >
                         {/* Image */}
-                        <div className="relative w-full h-56  aspect-square bg-[#f9f5f0]/30  overflow-hidden">
+                        <div className="relative w-full h-56 aspect-square bg-[#f9f5f0]/30 overflow-hidden">
                           <Image
                             src={
                               product?.imageUrls[0] ||
@@ -109,7 +130,7 @@ const FeaturedProducts = ({
                             alt={product?.name || "Leather product image"}
                             height={400}
                             width={400}
-                            className="w-full h-full object-cover rounded-t-sm  transition-transform duration-300 hover:scale-125"
+                            className="w-full h-full object-cover rounded-t-sm transition-transform duration-300 hover:scale-125"
                           />
                         </div>
 
@@ -121,7 +142,7 @@ const FeaturedProducts = ({
                         </Link>
 
                         {/* Rating */}
-                        <div className="flex items-center  px-4 gap-1 text-yellow-500 my-1">
+                        <div className="flex items-center px-4 gap-1 text-yellow-500 my-1">
                           {Array.from({ length: 5 }).map((_, i) => (
                             <Star
                               key={i}
@@ -135,7 +156,7 @@ const FeaturedProducts = ({
                         </div>
 
                         {/* Price + Stock */}
-                        <div className="flex flex-col px-4 sm:flex-row items-start sm:items-center justify-between gap-1 sm:gap-2 mt-1 gap-2">
+                        <div className="flex flex-col px-4 sm:flex-row items-start sm:items-center justify-between gap-1 sm:gap-2 mt-1">
                           <div className="flex items-center justify-between gap-2 w-full">
                             {product?.offerPrice ? (
                               <>
@@ -158,13 +179,13 @@ const FeaturedProducts = ({
                         <div className="p-4 mt-auto">
                           <Button
                             onClick={() => handleAddToProduct(product)}
-                            className="w-full  rounded-md border border-[#7c3f00] text-[#7c3f00] hover:bg-[#7c3f00]/20 bg-white flex items-center justify-center gap-2 text-xs sm:text-sm md:text-base"
+                            className="w-full rounded-md border border-[#7c3f00] text-[#7c3f00] hover:bg-[#7c3f00]/20 bg-white flex items-center justify-center gap-2 text-xs sm:text-sm md:text-base"
                             variant="outline"
                           >
                             <ShoppingCart className="h-4 w-4" /> Add To Cart
                           </Button>
                         </div>
-                      </div>
+                      </motion.div>
                     </SwiperSlide>
                   ))}
                 </Swiper>
