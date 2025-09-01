@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { User, LogOut, LayoutDashboard, LogIn } from "lucide-react";
+import { User, LogOut, LayoutDashboard, LogIn, Edit2 } from "lucide-react";
 import { useUser } from "@/context/UserContext";
 import Link from "next/link";
 import ProfileCard from "../settings/profile";
@@ -9,6 +9,14 @@ import { Button } from "@/components/ui/button";
 import { logout } from "@/services/AuthService";
 import { protectedRoutes } from "@/components/constant";
 import { usePathname, useRouter } from "next/navigation";
+import ChangePassword from "./ChangePassword";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 const ProfileDashboard = ({ userProfile }: { userProfile: any }) => {
   const [active, setActive] = useState("profile");
@@ -46,6 +54,27 @@ const ProfileDashboard = ({ userProfile }: { userProfile: any }) => {
           >
             <LayoutDashboard size={18} /> Dashboard
           </Link>
+
+          {/* Change Password with Dialog */}
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button className="flex items-center justify-start w-full gap-2 px-3 py-2 rounded-md bg-[#FFFFFF] text-gray-600 hover:bg-gray-100 shadow-sm">
+                <Edit2 size={18} /> Change Password
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="max-w-[500px] max-h-[500px] flex items-center justify-center">
+              <div className="w-full">
+                <DialogHeader>
+                  <DialogTitle className="text-center">
+                    Change Password
+                  </DialogTitle>
+                </DialogHeader>
+                <div className="flex items-center justify-center mt-4">
+                  <ChangePassword />
+                </div>
+              </div>
+            </DialogContent>
+          </Dialog>
 
           {user ? (
             <Button

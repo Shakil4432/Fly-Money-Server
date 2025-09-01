@@ -58,13 +58,13 @@ export default function LoginForm() {
         backgroundImage: "url('/Embossed Shield on Dark Leather.png')", // Make sure this path is correct
       }}
     >
-      <div className="bg-black/70 backdrop-blur-sm rounded-xl p-6 w-full max-w-md shadow-lg">
+      <div className="bg-[#7c3f00]/10 text-gray-500 backdrop-blur-sm rounded-xl p-6 w-full max-w-md shadow-lg">
         <div>
           <div className="flex items-center justify-center">
             <Logo />
           </div>
           <div className="flex  px-6 items-center justify-center  gap-4">
-            <h1 className="text-3xl font-semibold text-white">Login Here</h1>
+            <h1 className="text-3xl font-semibold text-gray-600">Login Here</h1>
           </div>
         </div>
 
@@ -75,13 +75,13 @@ export default function LoginForm() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-white">Email</FormLabel>
+                  <FormLabel className="text-gray-600">Email</FormLabel>
                   <FormControl>
                     <Input
                       type="email"
                       {...field}
                       value={field.value || ""}
-                      className="bg-[#222222] text-white"
+                      className=" text-gray-600"
                     />
                   </FormControl>
                   <FormMessage />
@@ -94,13 +94,13 @@ export default function LoginForm() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-white">Password</FormLabel>
+                  <FormLabel className="text-gray-600">Password</FormLabel>
                   <FormControl>
                     <Input
                       type="password"
                       {...field}
                       value={field.value || ""}
-                      className="bg-[#222222] text-white"
+                      className=" text-gray-600"
                     />
                   </FormControl>
                   <FormMessage />
@@ -110,16 +110,22 @@ export default function LoginForm() {
 
             <Button
               type="submit"
-              className="w-full bg-yellow-500 hover:bg-yellow-600"
+              className="w-full bg-[#7c3f00] hover:bg-[#7c3f00]/80"
             >
               {isSubmitting ? "Logging in..." : "Login"}
             </Button>
           </form>
         </Form>
+        <p
+          className="text-sm text-right text-[#7c3f00] cursor-pointer hover:underline mt-2"
+          onClick={() => router.push("/forgot-password")}
+        >
+          Forgot Password?
+        </p>
 
-        <p className="text-sm text-center text-white mt-4">
+        <p className="text-sm text-center text-gray-600 mt-4">
           Don’t have an account?{" "}
-          <Link href="/register" className="text-yellow-400 hover:underline">
+          <Link href="/register" className="text-[#7c3f00] hover:underline">
             Register
           </Link>
         </p>

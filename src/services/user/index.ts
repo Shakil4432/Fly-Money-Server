@@ -1,7 +1,7 @@
 "use server";
 
-import { getValidToken } from "@/lib/verifyToken";
 import { revalidateTag } from "next/cache";
+import { cookies } from "next/headers";
 
 export const getAllUser = async (
   page?: any,
@@ -11,7 +11,7 @@ export const getAllUser = async (
   }
 ) => {
   try {
-    const token = await getValidToken();
+    const token = (await cookies()).get("accessToken")!.value;
 
     if (!token) {
       throw new Error("No access token found");
@@ -61,7 +61,7 @@ export const getAllUser = async (
 
 export const getAllUserWithOrders = async (userId: string) => {
   try {
-    const token = await getValidToken();
+    const token = (await cookies()).get("accessToken")!.value;
 
     if (!token) {
       throw new Error("No access token found");
@@ -91,7 +91,7 @@ export const getAllUserWithOrders = async (userId: string) => {
 };
 
 export const changeUserStatus = async (userId: string): Promise<any> => {
-  const token = await getValidToken();
+  const token = (await cookies()).get("accessToken")!.value;
 
   try {
     const res = await fetch(
@@ -114,7 +114,7 @@ export const changeUserStatus = async (userId: string): Promise<any> => {
 export const UpdateUserProfile = async (
   ProfileData: FormData
 ): Promise<any> => {
-  const token = await getValidToken();
+  const token = (await cookies()).get("accessToken")!.value;
 
   try {
     const res = await fetch(
@@ -136,7 +136,7 @@ export const UpdateUserProfile = async (
 
 export const getUserProfile = async () => {
   try {
-    const token = await getValidToken();
+    const token = (await cookies()).get("accessToken")!.value;
 
     if (!token) {
       throw new Error("No access token found");

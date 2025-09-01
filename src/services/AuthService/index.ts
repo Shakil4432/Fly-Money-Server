@@ -102,3 +102,85 @@ export const getNewToken = async () => {
     return Error(error);
   }
 };
+
+// --- Forgot Password ---
+export const forgotPassword = async (email: string) => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_API}/auth/forgot-password`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      }
+    );
+
+    return res.json();
+  } catch (error: any) {
+    return Error(error);
+  }
+};
+
+export const verifyOtp = async (email: string, otp: string) => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_API}/auth/verify-otp`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, otp }),
+      }
+    );
+
+    return res.json(); // should return resetToken
+  } catch (error: any) {
+    return Error(error);
+  }
+};
+
+export const resetPassword = async (token: string, newPassword: string) => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_API}/auth/reset-password`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ token, newPassword }),
+      }
+    );
+
+    return res.json();
+  } catch (error: any) {
+    return Error(error);
+  }
+};
+
+export const changePassword = async (
+  oldPassword: string,
+  newPassword: string
+) => {
+  console.log((await cookies()).get("accessToken")!.value);
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_API}/auth/forgot-password`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: (await cookies()).get("accessToken")!.value,
+        },
+        body: JSON.stringify({ oldPassword, newPassword }),
+      }
+    );
+
+    return res.json();
+  } catch (error: any) {
+    return Error(error);
+  }
+};

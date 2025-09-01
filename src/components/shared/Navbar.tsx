@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
-import { Heart, LogOut, ShoppingCart } from "lucide-react";
+import { LogOut, ShoppingCart } from "lucide-react";
 import Link from "next/link";
 import {
   DropdownMenu,

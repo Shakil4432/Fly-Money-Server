@@ -1,16 +1,15 @@
 "use server";
-import { getValidToken } from "@/lib/verifyToken";
+
 import { revalidateTag } from "next/cache";
+import { cookies } from "next/headers";
 
 // add Flash Sale
 export const addFlashSale = async (productData: any): Promise<any> => {
-  const token = await getValidToken();
-
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/flash-sale`, {
       method: "POST",
       headers: {
-        Authorization: token,
+        Authorization: (await cookies()).get("accessToken")!.value,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(productData),
