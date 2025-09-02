@@ -75,7 +75,9 @@ export default function Navbar() {
             <CategorySidebarForMobile></CategorySidebarForMobile>
           </div>
           <div className="ml-10 lg:ml-auto ">
-            <Logo />
+            <Link href={"/"}>
+              <Logo />
+            </Link>
           </div>
         </div>
 
