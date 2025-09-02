@@ -85,7 +85,7 @@ const TrendingProducts = ({
         >
           {trendingProduct.map((product) => (
             <SwiperSlide key={product.productId}>
-              <div className="border h-[310px] lg:h-[400px] shadow-sm bg-white  flex flex-col ">
+              <div className="border h-[310px] lg:h-[400px] rounded-sm shadow-sm bg-white  flex flex-col ">
                 {/* Product Image */}
                 <div className="relative w-full h-56  aspect-square bg-[#f9f5f0]/30  overflow-hidden">
                   <Image

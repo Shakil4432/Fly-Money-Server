@@ -4,17 +4,15 @@ import { Dispatch, useEffect, useState } from "react";
 import { Slider } from "@/components/ui/slider";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { Star, Menu, X, Loader2, Cross } from "lucide-react";
+import { Star, X, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { getAllCategories } from "@/services/Category";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 export default function FilterSidebarForMobile({
-  sidebarOpen,
   setSidebarOpen,
 }: {
-  sidebarOpen: boolean;
   setSidebarOpen: Dispatch<React.SetStateAction<boolean>>;
 }) {
   const [price, setPrice] = useState([0]);

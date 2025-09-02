@@ -6,7 +6,7 @@ import React, { useState } from "react";
 import FilterSidebar from "./filterSidebar";
 import TablePagination from "@/components/ui/core/NMTable/TablePagination";
 import ProductToolbar from "./ProductToolbar";
-import { Menu, X } from "lucide-react";
+import { Menu } from "lucide-react";
 import FilterSidebarForMobile from "./FilterSIdebarForMobile";
 
 const AllProducts = ({
@@ -50,10 +50,7 @@ const AllProducts = ({
               sidebarOpen ? "translate-x-0" : "-translate-x-full"
             }`}
           >
-            <FilterSidebarForMobile
-              setSidebarOpen={setSidebarOpen}
-              sidebarOpen={sidebarOpen}
-            />
+            <FilterSidebarForMobile setSidebarOpen={setSidebarOpen} />
           </div>
         )}
 

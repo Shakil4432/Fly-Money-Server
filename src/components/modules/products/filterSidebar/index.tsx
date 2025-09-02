@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Slider } from "@/components/ui/slider";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { Star, Menu, X, Loader2 } from "lucide-react";
+import { Star, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { getAllCategories } from "@/services/Category";
