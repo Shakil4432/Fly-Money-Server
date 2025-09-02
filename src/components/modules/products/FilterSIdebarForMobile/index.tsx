@@ -1,16 +1,22 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Dispatch, useEffect, useState } from "react";
 import { Slider } from "@/components/ui/slider";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { Star, Menu, X, Loader2 } from "lucide-react";
+import { Star, Menu, X, Loader2, Cross } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { getAllCategories } from "@/services/Category";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-export default function FilterSidebar() {
+export default function FilterSidebarForMobile({
+  sidebarOpen,
+  setSidebarOpen,
+}: {
+  sidebarOpen: boolean;
+  setSidebarOpen: Dispatch<React.SetStateAction<boolean>>;
+}) {
   const [price, setPrice] = useState([0]);
   const [isLoading, setIsLoading] = useState(false);
   const [categories, setCategories] = useState([]);
@@ -53,24 +59,30 @@ export default function FilterSidebar() {
       {/* Sidebar */}
       <aside
         className={`
-          fixed top-0 left-0 h-full w-72 bg-white p-6 
+          fixed top-0 left-0 h-full w-72 bg-white p-6 overflow-y-auto
           shadow-2xl transition-transform duration-300 ease-in-out z-40
-          lg:static lg:translate-x-0 lg:shadow-none lg:h-auto
+          lg:hidden lg:translate-x-0 lg:shadow-none lg:h-auto
         `}
       >
         {/* Header */}
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold text-[#7c3f00]">Filters</h2>
-          {searchParams.toString().length > 0 && (
-            <Button
-              onClick={clearFilters}
-              size="sm"
-              variant="outline"
-              className="text-[#7c3f00] border-[#7c3f00] hover:bg-[#7c3f00]/10"
-            >
-              Clear
-            </Button>
-          )}
+          <div className=" flex items-center justify-between w-full ">
+            <h2 className="text-2xl font-bold text-[#7c3f00]">Filters</h2>
+            {searchParams.toString().length > 0 && (
+              <Button
+                onClick={clearFilters}
+                size="sm"
+                variant="outline"
+                className="text-[#7c3f00] border-[#7c3f00] hover:bg-[#7c3f00]/10"
+              >
+                Clear
+              </Button>
+            )}
+            <X
+              onClick={() => setSidebarOpen(false)}
+              className="text-[#7c3f00]"
+            ></X>
+          </div>
         </div>
 
         {/* Price Filter */}

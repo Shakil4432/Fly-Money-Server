@@ -11,9 +11,19 @@ import { IProduct } from "@/types/product";
 import { ShoppingCart, Star } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useAppDispatch } from "@/Redux/hooks";
+import { addProduct } from "@/Redux/features/cartSlice";
+import { toast } from "sonner";
 
 const NewArrivalSlider = ({ newArrivals }: { newArrivals: IProduct[] }) => {
   const router = useRouter();
+
+  const dispatch = useAppDispatch();
+
+  const handleAddToProduct = (product: IProduct) => {
+    dispatch(addProduct(product));
+    toast.success(`${product.name} add to cart`);
+  };
   const handleSearchQuery = (query: string, value: string | number) => {
     const params = new URLSearchParams();
     params.set(query, value.toString());
@@ -119,6 +129,7 @@ const NewArrivalSlider = ({ newArrivals }: { newArrivals: IProduct[] }) => {
 
                 {/* Add to Cart */}
                 <Button
+                  onClick={() => handleAddToProduct(product)}
                   variant="outline"
                   className="mt-3 w-full bg-white flex items-center justify-center gap-2 border-[#7c3f00]/30 text-[#7c3f00] hover:bg-[#7c3f00]/20"
                 >

@@ -163,7 +163,7 @@ export default function Navbar() {
 
         <div className="md:hidden flex items-center justify-center ">
           <div className="relative">
-            <div className=" absolute top-2 left-3 bg-white rounded-full flex justify-center text-xs text-red-600 mx-auto items-center">
+            <div className=" absolute  bg-opacity-0  top-2 left-3 bg-white rounded-full flex justify-center text-xs text-red-600 mx-auto items-center">
               <span className={`${products.length === 0 ? "hidden" : "block"}`}>
                 {products.length}
               </span>
@@ -171,7 +171,7 @@ export default function Navbar() {
             <Link href={"/cart"}>
               <Button
                 variant="outline"
-                className="rounded-full shadow-sm size-12 bg-white border-none lg:border-[#7c3f00] text-[#7c3f00] hover:bg-[#7c3f00] hover:text-white"
+                className="rounded-full shadow-sm size-12 bg-white border-none lg:border-[#7c3f00] text-[#7c3f00] hover:text-[#7c3f00]/70 "
               >
                 <ShoppingCart className="w-4 h-4 lg:w-6 lg:h-6" />
               </Button>

@@ -50,7 +50,7 @@ export default function CountDown() {
       {(["H", "M", "S"] as const).map((unit) => (
         <div
           key={unit}
-          className={`flex flex-col items-center px-3 lg:px-6 py-1 rounded-full w-24 lg:w-32 ${
+          className={`flex flex-col items-center px-3 lg:px-6 py-1 rounded-full w-20 lg:w-32 ${
             unit === "H"
               ? "border border-red-500 text-red-500 sm:text-sm"
               : "bg-[#FAF0E6] border border-[#7c3f00] text-[#7c3f00] sm:text-sm"

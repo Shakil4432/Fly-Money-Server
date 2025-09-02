@@ -43,7 +43,7 @@ const Category = () => {
             {Parent.map((category: any) => (
               <div
                 key={category.name}
-                className="relative min-w-[180px] lg:min-w-[250px] flex-shrink-0"
+                className="relative min-w-[100px] lg:min-w-[250px] flex-shrink-0"
               >
                 <button
                   onClick={() =>
@@ -52,20 +52,20 @@ const Category = () => {
                   className="w-full focus:outline-none"
                   aria-expanded={openCategory === category.name}
                 >
-                  <Card className="h-44 md:h-48 flex flex-col bg-[#FFFFFF] items-center rounded-none hover:shadow-2xl  justify-center  border transition duration-300 ease-in-out">
+                  <Card className="h-24 md:h-48 flex flex-col bg-[#FFFFFF] items-center rounded-none hover:shadow-2xl  justify-center  border transition duration-300 ease-in-out">
                     <CardContent className="flex flex-col items-center justify-center space-y-3 p-4 ">
                       <Image
                         src={category.icon}
                         alt={category.name}
                         width={60}
                         height={60}
-                        className="object-contain w-12 h-12 lg:w-16 lg:h-16 "
+                        className="object-contain w-6 h-6 lg:w-16 lg:h-16 "
                       />
                       <div
-                        className="text-center text-sm lg:text-lg  font-semibold"
+                        className="text-center text-xs lg:text-lg  font-semibold "
                         style={{ color: PRIMARY }}
                       >
-                        {category.name}
+                        <span className="truncate">{category.name}</span>
                       </div>
                     </CardContent>
                   </Card>

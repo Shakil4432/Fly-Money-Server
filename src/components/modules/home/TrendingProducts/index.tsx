@@ -7,6 +7,9 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import Image from "next/image";
+import { useAppDispatch } from "@/Redux/hooks";
+import { addProduct } from "@/Redux/features/cartSlice";
+import { toast } from "sonner";
 
 interface IProduct {
   orderCount: number;
@@ -25,6 +28,12 @@ const TrendingProducts = ({
   trendingProduct,
   title = "Best Selling ",
 }: TrendingProductsProps) => {
+  const dispatch = useAppDispatch();
+
+  const handleAddToProduct = (product: IProduct) => {
+    dispatch(addProduct(product));
+    toast.success(`${product.name} add to cart`);
+  };
   return (
     <div className="container mx-auto lg:mt-16 md:mt-32 px-4 md:px-0 ">
       <div className="flex  items-start justify-between py-6 md:py-10 gap-4 md:gap-0">
@@ -125,6 +134,7 @@ const TrendingProducts = ({
                 {/* Button */}
                 <div className="p-4 mt-auto">
                   <Button
+                    onClick={() => handleAddToProduct(product)}
                     className="w-full  rounded-sm border border-[#7c3f00] text-[#7c3f00] hover:bg-[#7c3f00]/20 bg-white flex items-center justify-center gap-2 text-xs sm:text-sm md:text-base"
                     variant="outline"
                   >

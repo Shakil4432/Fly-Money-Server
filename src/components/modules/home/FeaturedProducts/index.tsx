@@ -75,14 +75,17 @@ const FeaturedProducts = ({
               </p>
             </div>
 
-            <div className="overflow-x-auto overflow-visible scrollbar-hide w-full md:w-auto">
-              <TabsList className="flex gap-4 md:gap-4 items-center bg-white px-2 md:px-0 rounded-md">
+            <div className="w-full md:w-auto">
+              <TabsList className="flex items-center justify-start gap-6 bg-white border-gray-200 overflow-x-auto md:overflow-visible scrollbar-hide">
                 {ParentCategories.slice(0, 6).map((cat) => (
                   <TabsTrigger
                     key={cat._id}
                     value={cat.name}
                     onClick={() => setSelectedCategoryId(cat._id)}
-                    className="whitespace-nowrap font-medium text-gray-600 data-[state=active]:text-[#7c3f00] data-[state=active]:border-b-1 data-[state=active]:border-[#7c3f00] data-[state=active]:font-semibold py-2 lg:px-4 md:px-6 transition"
+                    className="whitespace-nowrap text-xs lg:text-sm font-medium text-gray-600 
+                      data-[state=active]:text-[#7c3f00] data-[state=active]:border-b-1
+                      data-[state=active]:border-[#7c3f00] data-[state=active]:font-semibold 
+                     py-1 px-2 lg:py-2 lg:px-3 transition"
                   >
                     {cat.name.toUpperCase()}
                   </TabsTrigger>

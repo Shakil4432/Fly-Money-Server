@@ -13,6 +13,9 @@ import { ShoppingCart, Star } from "lucide-react";
 import CountDown from "./CountDown";
 import Image from "next/image";
 import { motion, Variants } from "framer-motion";
+import { useAppDispatch } from "@/Redux/hooks";
+import { addProduct } from "@/Redux/features/cartSlice";
+import { toast } from "sonner";
 
 interface FeaturedProductsProps {
   ParentCategories: ICategory[];
@@ -60,13 +63,20 @@ const FlashSale = ({
     exit: { opacity: 0, y: -20, transition: { duration: 0.2 } },
   };
 
+  const dispatch = useAppDispatch();
+
+  const handleAddToProduct = (product: IProduct) => {
+    dispatch(addProduct(product));
+    toast.success(`${product.name} add to cart`);
+  };
+
   return (
     <div className="container mx-auto lg:mt-16 md:mt-32 px-4 md:px-0">
       {defaultTab && (
         <Tabs defaultValue={defaultTab} className="w-full">
           {/* Header */}
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between py-6 md:py-10 gap-4 md:gap-0">
-            <div className="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-10 lg:w-full ">
+            <div className="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-10 w-full ">
               <h2 className="text-lg lg:w-[26%]  lg:text-3xl md:text-3xl font-bold text-[#7c3f00]">
                 {title}
               </h2>
@@ -79,10 +89,10 @@ const FlashSale = ({
                 <TabsTrigger
                   value="all"
                   onClick={() => setSelectedCategoryId("all")}
-                  className="whitespace-nowrap font-medium text-gray-600 
+                  className="whitespace-nowrap text-xs lg:text-sm font-medium text-gray-600 
                     data-[state=active]:text-[#7c3f00] data-[state=active]:border-b-1
                     data-[state=active]:border-[#7c3f00] data-[state=active]:font-semibold 
-                    py-2 px-3 transition"
+                    py-1 px-2 lg:py-2 lg:px-3 transition"
                 >
                   ALL
                 </TabsTrigger>
@@ -92,10 +102,10 @@ const FlashSale = ({
                     key={cat._id}
                     value={cat.name}
                     onClick={() => setSelectedCategoryId(cat._id)}
-                    className="whitespace-nowrap font-medium text-gray-600 
+                    className="whitespace-nowrap text-xs lg:text-sm font-medium text-gray-600 
                       data-[state=active]:text-[#7c3f00] data-[state=active]:border-b-1
                       data-[state=active]:border-[#7c3f00] data-[state=active]:font-semibold 
-                      py-2 px-3 transition"
+                     py-1 px-2 lg:py-2 lg:px-3 transition"
                   >
                     {cat.name.toUpperCase()}
                   </TabsTrigger>
@@ -200,6 +210,7 @@ const FlashSale = ({
                         {/* Add To Cart */}
                         <div className="p-4 mt-auto">
                           <Button
+                            onClick={() => handleAddToProduct(product)}
                             className="w-full rounded-md border border-[#7c3f00] text-[#7c3f00] hover:bg-[#7c3f00]/20 bg-white flex items-center justify-center gap-2 text-xs sm:text-sm md:text-base"
                             variant="outline"
                           >
@@ -313,6 +324,7 @@ const FlashSale = ({
                           {/* Add To Cart */}
                           <div className="p-4 mt-auto">
                             <Button
+                              onClick={() => handleAddToProduct(product)}
                               className="w-full rounded-md border border-[#7c3f00] text-[#7c3f00] hover:bg-[#7c3f00]/20 bg-white flex items-center justify-center gap-2 text-xs sm:text-sm md:text-base"
                               variant="outline"
                             >
