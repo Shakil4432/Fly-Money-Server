@@ -255,7 +255,9 @@ export default function AddProductsForm() {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="flex justify-between items-center border-t border-b py-3 my-5">
-            <p className="text-primary font-bold text-xl">Basic Information</p>
+            <p className="text-[#7c3f00] font-bold text-xl">
+              Basic Information
+            </p>
           </div>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
             <FormField
@@ -492,7 +494,7 @@ export default function AddProductsForm() {
 
           <div>
             <div className="flex justify-between items-center border-t border-b py-3 my-5">
-              <p className="text-primary font-bold text-xl">Images</p>
+              <p className="text-[#7c3f00] font-bold text-xl">Images</p>
             </div>
             <div className="flex gap-4 ">
               <NMImageUploader
@@ -512,14 +514,16 @@ export default function AddProductsForm() {
 
           <div>
             <div className="flex justify-between items-center border-t border-b py-3 my-5">
-              <p className="text-primary font-bold text-xl">Available Colors</p>
+              <p className="text-[#7c3f00] font-bold text-xl">
+                Available Colors
+              </p>
               <Button
                 variant="outline"
                 className="size-10"
                 onClick={addColor}
                 type="button"
               >
-                <Plus className="text-primary" />
+                <Plus className="text-[#7c3f00]" />
               </Button>
             </div>
 
@@ -546,14 +550,14 @@ export default function AddProductsForm() {
 
           <div>
             <div className="flex justify-between items-center border-t border-b py-3 my-5">
-              <p className="text-primary font-bold text-xl">Key Features</p>
+              <p className="text-[#7c3f00] font-bold text-xl">Key Features</p>
               <Button
                 onClick={addFeatures}
                 variant="outline"
                 className="size-10"
                 type="button"
               >
-                <Plus className="text-primary" />
+                <Plus className="text-[#7c3f00]" />
               </Button>
             </div>
 
@@ -580,14 +584,14 @@ export default function AddProductsForm() {
 
           <div>
             <div className="flex justify-between items-center border-t border-b py-3 my-5">
-              <p className="text-primary font-bold text-xl">Specification</p>
+              <p className="text-[#7c3f00] font-bold text-xl">Specification</p>
               <Button
                 onClick={addSpec}
                 variant="outline"
                 className="size-10"
                 type="button"
               >
-                <Plus className="text-primary" />
+                <Plus className="text-[#7c3f00]" />
               </Button>
             </div>
 
@@ -626,7 +630,11 @@ export default function AddProductsForm() {
             ))}
           </div>
 
-          <Button type="submit" className="mt-5 w-full" disabled={isSubmitting}>
+          <Button
+            type="submit"
+            className="mt-5 w-full bg-[#7c3f00] hover:bg-[#7c3f00]/80"
+            disabled={isSubmitting}
+          >
             {isSubmitting ? "Adding Product....." : "Add Product"}
           </Button>
         </form>

@@ -88,8 +88,8 @@ const ManageCategories = ({ categories }: { categories: ICategory[] }) => {
   ];
   return (
     <div>
-      <div className="flex items-center font-bold text-2xl justify-between p-6 text-[#7c3f00]">
-        <h1>Manage Categories</h1>
+      <div className=" grid grid-cols-1 lg:flex items-center font-bold text-xl lg:text-2xl justify-between p-6 text-[#7c3f00]">
+        <h1 className="mb-3 lg:mb-auto">Manage Categories</h1>
         <CreateCategoryModal></CreateCategoryModal>
       </div>
       <div className="p-6">

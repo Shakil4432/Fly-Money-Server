@@ -1,7 +1,7 @@
 import ProfileCard from "@/components/modules/shop/settings/profile";
 import { getUserProfile } from "@/services/user";
 
-const AdminProfilePage = async () => {
+const UserProfilePage = async () => {
   const { data } = await getUserProfile();
 
   return (
@@ -11,4 +11,4 @@ const AdminProfilePage = async () => {
   );
 };
 
-export default AdminProfilePage;
+export default UserProfilePage;

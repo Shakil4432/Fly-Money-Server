@@ -138,8 +138,10 @@ const ManageUsers = ({ user, meta }: { user: UserInfo[]; meta: IMeta }) => {
 
   return (
     <div>
-      <div className="flex items-center justify-between py-3">
-        <h1 className="text-2xl font-bold text-[#7c3f00] mb-4">Manage Users</h1>
+      <h1 className="text-2xl text-center font-bold text-[#7c3f00] mb-4">
+        Manage Users
+      </h1>
+      <div className="grid grid-cols-1 lg:flex items-center justify-between py-3">
         <div className="flex items-center gap-2">
           {/* Search Field */}
           <div className="flex items-center border rounded-md px-2 w-full">

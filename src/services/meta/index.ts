@@ -1,12 +1,14 @@
 "use server";
 
+import { getValidToken } from "@/lib/verifyToken";
 import { cookies } from "next/headers";
 
 export const getMetaData = async () => {
+  const token = await getValidToken();
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/meta`, {
       headers: {
-        Authorization: (await cookies()).get("accessToken")!.value,
+        Authorization: token,
       },
 
       next: {

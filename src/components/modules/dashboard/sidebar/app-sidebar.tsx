@@ -60,6 +60,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               ],
             },
             {
+              title: "Banner",
+              url: "/user/shop/all-products",
+              icon: Bot,
+              items: [{ title: "Manage Banner", url: "/user/banner" }],
+            },
+            {
               title: "Settings",
               url: "/user/profile/settings",
               icon: Settings2,

@@ -46,7 +46,7 @@ export default function AutoSlider() {
                 <motion.div
                   initial="hidden"
                   animate="visible"
-                  className="bg-red-50 flex flex-col md:flex-row items-center justify-between p-6 md:p-16 lg:h-[60vh] rounded-2xl"
+                  className="bg-red-50 flex flex-col md:flex-row items-center justify-between p-6 md:p-16 lg:h-[70vh] rounded-2xl"
                 >
                   <motion.div
                     variants={textVariant}
@@ -88,7 +88,7 @@ export default function AutoSlider() {
                 <motion.div
                   initial="hidden"
                   animate="visible"
-                  className="bg-[#f9f5f0] flex flex-col md:flex-row items-center justify-between p-6 md:p-16 lg:h-[60vh] md:h-[50vh] rounded-2xl"
+                  className="bg-[#f9f5f0] flex flex-col md:flex-row items-center justify-between p-6 md:p-16 lg:h-[70vh] md:h-[50vh] rounded-2xl"
                 >
                   <motion.div
                     variants={textVariant}

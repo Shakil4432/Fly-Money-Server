@@ -216,7 +216,9 @@ export default function UpdateProductForm({ product }: { product: IProduct }) {
         <form onSubmit={form.handleSubmit(onSubmit)}>
           {/* Basic Info */}
           <div className="flex justify-between items-center border-t border-b py-3 my-5">
-            <p className="text-primary font-bold text-xl">Basic Information</p>
+            <p className="text-[#7c3f00] font-bold text-xl">
+              Basic Information
+            </p>
           </div>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
             <FormField
@@ -377,7 +379,7 @@ export default function UpdateProductForm({ product }: { product: IProduct }) {
 
           {/* Images */}
           <div className="flex justify-between items-center border-t border-b py-3 my-5">
-            <p className="text-primary font-bold text-xl">Images</p>
+            <p className="text-[#7c3f00] font-bold text-xl">Images</p>
           </div>
           <div className="flex gap-4 ">
             <NMImageUploader
@@ -394,14 +396,14 @@ export default function UpdateProductForm({ product }: { product: IProduct }) {
 
           {/* Colors */}
           <div className="flex justify-between items-center border-t border-b py-3 my-5">
-            <p className="text-primary font-bold text-xl">Available Colors</p>
+            <p className="text-[#7c3f00] font-bold text-xl">Available Colors</p>
             <Button
               type="button"
               variant="outline"
               className="size-10"
               onClick={() => appendColor({ value: "" })}
             >
-              <Plus className="text-primary" />
+              <Plus className="text-[#7c3f00]" />
             </Button>
           </div>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -424,14 +426,14 @@ export default function UpdateProductForm({ product }: { product: IProduct }) {
 
           {/* Key Features */}
           <div className="flex justify-between items-center border-t border-b py-3 my-5">
-            <p className="text-primary font-bold text-xl">Key Features</p>
+            <p className="text-[#7c3f00] font-bold text-xl">Key Features</p>
             <Button
               type="button"
               variant="outline"
               className="size-10"
               onClick={() => appendFeatures({ value: "" })}
             >
-              <Plus className="text-primary" />
+              <Plus className="text-[#7c3f00]" />
             </Button>
           </div>
           {featureFields.map((fieldItem, index) => (
@@ -452,14 +454,14 @@ export default function UpdateProductForm({ product }: { product: IProduct }) {
 
           {/* Specification */}
           <div className="flex justify-between items-center border-t border-b py-3 my-5">
-            <p className="text-primary font-bold text-xl">Specification</p>
+            <p className="text-[#7c3f00] font-bold text-xl">Specification</p>
             <Button
               type="button"
               variant="outline"
               className="size-10"
               onClick={() => appendSpec({ key: "", value: "" })}
             >
-              <Plus className="text-primary" />
+              <Plus className="text-[#7c3f00]" />
             </Button>
           </div>
           {specFields.map((fieldItem, index) => (
@@ -494,7 +496,11 @@ export default function UpdateProductForm({ product }: { product: IProduct }) {
             </div>
           ))}
 
-          <Button type="submit" className="mt-5 w-full" disabled={isSubmitting}>
+          <Button
+            type="submit"
+            className="mt-5 w-full bg-[#7c3f00] hover:bg-[#7c3f00]/80"
+            disabled={isSubmitting}
+          >
             {isSubmitting ? "Updating Product..." : "Update Product"}
           </Button>
         </form>

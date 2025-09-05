@@ -1,5 +1,6 @@
 "use server";
 
+import { getValidToken } from "@/lib/verifyToken";
 import { revalidateTag } from "next/cache";
 import { cookies } from "next/headers";
 
@@ -128,11 +129,12 @@ export const getTrendingProducts = async () => {
   }
 };
 export const addProduct = async (productData: FormData): Promise<any> => {
+  const token = await getValidToken();
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/product`, {
       method: "POST",
       headers: {
-        Authorization: (await cookies()).get("accessToken")!.value,
+        Authorization: token,
       },
       body: productData,
     });
@@ -147,13 +149,14 @@ export const updateProduct = async (
   productData: FormData,
   productId: string
 ): Promise<any> => {
+  const token = await getValidToken();
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_API}/product/${productId}`,
       {
         method: "PATCH",
         headers: {
-          Authorization: (await cookies()).get("accessToken")!.value,
+          Authorization: token,
         },
         body: productData,
       }
@@ -182,13 +185,14 @@ export const getSingleProduct = async (productId: string): Promise<any> => {
 };
 
 export const deleteProduct = async (productId: string): Promise<any> => {
+  const token = await getValidToken();
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_API}/product/${productId}`,
       {
         method: "DELETE",
         headers: {
-          Authorization: (await cookies()).get("accessToken")!.value,
+          Authorization: token,
         },
       }
     );

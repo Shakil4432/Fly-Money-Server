@@ -258,9 +258,11 @@ const ManageProducts = ({
   ];
   return (
     <div>
+      <h1 className="text-lg text-center  lg:text-xl font-bold text-[#7c3f00]">
+        Manage Products
+      </h1>
       <div className="flex items-center justify-between p-3">
-        <h1 className="text-xl font-bold text-[#7c3f00]">Manage Products</h1>
-        <div className="flex items-center gap-2">
+        <div className="grid grid-cols-2 lg:grid-cols-5 items-center gap-2">
           <div className="flex items-center border rounded-md px-2 w-full">
             <Input
               placeholder="Search users..."

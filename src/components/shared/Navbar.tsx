@@ -216,24 +216,6 @@ export default function Navbar() {
       </div>
 
       {/* Mobile Search */}
-      {/* <div className="md:hidden px-4 pb-3">
-        <div className="relative">
-          <input
-            type="text"
-            placeholder="Search..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-4 pr-12 py-2 border border-[#7c3f00] rounded-lg bg-white focus:ring-2 focus:ring-[#7c3f00]"
-          />
-          <button
-            type="submit"
-            onClick={handleSearch}
-            className="absolute right-2 top-1/2 -translate-y-1/2 text-[#7c3f00] px-3 py-1 rounded-md"
-          >
-            Search
-          </button>
-        </div>
-      </div> */}
 
       {/* Categories */}
       <div className="border-t border-[#7c3f00]/20">

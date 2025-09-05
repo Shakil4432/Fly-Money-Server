@@ -7,10 +7,12 @@ import FlashSale from "@/components/modules/home/FlashSale";
 
 import AutoSlider from "@/components/modules/home/heroSection/AutoSlider";
 import NewArrivalSlider from "@/components/modules/home/newArrivals";
+import ProductGallery from "@/components/modules/home/ProductGallery";
 import ReviewSlider from "@/components/modules/home/Review";
 
 import TopRatedProducts from "@/components/modules/home/TopRatedProducts";
 import TrendingProducts from "@/components/modules/home/TrendingProducts";
+import { getAllBanner } from "@/services/banner";
 
 import { getParentCategores } from "@/services/Category";
 import { getFlashSaleProducts } from "@/services/FlashSale";
@@ -31,6 +33,8 @@ const HomePage = async () => {
   const { data: newArrivals } = await getNewArrivalProducts();
   const { data: TopRatingProducts } = await getTopRatedProduct();
   const { data: reviews } = await getAllReviews();
+  const { data: banner } = await getAllBanner();
+  console.log(banner);
 
   return (
     <div>
@@ -47,6 +51,7 @@ const HomePage = async () => {
       <TopRatedProducts
         TopRatingProducts={TopRatingProducts}
       ></TopRatedProducts>
+      <ProductGallery></ProductGallery>
       <NewArrivalSlider newArrivals={newArrivals}></NewArrivalSlider>
       <AboutSection></AboutSection>
       <ReviewSlider reviews={reviews?.result || []}></ReviewSlider>
