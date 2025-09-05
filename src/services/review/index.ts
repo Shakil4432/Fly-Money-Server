@@ -2,7 +2,6 @@
 
 import { getValidToken } from "@/lib/verifyToken";
 import { revalidateTag } from "next/cache";
-import { cookies } from "next/headers";
 
 export const createReview = async (productData: any): Promise<any> => {
   const token = await getValidToken();

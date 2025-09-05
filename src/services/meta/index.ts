@@ -1,7 +1,6 @@
 "use server";
 
 import { getValidToken } from "@/lib/verifyToken";
-import { cookies } from "next/headers";
 
 export const getMetaData = async () => {
   const token = await getValidToken();

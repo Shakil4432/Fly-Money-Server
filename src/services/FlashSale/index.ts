@@ -2,7 +2,6 @@
 
 import { getValidToken } from "@/lib/verifyToken";
 import { revalidateTag } from "next/cache";
-import { cookies } from "next/headers";
 
 // add Flash Sale
 export const addFlashSale = async (productData: any): Promise<any> => {

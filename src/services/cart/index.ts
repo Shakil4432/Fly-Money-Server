@@ -2,7 +2,6 @@
 
 import { getValidToken } from "@/lib/verifyToken";
 import { IOrder } from "@/types/cart";
-import { cookies } from "next/headers";
 
 export const createOrder = async (order: IOrder) => {
   const token = await getValidToken();
