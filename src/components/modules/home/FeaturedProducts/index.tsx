@@ -61,7 +61,7 @@ const FeaturedProducts = ({
   };
 
   return (
-    <div className="container mx-auto lg:mt-16 md:mt-32 px-4 md:px-0">
+    <div className="container mx-auto lg:mt-16  px-4 md:px-0">
       {defaultTab && (
         <Tabs defaultValue={defaultTab} className="w-full">
           {/* Tabs Header */}

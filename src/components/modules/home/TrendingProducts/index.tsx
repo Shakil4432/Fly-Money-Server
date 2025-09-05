@@ -35,7 +35,7 @@ const TrendingProducts = ({
     toast.success(`${product.name} add to cart`);
   };
   return (
-    <div className="container mx-auto lg:mt-16 md:mt-32 px-4 md:px-0 ">
+    <div className="container mx-auto lg:mt-16  px-4 md:px-0 ">
       <div className="flex  items-start justify-between py-6 md:py-10 gap-4 md:gap-0">
         <div className="space-y-2">
           <div className="flex items-center justify-between">

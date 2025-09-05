@@ -1,3 +1,5 @@
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 import React from "react";
 
 const products = [
@@ -14,6 +16,36 @@ const products = [
 const ProductGallery = () => {
   return (
     <div className="container w-full mx-auto p-4">
+      <div className="flex  items-start justify-between py-6 md:py-10 gap-4 md:gap-0">
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg lg:text-3xl md:text-3xl font-bold text-[#7c3f00]">
+              Product Gallery
+            </h2>
+            <Link href={"/products"}>
+              <Button
+                className="w-full mt-auto block lg:hidden text-sm  border-none text-[#7c3f00] hover:bg-[#7c3f00]/20 bg-white  gap-2 lg:text-xs sm:text-sm md:text-base"
+                variant="outline"
+              >
+                See more...
+              </Button>
+            </Link>
+          </div>
+          <p className="text-gray-500 text-sm md:text-base">
+            Check out our most products gallery
+          </p>
+        </div>
+        <div>
+          <Link href={"/products"}>
+            <Button
+              className="w-full hidden lg:block mt-auto text-sm rounded-md border border-[#7c3f00] text-[#7c3f00] hover:bg-[#7c3f00]/20 bg-white  lg:text-xs sm:text-sm md:text-base"
+              variant="outline"
+            >
+              All Collection
+            </Button>
+          </Link>
+        </div>
+      </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 auto-rows-[300px]">
         {products.map((product) => (
           <div

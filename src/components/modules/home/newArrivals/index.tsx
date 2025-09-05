@@ -30,7 +30,7 @@ const NewArrivalSlider = ({ newArrivals }: { newArrivals: IProduct[] }) => {
     router.push(`/products?${params.toString()}`);
   };
   return (
-    <div className="w-full py-4 lg:py-8 px-4 container mx-auto">
+    <div className="w-full py-4 lg:py-16 lg:mt-16 px-4 container mx-auto">
       <div className="flex items-center justify-between">
         <div className="flex items-center justify-between w-full">
           <h2 className="text-lg lg:text-3xl md:text-3xl font-bold text-[#7c3f00]">
