@@ -75,7 +75,7 @@ const AboutUsSection = () => {
         <div className="w-full h-full  bg-red-700 rounded-3xl">
           <div className="relative w-full  h-full rounded-3xl overflow-hidden  border border-[#2a2a2a]">
             <Image
-              src="/about.png" // <- Add this image to your /public folder
+              src="/about.jpg" // <- Add this image to your /public folder
               alt="About our craftsmanship"
               fill
               className="object-cover "
