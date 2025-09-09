@@ -15,7 +15,7 @@ const products = [
 
 const ProductGallery = () => {
   return (
-    <div className="container w-full mx-auto p-4">
+    <div className="container hidden lg:block w-full mx-auto p-4">
       <div className="flex  items-start justify-between py-6 md:py-10 gap-4 md:gap-0">
         <div className="space-y-2">
           <div className="flex items-center justify-between">

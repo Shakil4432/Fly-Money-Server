@@ -1,5 +1,6 @@
 export const dynamic = "force-dynamic";
 
+import DeliveryBanner from "@/components/DeliveryBanner";
 import AboutSection from "@/components/modules/home/about";
 
 import FeaturedProducts from "@/components/modules/home/FeaturedProducts";
@@ -7,7 +8,7 @@ import FlashSale from "@/components/modules/home/FlashSale";
 
 import AutoSlider from "@/components/modules/home/heroSection/AutoSlider";
 import NewArrivalSlider from "@/components/modules/home/newArrivals";
-import ProductGallery from "@/components/modules/home/ProductGallery";
+// import ProductGallery from "@/components/modules/home/ProductGallery";
 import ReviewSlider from "@/components/modules/home/Review";
 
 import TopRatedProducts from "@/components/modules/home/TopRatedProducts";
@@ -51,7 +52,8 @@ const HomePage = async () => {
       <TopRatedProducts
         TopRatingProducts={TopRatingProducts}
       ></TopRatedProducts>
-      <ProductGallery></ProductGallery>
+      <DeliveryBanner></DeliveryBanner>
+      {/* <ProductGallery></ProductGallery> */}
       <NewArrivalSlider newArrivals={newArrivals}></NewArrivalSlider>
       <AboutSection></AboutSection>
       <ReviewSlider reviews={reviews?.result || []}></ReviewSlider>
