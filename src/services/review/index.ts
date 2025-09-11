@@ -1,16 +1,15 @@
 "use server";
 
-import { getValidToken } from "@/lib/verifyToken";
 import { revalidateTag } from "next/cache";
+import { cookies } from "next/headers";
 
 export const createReview = async (productData: any): Promise<any> => {
-  const token = await getValidToken();
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/review`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: token,
+        Authorization: (await cookies()).get("accessToken")!.value,
       },
       body: JSON.stringify(productData),
     });

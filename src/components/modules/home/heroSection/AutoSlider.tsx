@@ -28,11 +28,11 @@ import { motion } from "framer-motion";
 
 export default function AutoSlider() {
   return (
-    <div className="bg-[#f9f5f0]/30">
+    <div className="bg-[#f9f5f0]/90">
       <div className="mx-auto ">
-        <div className=" gap-4 py-2 px-1">
+        <div className=" gap-4 pt-2 px-1">
           {/* Carousel Section */}
-          <div className=" w-full p-2">
+          <div className=" w-full ">
             <Swiper
               pagination={{ clickable: true }}
               autoplay={{ delay: 3000 }}
@@ -45,7 +45,7 @@ export default function AutoSlider() {
                 <motion.div
                   initial="hidden"
                   animate="visible"
-                  className="bg-red-50 flex flex-col md:flex-row items-center justify-between p-6 md:p-16 h-[23vh] lg:h-[80vh] rounded-sm "
+                  className="bg-red-50 flex flex-col md:flex-row items-center justify-between   h-[23vh] lg:h-[80vh] rounded-sm "
                   style={{
                     backgroundImage: "url('/banner1.jpg')",
                     backgroundSize: "cover",
@@ -59,7 +59,7 @@ export default function AutoSlider() {
                 <motion.div
                   initial="hidden"
                   animate="visible"
-                  className="bg-red-50 flex flex-col md:flex-row items-center justify-between p-6 md:p-16 h-[23vh] lg:h-[80vh] rounded-sm"
+                  className="bg-red-50 flex flex-col md:flex-row items-center justify-between   h-[23vh] lg:h-[80vh] rounded-sm"
                   style={{
                     backgroundImage: "url('/flashsale.jpg')",
                     backgroundSize: "cover",
@@ -78,7 +78,6 @@ export default function AutoSlider() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        className="lg:mt-8"
       >
         <Category />
       </motion.div>
